@@ -1,0 +1,18 @@
+#
+#	LampControl Configuration File
+#	=====================================
+#
+#	Plugin by jacklink01
+# 	Like this plugin? Donate! http://voidteam.net/donate :)
+#
+#	Need a new config file? Just delete this one and a new one will be created.
+#
+
+activatorItemID: 259
+
+allowOnlyPermitted: false
+
+woodenPressurePlateCanInteract: true
+stonePressurePlateCanInteract: true
+
+opOnWithHand: true

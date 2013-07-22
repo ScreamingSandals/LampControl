@@ -1,4 +1,21 @@
 name: LampControl
 author: jacklink01
 version: 1.0
-main: com.jacklinkproductions.LampControl
+main: com.jacklinkproductions.LampControl.Main
+
+commands:
+   lampcontrol:
+      description: Turn on lamps with WorldEdit
+      usage: /<command> [percentage]
+   lamp:
+      description: Turn on lamps with WorldEdit
+      usage: /<command> [percentage]
+   lc:
+      description: Turn on lamps with WorldEdit
+      usage: /<command> [percentage]
+   /lamp:
+      description: Turn on lamps with WorldEdit
+      usage: /<command> [percentage]
+   /lc:
+      description: Turn on lamps with WorldEdit
+      usage: /<command> [percentage]
