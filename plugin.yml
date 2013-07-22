@@ -1,4 +1,4 @@
-name: LumosMaxima
-author: richie3366
-version: 1.5.2.0
-main: fr.richie.LumosMaxima.LMPlugin
+name: LampControl
+author: jacklink01
+version: 1.0
+main: com.jacklinkproductions.LampControl
