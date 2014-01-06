@@ -1,3 +1,8 @@
+/*
+	Thank you to rsod for providing WorldEdit code.
+	GNU General Public License version 3 (GPLv3)
+*/
+
 package com.jacklinkproductions.LampControl;
 
 import org.bukkit.Bukkit;

@@ -31,6 +31,7 @@ public class LampListener implements Listener
 	@EventHandler
 	public void onBlockPhysics(BlockPhysicsEvent e)
 	{
+		@SuppressWarnings("deprecation")
 		int typeID = e.getBlock().getTypeId();
 		
 		if (((typeID == 123) || (typeID == 124)) && (!this.plugin.isRedstoneMaterial(e.getChangedType())))
@@ -39,12 +40,13 @@ public class LampListener implements Listener
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e)
 	{
 		if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
 		
-		if (e.getPlayer().isOp() && Main.opOnWithHand == "true")
+		if (e.getPlayer().isOp() && Main.opUsesHand == "true")
 		{
 			if ((e.getPlayer().getItemInHand() == null) || (!e.getPlayer().getItemInHand().getType().equals(Material.AIR) && !e.getPlayer().getItemInHand().getType().equals(this.plugin.toolMaterial)))
 			{
@@ -68,7 +70,7 @@ public class LampListener implements Listener
 		
 		e.setCancelled(true);
 		
-		if ((Main.allowOnlyPermitted == "true") && (!e.getPlayer().hasPermission("lampcontrol.use"))) return;
+		if ((Main.usePermissions == "true") && (!e.getPlayer().hasPermission("lampcontrol.use"))) return;
 		
 		Block b = e.getClickedBlock();
 		BlockState blockState = b.getState();
@@ -83,6 +85,14 @@ public class LampListener implements Listener
 			Main.switchLamp(b, false);
 			e.getPlayer().sendMessage(ChatColor.RED + Main.prefix + "You don't have permissions to build here !");
 			return;
+		}
+		
+		if (Main.takeItemOnUse == "true")
+		{
+			ItemStack item = e.getPlayer().getItemInHand();
+	        item.setAmount(item.getAmount() - 1);
+	        e.getPlayer().setItemInHand(null);
+	        e.getPlayer().updateInventory();
 		}
 	}
 }

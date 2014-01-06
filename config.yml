@@ -2,17 +2,25 @@
 #	LampControl Configuration File
 #	=====================================
 #
-#	Plugin by jacklink01
+#	Plugin by jacklink01 adapted from LumosMaxima
 # 	Like this plugin? Donate! http://voidteam.net/donate :)
 #
 #	Need a new config file? Just delete this one and a new one will be created.
 #
 
-activatorItemID: 259
+# The item ID of the item with which you would like players to be able to turn on lamps.
+# (default: flint/steel 259)
+lampControlItem: 259
 
-allowOnlyPermitted: false
+# If set to true, then LampControl will check if players have permission, otherwise it will let everyone control lamps.
+usePermissions: false
 
-woodenPressurePlateCanInteract: true
-stonePressurePlateCanInteract: true
+# In the event that you would like to prevent plates from affecting lamps, you may set these to false.
+woodPlateControl: true
+stonePlateControl: true
 
-opOnWithHand: true
+# When this is set to true, OP'd players can use their hand to control the lamps in addition to the item above.
+opUsesHand: true
+
+# Take the item from the player after they use it to turn on a lamp
+takeItemOnUse: false
