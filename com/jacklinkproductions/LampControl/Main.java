@@ -3,12 +3,11 @@ package com.jacklinkproductions.LampControl;
 import java.io.File;
 import java.util.ArrayList;
 
-import net.minecraft.server.v1_7_R1.WorldServer;
-import org.bukkit.craftbukkit.v1_7_R1.CraftWorld;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.jacklinkproductions.LampControl.Updater;
 
 public class Main extends JavaPlugin
 {
@@ -20,6 +19,8 @@ public class Main extends JavaPlugin
 	public String stonePlateControl = "false";
 	public static String opUsesHand = "true";
 	public static String takeItemOnUse = "false";
+	public static String versionOk = "false";
+	public static String correctVersion = "v1_7_R1";
 	
     private static PluginDescriptionFile pdfFile;
     
@@ -38,6 +39,35 @@ public class Main extends JavaPlugin
 
         // Load configuration.
         reloadConfiguration();
+        
+        // Check for old config
+        if ((getConfig().isSet("config-version") == false) || (getConfig().getInt("config-version") < 2))
+        {
+            File file = new File(this.getDataFolder(), "config.yml");
+            file.delete();
+            saveDefaultConfig();
+            getLogger().info( "Created a new config.yml for this version." );
+        }
+        
+        // Setup Updater system
+        if (getConfig().getString("update-notification") == "true")
+        {
+        	new Updater(this, 62770, this.getFile(), Updater.UpdateType.DEFAULT, false);
+        }
+		
+		// Check if Craftbukkit is compatible with this version
+		final String packageName = getServer().getClass().getPackage().getName();
+        String cbversion = packageName.substring(packageName.lastIndexOf('.') + 1);
+        if (cbversion.equals(correctVersion))
+        {
+        	versionOk = "true";
+            getServer().getPluginManager().registerEvents(new LampListener(this), this);
+        }
+        else
+        {
+        	getLogger().severe("This version is for Craftbukkit " + correctVersion + " only.");
+        	getLogger().severe("The plugin will load to notify you of updates, but will not work.");
+        }
 
         // Register command executor.
         Commands commandExecutor = new Commands();
@@ -49,7 +79,7 @@ public class Main extends JavaPlugin
 
         // Output info to console on load
         pdfFile = this.getDescription();
-        getLogger().info( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
+        getLogger().info( pdfFile.getName() + " v" + pdfFile.getVersion() + " is enabled!" );
 		
 		this.redstone_materials.add(Material.DETECTOR_RAIL);
 		this.redstone_materials.add(Material.REDSTONE_WIRE);
@@ -73,9 +103,6 @@ public class Main extends JavaPlugin
 			this.redstone_materials.add(Material.WOOD_PLATE);
 		if (this.woodPlateControl == "true")
 			this.redstone_materials.add(Material.STONE_PLATE);
-
-        // Register our events
-        getServer().getPluginManager().registerEvents(new LampListener(this), this);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -98,22 +125,5 @@ public class Main extends JavaPlugin
 			return true;
 		}
 		return false;
-	}
-	
-	@SuppressWarnings("deprecation")
-	public static void switchLamp(Block b, boolean lighting)
-	{
-		WorldServer ws = ((CraftWorld)b.getWorld()).getHandle();
-	
-		boolean mem = ws.isStatic;
-		if (!mem) ws.isStatic = true;
-	
-		if (lighting)
-			b.setTypeIdAndData(Material.REDSTONE_LAMP_ON.getId(), (byte)0, false);
-		else {
-			b.setTypeIdAndData(Material.REDSTONE_LAMP_OFF.getId(), (byte)0, false);
-		}
-	
-		if (!mem) ws.isStatic = false;
 	}
 }

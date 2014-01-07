@@ -46,7 +46,7 @@ public class LampListener implements Listener
 	{
 		if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
 		
-		if (e.getPlayer().isOp() && Main.opUsesHand == "true")
+		if (e.getPlayer().isOp() && Main.opUsesHand == "true" || e.getPlayer().hasPermission("lampcontrol.hand"))
 		{
 			if ((e.getPlayer().getItemInHand() == null) || (!e.getPlayer().getItemInHand().getType().equals(Material.AIR) && !e.getPlayer().getItemInHand().getType().equals(this.plugin.toolMaterial)))
 			{
@@ -75,14 +75,14 @@ public class LampListener implements Listener
 		Block b = e.getClickedBlock();
 		BlockState blockState = b.getState();
 		
-		Main.switchLamp(b, true);
+		SwitchLamp.switchLamp(b, true);
 		
 		BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(b, blockState, b, new ItemStack(Material.REDSTONE_LAMP_ON), e.getPlayer(), true);
 		Bukkit.getPluginManager().callEvent(checkBuildPerms);
 		
 		if (checkBuildPerms.isCancelled())
 		{
-			Main.switchLamp(b, false);
+			SwitchLamp.switchLamp(b, false);
 			e.getPlayer().sendMessage(ChatColor.RED + Main.prefix + "You don't have permissions to build here !");
 			return;
 		}

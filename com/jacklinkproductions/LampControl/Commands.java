@@ -23,6 +23,12 @@ public class Commands implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
 	{
+		if (Main.versionOk == "false")
+		{
+		  sender.sendMessage(ChatColor.RED + "This version of Craftbukkit is not compatible!");
+		  return true;
+		}
+		
 		if (!(sender instanceof Player))
 		{
 		  sender.sendMessage("This command cannot be run from the console.");
@@ -93,7 +99,7 @@ public class Commands implements CommandExecutor {
 					found++;
 					if ((percent == 100) || ((int)(Math.random() * 100.0D) < percent))
 					{
-						Main.switchLamp(block, true);
+						SwitchLamp.switchLamp(block, true);
 						affected++;
 					}
 				}

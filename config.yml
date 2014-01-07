@@ -20,7 +20,15 @@ woodPlateControl: true
 stonePlateControl: true
 
 # When this is set to true, OP'd players can use their hand to control the lamps in addition to the item above.
+# You may also give a player or group the 'lampcontrol.hand' permission.
 opUsesHand: true
 
 # Take the item from the player after they use it to turn on a lamp
 takeItemOnUse: false
+
+# Keep up to date! This plugin can notify you about updates and let you install them from in-game!
+update-notification: true
+
+
+# Don't touch this unless you wanna lose your config. :)
+config-version: 2
