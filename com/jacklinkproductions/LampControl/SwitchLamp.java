@@ -15,14 +15,16 @@ public class SwitchLamp extends JavaPlugin
 			WorldServer ws = ((CraftWorld)b.getWorld()).getHandle();
 		
 			boolean mem = ws.isStatic;
-			if (!mem) ws.isStatic = true;
 		
-			if (lighting)
+			if (lighting == true)
+			{
+				if (!mem) ws.isStatic = true;
 				b.setTypeIdAndData(Material.REDSTONE_LAMP_ON.getId(), (byte)0, false);
-			else {
+				if (!mem) ws.isStatic = false;
+			}
+			else
+			{
 				b.setTypeIdAndData(Material.REDSTONE_LAMP_OFF.getId(), (byte)0, false);
 			}
-		
-			if (!mem) ws.isStatic = false;
 		}
 }

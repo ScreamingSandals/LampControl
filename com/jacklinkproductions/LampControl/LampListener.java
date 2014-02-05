@@ -63,6 +63,35 @@ public class LampListener implements Listener
 	
 		if (e.getClickedBlock().getType().equals(Material.REDSTONE_LAMP_ON))
 		{
+			if ((Main.usePermissions == "true") && (!e.getPlayer().hasPermission("lampcontrol.use"))) return;
+			
+			if (Main.toggleLamps == "false") return;
+			
+			e.setCancelled(true);
+			
+			Block b = e.getClickedBlock();
+			BlockState blockState = b.getState();
+			
+			SwitchLamp.switchLamp(b, false);
+			
+			BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(b, blockState, b, new ItemStack(Material.REDSTONE_LAMP_OFF), e.getPlayer(), true);
+			Bukkit.getPluginManager().callEvent(checkBuildPerms);
+			
+			if (checkBuildPerms.isCancelled())
+			{
+				SwitchLamp.switchLamp(b, true);
+				e.getPlayer().sendMessage(ChatColor.RED + Main.prefix + "You don't have permissions to build here !");
+				return;
+			}
+			
+			if (Main.takeItemOnUse == "true")
+			{
+				ItemStack item = e.getPlayer().getItemInHand();
+		        item.setAmount(item.getAmount() - 1);
+		        e.getPlayer().setItemInHand(null);
+		        e.getPlayer().updateInventory();
+			}
+			
 			return;
 		}
 		

@@ -1,6 +1,6 @@
 name: LampControl
 author: jacklink01
-version: 2.0
+version: 2.1
 main: com.jacklinkproductions.LampControl.Main
 
 commands:
@@ -19,3 +19,6 @@ commands:
    /lc:
       description: Turn on lamps with WorldEdit
       usage: /<command> [percentage]
+   /lc update:
+      description: Update to the latest version
+      usage: /<command> update
