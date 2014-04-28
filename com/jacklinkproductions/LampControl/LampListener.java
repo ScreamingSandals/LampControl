@@ -9,7 +9,9 @@ package com.jacklinkproductions.LampControl;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -34,7 +36,7 @@ public class LampListener implements Listener
 		@SuppressWarnings("deprecation")
 		int typeID = e.getBlock().getTypeId();
 		
-		if (((typeID == 123) || (typeID == 124)) && (!this.plugin.isRedstoneMaterial(e.getChangedType())))
+		if (((typeID == 123) || (typeID == 124) || (typeID == 27)) && (!this.plugin.isRedstoneMaterial(e.getChangedType())))
 		{
 			e.setCancelled(true);
 		}
@@ -45,6 +47,8 @@ public class LampListener implements Listener
 	public void onPlayerInteract(PlayerInteractEvent e)
 	{
 		if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
+		
+		if (e.getPlayer().isSneaking()) return;
 		
 		if (e.getPlayer().isOp() && Main.opUsesHand == "true" || e.getPlayer().hasPermission("lampcontrol.hand"))
 		{
@@ -72,14 +76,14 @@ public class LampListener implements Listener
 			Block b = e.getClickedBlock();
 			BlockState blockState = b.getState();
 			
-			SwitchLamp.switchLamp(b, false);
+			SwitchBlock.switchLamp(b, false);
 			
 			BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(b, blockState, b, new ItemStack(Material.REDSTONE_LAMP_OFF), e.getPlayer(), true);
 			Bukkit.getPluginManager().callEvent(checkBuildPerms);
 			
 			if (checkBuildPerms.isCancelled())
 			{
-				SwitchLamp.switchLamp(b, true);
+				SwitchBlock.switchLamp(b, true);
 				e.getPlayer().sendMessage(ChatColor.RED + Main.prefix + "You don't have permissions to build here !");
 				return;
 			}
@@ -92,7 +96,146 @@ public class LampListener implements Listener
 		        e.getPlayer().updateInventory();
 			}
 			
+			e.getPlayer().getWorld().playSound(e.getClickedBlock().getLocation(), Sound.CLICK, 0.5F, 0.0F);
+			
 			return;
+		}
+
+		if (e.getClickedBlock().getType().equals(Material.POWERED_RAIL))
+		{
+			if ((Main.usePermissions == "true") && (!e.getPlayer().hasPermission("lampcontrol.use"))) return;
+		
+			if (Main.controlRails == "false") return;
+			
+			e.setCancelled(true);
+			
+			Block b = e.getClickedBlock();
+			BlockState blockState = b.getState();
+			int data = (int) b.getData();
+			
+			if (data < 7)
+			{
+				BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(b, blockState, b, new ItemStack(Material.POWERED_RAIL), e.getPlayer(), true);
+				Bukkit.getPluginManager().callEvent(checkBuildPerms);
+				
+				if (checkBuildPerms.isCancelled())
+				{
+					e.getPlayer().sendMessage(ChatColor.RED + Main.prefix + "You don't have permissions to build here !");
+					return;
+				}
+				else
+				{				
+					int i = 1;
+					while (i < 9)
+					{
+						Block rb = b.getRelative(BlockFace.NORTH, i);
+						int rdata = (int) rb.getData();
+						
+						if ((rb.getType().equals(Material.POWERED_RAIL)) && (rdata < 7))
+						{
+							SwitchBlock.switchRail(rb, true);
+						}
+						else
+						{
+							break;
+						}
+						
+						i++;
+					}
+					i = 1;
+					while (i < 9)
+					{
+						Block rb = b.getRelative(BlockFace.SOUTH, i);
+						int rdata = (int) rb.getData();
+						
+						if ((rb.getType().equals(Material.POWERED_RAIL)) && (rdata < 7))
+						{
+							SwitchBlock.switchRail(rb, true);
+						}
+						else
+						{
+							break;
+						}
+						
+						i++;
+					}
+					i = 1;
+					while (i < 9)
+					{
+						Block rb = b.getRelative(BlockFace.EAST, i);
+						int rdata = (int) rb.getData();
+						
+						if ((rb.getType().equals(Material.POWERED_RAIL)) && (rdata < 7))
+						{
+							SwitchBlock.switchRail(rb, true);
+						}
+						else
+						{
+							break;
+						}
+						
+						i++;
+					}
+					i = 1;
+					while (i < 9)
+					{
+						Block rb = b.getRelative(BlockFace.WEST, i);
+						int rdata = (int) rb.getData();
+						
+						if ((rb.getType().equals(Material.POWERED_RAIL)) && (rdata < 7))
+						{
+							SwitchBlock.switchRail(rb, true);
+						}
+						else
+						{
+							break;
+						}
+						
+						i++;
+					}
+
+					SwitchBlock.switchRail(b, true);
+				}
+				
+				if (Main.takeItemOnUse == "true")
+				{
+					ItemStack item = e.getPlayer().getItemInHand();
+			        item.setAmount(item.getAmount() - 1);
+			        e.getPlayer().setItemInHand(null);
+			        e.getPlayer().updateInventory();
+				}
+				
+				e.getPlayer().getWorld().playSound(e.getClickedBlock().getLocation(), Sound.CLICK, 0.5F, 1.0F);
+				
+				return;
+			}
+			else
+			{				
+				BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(b, blockState, b, new ItemStack(Material.POWERED_RAIL), e.getPlayer(), true);
+				Bukkit.getPluginManager().callEvent(checkBuildPerms);
+				
+				if (checkBuildPerms.isCancelled())
+				{
+					e.getPlayer().sendMessage(ChatColor.RED + Main.prefix + "You don't have permissions to build here !");
+					return;
+				}
+				else
+				{
+					SwitchBlock.switchRail(b, false);
+				}
+				
+				if (Main.takeItemOnUse == "true")
+				{
+					ItemStack item = e.getPlayer().getItemInHand();
+			        item.setAmount(item.getAmount() - 1);
+			        e.getPlayer().setItemInHand(null);
+			        e.getPlayer().updateInventory();
+				}
+				
+				e.getPlayer().getWorld().playSound(e.getClickedBlock().getLocation(), Sound.CLICK, 0.5F, 0.0F);
+				
+				return;
+			}
 		}
 		
 		if (!e.getClickedBlock().getType().equals(Material.REDSTONE_LAMP_OFF)) return;
@@ -104,15 +247,15 @@ public class LampListener implements Listener
 		Block b = e.getClickedBlock();
 		BlockState blockState = b.getState();
 		
-		SwitchLamp.switchLamp(b, true);
+		SwitchBlock.switchLamp(b, true);
 		
 		BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(b, blockState, b, new ItemStack(Material.REDSTONE_LAMP_ON), e.getPlayer(), true);
 		Bukkit.getPluginManager().callEvent(checkBuildPerms);
 		
 		if (checkBuildPerms.isCancelled())
 		{
-			SwitchLamp.switchLamp(b, false);
-			e.getPlayer().sendMessage(ChatColor.RED + Main.prefix + "You don't have permissions to build here !");
+			SwitchBlock.switchLamp(b, false);
+			e.getPlayer().sendMessage(ChatColor.RED + Main.prefix + "You don't have permissions to build here!");
 			return;
 		}
 		
@@ -123,5 +266,7 @@ public class LampListener implements Listener
 	        e.getPlayer().setItemInHand(null);
 	        e.getPlayer().updateInventory();
 		}
+
+		e.getPlayer().getWorld().playSound(e.getClickedBlock().getLocation(), Sound.CLICK, 0.5F, 1.0F);
 	}
 }

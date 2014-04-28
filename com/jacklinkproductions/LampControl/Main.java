@@ -16,7 +16,7 @@ import com.jacklinkproductions.LampControl.Updater;
 
 public class Main extends JavaPlugin
 {
-	public static String prefix = "&6[LampControl] ";
+	public static String prefix = "[LampControl] ";
 	private ArrayList<Material> redstone_materials = new ArrayList<Material>();
 	public Material toolMaterial;
 	public static String usePermissions = "false";
@@ -25,9 +25,10 @@ public class Main extends JavaPlugin
 	public static String opUsesHand = "true";
 	public static String toggleLamps = "true";
 	public static String takeItemOnUse = "false";
+	public static String controlRails = "false";
 	public static String versionOk = "false";
 	
-	public static String correctVersion = "v1_7_R1";
+	public static String correctVersion = "v1_7_R3";
 	public static int updaterID = 62770;
 	
     static PluginDescriptionFile pdfFile;
@@ -50,7 +51,7 @@ public class Main extends JavaPlugin
         reloadConfiguration();
         
         // Check for old config
-        if ((getConfig().isSet("config-version") == false) || (getConfig().getInt("config-version") < 3))
+        if ((getConfig().isSet("config-version") == false) || (getConfig().getInt("config-version") < 4))
         {
             File file = new File(this.getDataFolder(), "config.yml");
             file.delete();
@@ -91,6 +92,7 @@ public class Main extends JavaPlugin
         getLogger().info( pdfFile.getName() + " v" + pdfFile.getVersion() + " is enabled!" );
 		
 		this.redstone_materials.add(Material.DETECTOR_RAIL);
+		this.redstone_materials.add(Material.POWERED_RAIL);
 		this.redstone_materials.add(Material.REDSTONE_WIRE);
 		this.redstone_materials.add(Material.REDSTONE_BLOCK);
 		this.redstone_materials.add(Material.PISTON_MOVING_PIECE);
@@ -127,6 +129,7 @@ public class Main extends JavaPlugin
         opUsesHand = getConfig().getString("opUsesHand");
         takeItemOnUse = getConfig().getString("takeItemOnUse");
         toggleLamps = getConfig().getString("toggleLamps");
+        controlRails = getConfig().getString("controlRails");
     }
 	
 	public boolean isRedstoneMaterial(Material mat)

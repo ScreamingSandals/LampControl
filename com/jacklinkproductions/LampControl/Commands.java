@@ -27,13 +27,14 @@ public class Commands implements CommandExecutor
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
 	{
 		int percent = 100;
+		boolean off = false;
 			
 		if (args.length == 1)
 		{
 			if (args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("version"))
 			{
 				sender.sendMessage(ChatColor.YELLOW + "-- " + Main.pdfFile.getName() + " v" + Main.pdfFile.getVersion() + " --");
-				sender.sendMessage(ChatColor.RED + "/lamp [percentage] - For a WorldEdit Selection");
+				sender.sendMessage(ChatColor.RED + "/lamp [off] [percentage] - For a WorldEdit Selection");
 				sender.sendMessage(ChatColor.RED + "/lamp update - Updates to latest version");
 				return true;
 			}
@@ -68,13 +69,18 @@ public class Commands implements CommandExecutor
 					return true;
 				}
 			}
+			else if (args[0].equalsIgnoreCase("off"))
+			{
+				percent = 100;
+				off = true;
+			}
 			else
 			{
 				try {
 					percent = Integer.parseInt(args[0]);
 				} catch (NumberFormatException e) {
 					sender.sendMessage(ChatColor.RED + "'" + args[0] + "' is not a percentage.");
-					sender.sendMessage(ChatColor.RED + "/lamp [percentage]");
+					sender.sendMessage(ChatColor.RED + "/lamp [off] [percentage]");
 					return true;
 				}
 				if ((percent <= 0) || (percent >= 100)) {
@@ -85,9 +91,28 @@ public class Commands implements CommandExecutor
 		}
 		else if (args.length > 1)
 		{
-			sender.sendMessage(ChatColor.RED + "Too many arguments:");
-			sender.sendMessage(ChatColor.RED + "/lamp [percentage]");
-			return true;
+			if (args.length == 2 && args[0].equalsIgnoreCase("off"))
+			{
+				off = true;
+				
+				try {
+					percent = Integer.parseInt(args[1]);
+				} catch (NumberFormatException e) {
+					sender.sendMessage(ChatColor.RED + "'" + args[1] + "' is not a percentage.");
+					sender.sendMessage(ChatColor.RED + "/lamp [off] [percentage]");
+					return true;
+				}
+				if ((percent <= 0) || (percent >= 100)) {
+					sender.sendMessage(ChatColor.RED + "Percentage must be between 0 and 100!");
+					return true;
+				}
+			}
+			else
+			{
+				sender.sendMessage(ChatColor.RED + "Too many arguments:");
+				sender.sendMessage(ChatColor.RED + "/lamp [off] [percentage]");
+				return true;
+			}
 		}
 		else
 		{
@@ -138,13 +163,27 @@ public class Commands implements CommandExecutor
 									found++;
 									if ((percent == 100) || ((int)(Math.random() * 100.0D) < percent))
 									{
-										SwitchLamp.switchLamp(block, true);
+										SwitchBlock.switchLamp(block, true);
+										affected++;
+									}
+								}
+								else if (block.getType().equals(Material.REDSTONE_LAMP_ON) && off == true)
+								{
+									found++;
+									if ((percent == 100) || ((int)(Math.random() * 100.0D) < percent))
+									{
+										SwitchBlock.switchLamp(block, false);
 										affected++;
 									}
 								}
 							}
 						}
-						sender.sendMessage(ChatColor.LIGHT_PURPLE + "" + affected + " out of " + found + " lamp(s) have been turned on.");
+						
+						if (off == false)
+							sender.sendMessage(ChatColor.LIGHT_PURPLE + "" + affected + " out of " + found + " lamp(s) have been turned on.");
+						else
+							sender.sendMessage(ChatColor.LIGHT_PURPLE + "" + affected + " out of " + found + " lamp(s) have been turned off.");
+						
 						return true;
 					}
 				}

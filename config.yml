@@ -23,15 +23,19 @@ stonePlateControl: true
 # You may also give a player or group the 'lampcontrol.hand' permission.
 opUsesHand: true
 
-# Toggle the lamps on/off with your item/hand!
+# Toggle the lamps on/off with your item/hand! If off, lamps will turn ON, but not off.
 toggleLamps: true
 
 # Take the item from the player after they use it to turn on a lamp
 takeItemOnUse: false
 
+# BONUS! EXPERIMENTAL! Turn on/off powered rails with the control item or your hand!
+controlRails: false
+
+
+
 # Keep up to date! This plugin can notify you about updates and let you install them from in-game! (Users with lampcontrol.update or OP will be notified of updates)
 update-notification: true
 
-
 # Don't touch this unless you wanna lose your config. :)
-config-version: 3
+config-version: 4

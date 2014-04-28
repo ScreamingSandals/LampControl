@@ -1,6 +1,6 @@
 name: LampControl
 author: jacklink01
-version: 2.1
+version: 2.5
 main: com.jacklinkproductions.LampControl.Main
 
 commands:
