@@ -50,7 +50,7 @@ public class LampListener implements Listener
 		
 		if (e.getPlayer().isSneaking()) return;
 		
-		if (e.getPlayer().isOp() && Main.opUsesHand == "true" || e.getPlayer().hasPermission("lampcontrol.hand"))
+		if ((Main.opUsesHand == "true" && e.getPlayer().isOp()) || (e.getPlayer().hasPermission("lampcontrol.hand")))
 		{
 			if ((e.getPlayer().getItemInHand() == null) || (!e.getPlayer().getItemInHand().getType().equals(Material.AIR) && !e.getPlayer().getItemInHand().getType().equals(this.plugin.toolMaterial)))
 			{
@@ -67,7 +67,7 @@ public class LampListener implements Listener
 	
 		if (e.getClickedBlock().getType().equals(Material.REDSTONE_LAMP_ON))
 		{
-			if ((Main.usePermissions == "true") && (!e.getPlayer().hasPermission("lampcontrol.use"))) return;
+			if (Main.usePermissions == "true" && !e.getPlayer().hasPermission("lampcontrol.use")) return;
 			
 			if (Main.toggleLamps == "false") return;
 			
@@ -93,7 +93,6 @@ public class LampListener implements Listener
 				ItemStack item = e.getPlayer().getItemInHand();
 		        item.setAmount(item.getAmount() - 1);
 		        e.getPlayer().setItemInHand(null);
-		        e.getPlayer().updateInventory();
 			}
 			
 			e.getPlayer().getWorld().playSound(e.getClickedBlock().getLocation(), Sound.CLICK, 0.5F, 0.0F);
@@ -103,7 +102,7 @@ public class LampListener implements Listener
 
 		if (e.getClickedBlock().getType().equals(Material.POWERED_RAIL))
 		{
-			if ((Main.usePermissions == "true") && (!e.getPlayer().hasPermission("lampcontrol.use"))) return;
+			if (Main.usePermissions == "true" && !e.getPlayer().hasPermission("lampcontrol.use")) return;
 		
 			if (Main.controlRails == "false") return;
 			
@@ -229,7 +228,6 @@ public class LampListener implements Listener
 					ItemStack item = e.getPlayer().getItemInHand();
 			        item.setAmount(item.getAmount() - 1);
 			        e.getPlayer().setItemInHand(null);
-			        e.getPlayer().updateInventory();
 				}
 				
 				e.getPlayer().getWorld().playSound(e.getClickedBlock().getLocation(), Sound.CLICK, 0.5F, 0.0F);
@@ -242,7 +240,7 @@ public class LampListener implements Listener
 		
 		e.setCancelled(true);
 		
-		if ((Main.usePermissions == "true") && (!e.getPlayer().hasPermission("lampcontrol.use"))) return;
+		if (Main.usePermissions == "true" && !e.getPlayer().hasPermission("lampcontrol.use")) return;
 		
 		Block b = e.getClickedBlock();
 		BlockState blockState = b.getState();
@@ -264,7 +262,6 @@ public class LampListener implements Listener
 			ItemStack item = e.getPlayer().getItemInHand();
 	        item.setAmount(item.getAmount() - 1);
 	        e.getPlayer().setItemInHand(null);
-	        e.getPlayer().updateInventory();
 		}
 
 		e.getPlayer().getWorld().playSound(e.getClickedBlock().getLocation(), Sound.CLICK, 0.5F, 1.0F);
