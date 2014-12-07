@@ -28,7 +28,7 @@ public class Main extends JavaPlugin
 	public static String controlRails = "false";
 	public static String versionOk = "false";
 	
-	public static String correctVersion = "v1_7_R4";
+	public static String correctVersion = "v1_8_R1";
 	public static int updaterID = 62770;
 	
     static PluginDescriptionFile pdfFile;
@@ -146,7 +146,7 @@ public class Main extends JavaPlugin
     public void checkForUpdates()
     {
         final Updater updater = new Updater(this, updaterID, getFile(), Updater.UpdateType.NO_DOWNLOAD, true); // Start Updater but just do a version check
-        updateAvailable = updater.getResult() == Updater.UpdateResult.UPDATE_AVAILABLE; // Determine if there is an update ready for us
+        updateAvailable = (updater.getResult() == Updater.UpdateResult.UPDATE_AVAILABLE); // Determine if there is an update ready for us
         latestVersion = updater.getLatestName();
         getLogger().info(latestVersion + " is the latest version available, and the updatability of it is: " + updater.getResult().name() + ". The latest version is for " + updater.getLatestGameVersion() + " only.");
 

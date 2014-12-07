@@ -1,25 +1,23 @@
 package com.jacklinkproductions.LampControl;
 
-import net.minecraft.server.v1_7_R4.WorldServer;
+import net.minecraft.server.v1_8_R1.World;
+import org.bukkit.craftbukkit.v1_8_R1.CraftWorld;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class SwitchBlock extends JavaPlugin
 {
-	public static void switchLamp(Block b, boolean lighting)
+	public static void switchLamp(Block b, boolean lighting) throws Exception
 	{
-		WorldServer ws = ((CraftWorld)b.getWorld()).getHandle();
-	
-		boolean mem = ws.isStatic;
+		World w = ((CraftWorld)b.getWorld()).getHandle();
 	
 		if (lighting == true)
 		{
-			if (!mem) ws.isStatic = true;
+			setWorldStatic(w, true);
 			b.setType(Material.REDSTONE_LAMP_ON);
-			if (!mem) ws.isStatic = false;
+			setWorldStatic(w, false);
 		}
 		else
 		{
@@ -28,25 +26,31 @@ public class SwitchBlock extends JavaPlugin
 	}
 
 	@SuppressWarnings("deprecation")
-	public static void switchRail(Block b, boolean power)
+	public static void switchRail(Block b, boolean power) throws Exception
 	{
-		WorldServer ws = ((CraftWorld)b.getWorld()).getHandle();
+		World w = ((CraftWorld)b.getWorld()).getHandle();
 	
-		boolean mem = ws.isStatic;
 		int data = (int) b.getData();
 	
 		if (power == true)
 		{
 			data = data + 8;
-			
-			if (!mem) ws.isStatic = true;
+
+			setWorldStatic(w, true);
 			b.setTypeIdAndData(27, (byte)data, false);
-			if (!mem) ws.isStatic = false;
+			setWorldStatic(w, false);
 		}
 		else
 		{
 			data = data - 8;
 			b.setTypeIdAndData(27, (byte)data, false);
 		}
+	}
+	
+	private static void setWorldStatic(World world, boolean static_boolean) throws Exception {
+		java.lang.reflect.Field static_field = World.class.getDeclaredField("isStatic");
+		
+		static_field.setAccessible(true);
+		static_field.set(world, static_boolean);
 	}
 }

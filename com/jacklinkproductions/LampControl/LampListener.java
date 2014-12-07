@@ -44,7 +44,7 @@ public class LampListener implements Listener
 	
 	@SuppressWarnings("deprecation")
 	@EventHandler
-	public void onPlayerInteract(PlayerInteractEvent e)
+	public void onPlayerInteract(PlayerInteractEvent e) throws Exception
 	{
 		if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
 		

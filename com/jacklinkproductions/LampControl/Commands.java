@@ -163,7 +163,11 @@ public class Commands implements CommandExecutor
 									found++;
 									if ((percent == 100) || ((int)(Math.random() * 100.0D) < percent))
 									{
-										SwitchBlock.switchLamp(block, true);
+										try {
+											SwitchBlock.switchLamp(block, true);
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
 										affected++;
 									}
 								}
@@ -172,7 +176,11 @@ public class Commands implements CommandExecutor
 									found++;
 									if ((percent == 100) || ((int)(Math.random() * 100.0D) < percent))
 									{
-										SwitchBlock.switchLamp(block, false);
+										try {
+											SwitchBlock.switchLamp(block, false);
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
 										affected++;
 									}
 								}
