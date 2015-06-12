@@ -28,7 +28,7 @@ public class Main extends JavaPlugin
 	public static String controlRails = "false";
 	public static String versionOk = "false";
 	
-	public static String correctVersion = "v1_8_R1";
+	public static String correctVersion = "v1_8_R3";
 	public static int updaterID = 62770;
 	
     static PluginDescriptionFile pdfFile;

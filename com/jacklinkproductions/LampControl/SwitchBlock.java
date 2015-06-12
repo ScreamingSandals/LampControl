@@ -1,7 +1,7 @@
 package com.jacklinkproductions.LampControl;
 
-import net.minecraft.server.v1_8_R1.World;
-import org.bukkit.craftbukkit.v1_8_R1.CraftWorld;
+import net.minecraft.server.v1_8_R3.World;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -48,7 +48,7 @@ public class SwitchBlock extends JavaPlugin
 	}
 	
 	private static void setWorldStatic(World world, boolean static_boolean) throws Exception {
-		java.lang.reflect.Field static_field = World.class.getDeclaredField("isStatic");
+		java.lang.reflect.Field static_field = World.class.getDeclaredField("isClientSide");
 		
 		static_field.setAccessible(true);
 		static_field.set(world, static_boolean);
