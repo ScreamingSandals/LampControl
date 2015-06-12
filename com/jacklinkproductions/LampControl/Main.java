@@ -110,6 +110,8 @@ public class Main extends JavaPlugin
 		this.redstone_materials.add(Material.IRON_PLATE);
 		this.redstone_materials.add(Material.TRIPWIRE);
 		this.redstone_materials.add(Material.TRIPWIRE_HOOK);
+		this.redstone_materials.add(Material.DAYLIGHT_DETECTOR);
+		this.redstone_materials.add(Material.DAYLIGHT_DETECTOR_INVERTED);
 		if (this.stonePlateControl == "true")
 			this.redstone_materials.add(Material.WOOD_PLATE);
 		if (this.woodPlateControl == "true")
