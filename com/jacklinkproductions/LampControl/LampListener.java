@@ -37,7 +37,7 @@ public class LampListener implements Listener
 		@SuppressWarnings("deprecation")
 		int typeID = e.getBlock().getTypeId();
 
-		if (((typeID == 123) || (typeID == 124) || (typeID == 27)) && (!this.plugin.isRedstoneMaterial(e.getChangedType())))
+		if (((typeID == 124) || (typeID == 27)) && (!this.plugin.isRedstoneMaterial(e.getChangedType())))
 		{
 			e.setCancelled(true);
 		}
