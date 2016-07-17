@@ -1,7 +1,7 @@
 package com.jacklinkproductions.LampControl;
 
-import net.minecraft.server.v1_8_R3.World;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import net.minecraft.server.v1_10_R1.World;
+import org.bukkit.craftbukkit.v1_10_R1.CraftWorld;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -9,11 +9,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class SwitchBlock extends JavaPlugin
 {
-	public static void switchLamp(Block b, boolean lighting) throws Exception
+	public static void switchLamp(Block b, boolean lightning) throws Exception
 	{
 		World w = ((CraftWorld)b.getWorld()).getHandle();
-	
-		if (lighting == true)
+
+		if (lightning)
 		{
 			setWorldStatic(w, true);
 			b.setType(Material.REDSTONE_LAMP_ON);
@@ -22,28 +22,6 @@ public class SwitchBlock extends JavaPlugin
 		else
 		{
 			b.setType(Material.REDSTONE_LAMP_OFF);
-		}
-	}
-
-	@SuppressWarnings("deprecation")
-	public static void switchRail(Block b, boolean power) throws Exception
-	{
-		World w = ((CraftWorld)b.getWorld()).getHandle();
-	
-		int data = (int) b.getData();
-	
-		if (power == true)
-		{
-			data = data + 8;
-
-			setWorldStatic(w, true);
-			b.setTypeIdAndData(27, (byte)data, false);
-			setWorldStatic(w, false);
-		}
-		else
-		{
-			data = data - 8;
-			b.setTypeIdAndData(27, (byte)data, false);
 		}
 	}
 	

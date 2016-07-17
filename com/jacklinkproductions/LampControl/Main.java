@@ -3,16 +3,9 @@ package com.jacklinkproductions.LampControl;
 import java.io.File;
 import java.util.ArrayList;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import com.jacklinkproductions.LampControl.Updater;
 
 public class Main extends JavaPlugin
 {
@@ -25,12 +18,10 @@ public class Main extends JavaPlugin
 	public static String opUsesHand = "true";
 	public static String toggleLamps = "true";
 	public static String takeItemOnUse = "false";
-	public static String controlRails = "false";
 	public static String versionOk = "false";
-	
-	public static String correctVersion = "v1_8_R3";
-	public static int updaterID = 62770;
-	
+
+	public static String correctVersion = "v1_10_R1";
+
     static PluginDescriptionFile pdfFile;
 
     @Override
@@ -41,7 +32,7 @@ public class Main extends JavaPlugin
 
     @Override
 	public void onEnable() {
-    	
+
         // Create default config if not exist yet.
         if (!new File(getDataFolder(), "config.yml").exists()) {
             saveDefaultConfig();
@@ -49,7 +40,7 @@ public class Main extends JavaPlugin
 
         // Load configuration.
         reloadConfiguration();
-        
+
         // Check for old config
         if ((getConfig().isSet("config-version") == false) || (getConfig().getInt("config-version") < 4))
         {
@@ -58,20 +49,14 @@ public class Main extends JavaPlugin
             saveDefaultConfig();
             getLogger().info( "Created a new config.yml for this version." );
         }
-        
-        // Setup Updater system
-        if (getConfig().getString("update-notification") == "true")
-        {
-        	checkForUpdates();
-        }
-		
+
 		// Check if Craftbukkit is compatible with this version
 		final String packageName = getServer().getClass().getPackage().getName();
         String cbversion = packageName.substring(packageName.lastIndexOf('.') + 1);
         if (cbversion.equals(correctVersion))
         {
         	versionOk = "true";
-            getServer().getPluginManager().registerEvents(new LampListener(this), this);
+			getServer().getPluginManager().registerEvents(new LampListener(this), this);
         }
         else
         {
@@ -90,7 +75,7 @@ public class Main extends JavaPlugin
         // Output info to console on load
         pdfFile = this.getDescription();
         getLogger().info( pdfFile.getName() + " v" + pdfFile.getVersion() + " is enabled!" );
-		
+
 		this.redstone_materials.add(Material.DETECTOR_RAIL);
 		this.redstone_materials.add(Material.POWERED_RAIL);
 		this.redstone_materials.add(Material.REDSTONE_WIRE);
@@ -131,9 +116,8 @@ public class Main extends JavaPlugin
         opUsesHand = getConfig().getString("opUsesHand");
         takeItemOnUse = getConfig().getString("takeItemOnUse");
         toggleLamps = getConfig().getString("toggleLamps");
-        controlRails = getConfig().getString("controlRails");
     }
-	
+
 	public boolean isRedstoneMaterial(Material mat)
 	{
 		if (this.redstone_materials.contains(mat)) {
@@ -141,49 +125,4 @@ public class Main extends JavaPlugin
 		}
 		return false;
 	}
-
-    public boolean updateAvailable = false;
-    String latestVersion = null;
-
-    public void checkForUpdates()
-    {
-        final Updater updater = new Updater(this, updaterID, getFile(), Updater.UpdateType.NO_DOWNLOAD, true); // Start Updater but just do a version check
-        updateAvailable = (updater.getResult() == Updater.UpdateResult.UPDATE_AVAILABLE); // Determine if there is an update ready for us
-        latestVersion = updater.getLatestName();
-        getLogger().info(latestVersion + " is the latest version available, and the updatability of it is: " + updater.getResult().name() + ". The latest version is for " + updater.getLatestGameVersion() + " only.");
-
-        if(updateAvailable)
-        {
-            for (Player player : getServer().getOnlinePlayers())
-            {
-                if (player.hasPermission("lampcontrol.update"))
-                {
-                    player.sendMessage(ChatColor.YELLOW + "An update is available: " + latestVersion);
-                    player.sendMessage(ChatColor.YELLOW + "This update is for " + updater.getLatestGameVersion() + " only!");
-                    player.sendMessage(ChatColor.YELLOW + "Type /lc update if you would like to update.");
-                }
-            }
-
-            getServer().getPluginManager().registerEvents(new Listener()
-            {
-                @EventHandler
-                public void onPlayerJoin (PlayerJoinEvent event)
-                {
-                    Player player = event.getPlayer();
-                    if (player.hasPermission("lampcontrol.update"))
-                    {
-                        player.sendMessage(ChatColor.YELLOW + "An update is available: " + latestVersion);
-                        player.sendMessage(ChatColor.YELLOW + "This update is for " + updater.getLatestGameVersion() + " only!");
-                        player.sendMessage(ChatColor.YELLOW + "Type /lc update if you would like to update.");
-                    }
-                }
-            }, this);
-        }
-    }
-    
-    @Override
-    public File getFile() {
-
-        return super.getFile();
-    }
 }
