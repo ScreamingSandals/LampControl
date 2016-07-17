@@ -1,21 +1,16 @@
 name: LampControl
 author: jacklink01, Granik24
-version: 1.0.1-HoZFork
+version: 1.2-HoZFork
 main: com.jacklinkproductions.LampControl.Main
 
 commands:
-   lampcontrol:
-      description: Turn on lamps with WorldEdit
-      usage: /<command> [percentage]
    lamp:
       description: Turn on lamps with WorldEdit
-      usage: /<command> [percentage]
-   lc:
-      description: Turn on lamps with WorldEdit
-      usage: /<command> [percentage]
+      usage: /<command>
+      aliases: [lc, lampcontrol]
    /lamp:
       description: Turn on lamps with WorldEdit
-      usage: /<command> [percentage]
+      usage: /<command>
    /lc:
       description: Turn on lamps with WorldEdit
-      usage: /<command> [percentage]
+      usage: /<command>
