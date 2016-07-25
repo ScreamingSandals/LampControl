@@ -1,7 +1,7 @@
-package com.jacklinkproductions.LampControl;
+package cz.granik24.LampControl;
 
-import com.jacklinkproductions.LampControl.listeners.LampListener;
-import com.jacklinkproductions.LampControl.listeners.ReflectPlayerInteractEvent;
+import cz.granik24.LampControl.listeners.LampListener;
+import cz.granik24.LampControl.listeners.ReflectPlayerInteractEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -9,24 +9,25 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Main extends JavaPlugin {
     public static final String prefix = "[LampControl] ";
-    public static boolean opUsesHand = true, toggleLamps = true, takeItemOnUse = false, usePermissions = false;
-    public static PluginDescriptionFile pdfFile;
-    public static final int CONFIG_VERSION = 4;
+    public static boolean opUsesHand = true, toggleLamps = true, takeItemOnUse = false, usePermissions = false, woodPlateControl = false, stonePlateControl = false, controlRails = true;
+    public static PluginDescriptionFile pluginInfo;
+    private static final int CONFIG_VERSION = 5;
 
     public Material toolMaterial;
     private ReflectEvent reflectEvent;
     private List<Material> redstone_materials = new ArrayList<>();
-    private boolean woodPlateControl = false, stonePlateControl = false;
 
 
     @Override
     public void onDisable() {
         // Output info to console on disable
-        getLogger().info("Thanks for using LampControl!");
+        getLogger().info("Disabled LampControl! Don't worry, I'll be back. Muhaha");
     }
 
     @Override
@@ -51,8 +52,8 @@ public class Main extends JavaPlugin {
             saveDefaultConfig();
             getLogger().info("Created a new config.yml for this version.");
         }
-        // Register listeners
 
+        // Register listeners
         LampListener lampListener = new LampListener(this);
         reflectEvent.initListener(lampListener);
         reflectEvent.registerPlayerInteractEvent(new ReflectPlayerInteractEvent(this));
@@ -65,8 +66,8 @@ public class Main extends JavaPlugin {
         getCommand("/lc").setExecutor(commandExecutor);
 
         // Output info to console on load
-        pdfFile = this.getDescription();
-        getLogger().info(pdfFile.getName() + " v" + pdfFile.getVersion() + " is enabled!");
+        pluginInfo = this.getDescription();
+        getLogger().info(pluginInfo.getName() + " v" + pluginInfo.getVersion() + " is enabled!");
 
         this.redstone_materials.add(Material.DETECTOR_RAIL);
         this.redstone_materials.add(Material.POWERED_RAIL);
@@ -87,16 +88,16 @@ public class Main extends JavaPlugin {
         this.redstone_materials.add(Material.IRON_PLATE);
         this.redstone_materials.add(Material.TRIPWIRE);
         this.redstone_materials.add(Material.TRIPWIRE_HOOK);
-        this.redstone_materials.add(Material.DAYLIGHT_DETECTOR);
-        this.redstone_materials.add(Material.DAYLIGHT_DETECTOR_INVERTED);
+        this.redstone_materials.addAll(Arrays.stream(Material.values()).filter(mat -> mat.toString().equalsIgnoreCase("DAYLIGHT_DETECTOR") || mat.toString().equalsIgnoreCase("DAYLIGHT_DETECTOR_INVERTED")).collect(Collectors.toList()));
         if (this.stonePlateControl)
             this.redstone_materials.add(Material.WOOD_PLATE);
         if (this.woodPlateControl)
             this.redstone_materials.add(Material.STONE_PLATE);
     }
 
+    //load values from config
     @SuppressWarnings("deprecation")
-    public void reloadConfiguration() {
+    private void reloadConfiguration() {
         if (!new File(getDataFolder(), "config.yml").exists()) {
             saveDefaultConfig();
         }
@@ -108,12 +109,14 @@ public class Main extends JavaPlugin {
         opUsesHand = getConfig().getBoolean("opUsesHand");
         takeItemOnUse = getConfig().getBoolean("takeItemOnUse");
         toggleLamps = getConfig().getBoolean("toggleLamps");
+        controlRails = getConfig().getBoolean("controlRails");
     }
 
     public boolean isInRedstoneMaterials(Material mat) {
         return redstone_materials.contains(mat);
     }
 
+    //get spigot version
     public static String getNMSVersion() {
         final String packageName = Bukkit.getServer().getClass().getPackage().getName();
         return packageName.substring(packageName.lastIndexOf('.') + 1);

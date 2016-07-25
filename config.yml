@@ -2,7 +2,7 @@
 #	LampControl Configuration File
 #	=====================================
 #
-#	Plugin by jacklink01 adapted from LumosMaxima
+#	Plugin by Granik24 adapted from jacklink01
 # 	Like this plugin? Donate! http://voidteam.net/donate :)
 #
 #	Need a new config file? Just delete this one and a new one will be created.
@@ -26,8 +26,16 @@ opUsesHand: true
 # Toggle the lamps on/off with your item/hand! If off, lamps will turn ON, but not off.
 toggleLamps: true
 
+# Toggle the rails on/off with your item/hand! If off, rails will turn ON, but not off.
+controlRails: true
+
 # Take the item from the player after they use it to turn on a lamp
 takeItemOnUse: false
 
-# Don't touch this unless you wanna lose your config. :)
-config-version: 4
+# Don't edit this or I, your God, will reset this config.
+config-version: 5
+
+# And, there are some permissions for you :P
+# lampcontrol.use -> Basic permission for using this plugin
+# lampcontrol.worldedit -> Allows using WorldEdit to turn on/off lamps
+# lampcontrol.hand -> Needed for ON/OFF lamps with hand

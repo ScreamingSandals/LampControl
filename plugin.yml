@@ -1,7 +1,7 @@
 name: LampControl
-author: jacklink01, Granik24
-version: 1.2-HoZFork
-main: com.jacklinkproductions.LampControl.Main
+author: Granik24, jacklink01
+version: 3.0
+main: cz.granik24.LampControl.Main
 
 commands:
    lamp:

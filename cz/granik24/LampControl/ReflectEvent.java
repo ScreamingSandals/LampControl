@@ -1,4 +1,4 @@
-package com.jacklinkproductions.LampControl;
+package cz.granik24.LampControl;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
 /**
  * Created by Granik24 on 17.07.2016.
  */
+
 public class ReflectEvent {
 
     private Main javaPlugin;
@@ -29,7 +30,6 @@ public class ReflectEvent {
     }
 
     public void registerPlayerInteractEvent(Callback function) {
-
         boolean isTwoHandVersion = false;
         Class<? extends Event> playerInteractEvent = null;
         try {
@@ -43,7 +43,7 @@ public class ReflectEvent {
 
         if (playerInteractEvent == null)
             try {
-                throw new Exception("ERROR");
+                throw new Exception("PlayerInteractEvent not found. Try contacting developer with log.");
             } catch (Exception e) {
                 e.printStackTrace();
                 return;
@@ -61,6 +61,9 @@ public class ReflectEvent {
                         if (equipmentSlot != 1)
                             function.execute(event);
                     } else {
+                        if(instance == null) {
+                            return;
+                        }
                         if (!instance.toString().equalsIgnoreCase("OFF_HAND")) {
                             function.execute(event);
                         }

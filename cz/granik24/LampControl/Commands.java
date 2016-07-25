@@ -1,4 +1,4 @@
-package com.jacklinkproductions.LampControl;
+package cz.granik24.LampControl;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.bukkit.selections.CuboidSelection;
@@ -20,11 +20,11 @@ public class Commands implements CommandExecutor {
 
         if (args.length == 1) {
             if (args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("version")) {
-                sender.sendMessage(ChatColor.YELLOW + "-- " + Main.pdfFile.getName() + " v" + Main.pdfFile.getVersion() + " --");
+                sender.sendMessage(ChatColor.YELLOW + "-- " + Main.pluginInfo.getName() + " v" + Main.pluginInfo.getVersion() + " --");
                 sender.sendMessage(ChatColor.RED + "/lamp or //lamp - Will turn on selected lamps");
                 return true;
             }
-        } else if (args.length > 1) {
+        } else if (args.length > 2) {
             sender.sendMessage(ChatColor.RED + "Too many arguments!");
             sender.sendMessage(ChatColor.RED + "Use only /lamp or //lamp.");
             return true;
@@ -54,6 +54,7 @@ public class Commands implements CommandExecutor {
                     org.bukkit.Location min = selection.getMinimumPoint();
                     org.bukkit.Location max = selection.getMaximumPoint();
                     int affected = 0;
+                    int affected2 = 0;
                     int found = 0;
                     for (int x = min.getBlockX(); x <= max.getBlockX(); x++) {
                         for (int y = min.getBlockY(); y <= max.getBlockY(); y++)
@@ -72,12 +73,13 @@ public class Commands implements CommandExecutor {
                                         affected++;
 
                                     } else if (block.getType().equals(Material.REDSTONE_LAMP_ON)) {
+                                        found++;
                                         try {
                                             SwitchBlock.switchLamp(block, false);
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
-                                        affected++;
+                                        affected2++;
                                         off = true;
                                     }
                                 }
@@ -85,9 +87,8 @@ public class Commands implements CommandExecutor {
 
                     if (affected < 1) {
                         sender.sendMessage(ChatColor.LIGHT_PURPLE + "No lamps were affected.");
-                        sender.sendMessage(ChatColor.LIGHT_PURPLE + "If you want to turn off lamps, use " + ChatColor.WHITE + "/lamp off" + ChatColor.LIGHT_PURPLE + ".");
                     } else if (!off)
-                        sender.sendMessage(ChatColor.WHITE + "" + affected + ChatColor.LIGHT_PURPLE + " out of " + ChatColor.WHITE + found + ChatColor.LIGHT_PURPLE + " lamps have been turned on.");
+                        sender.sendMessage(ChatColor.WHITE + "" + affected2 + ChatColor.LIGHT_PURPLE + " out of " + ChatColor.WHITE + found + ChatColor.LIGHT_PURPLE + " lamps have been turned on.");
 
                     else
                         sender.sendMessage(ChatColor.WHITE + "" + affected + ChatColor.LIGHT_PURPLE + " out of " + ChatColor.WHITE + found + ChatColor.LIGHT_PURPLE + " lamps have been turned off.");

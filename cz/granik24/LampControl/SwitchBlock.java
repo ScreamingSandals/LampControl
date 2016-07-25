@@ -1,17 +1,15 @@
-package com.jacklinkproductions.LampControl;
+package cz.granik24.LampControl;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 
 /**
  * Created by Granik24 on 17.07.2016.
  */
+
 public class SwitchBlock {
 
 
@@ -36,6 +34,27 @@ public class SwitchBlock {
                 setWorldStatic(cW, false);
             } else {
                 b.setType(Material.REDSTONE_LAMP_OFF);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    public static void switchRail(Block b, boolean power) {
+        try {
+            Object cW = getNMCWorld(getInstanceOfCW(getCraftWorld(b.getWorld())));
+            int data = (int) b.getData();
+
+            if (power) {
+                data = data + 8;
+
+                setWorldStatic(cW, true);
+                b.setTypeIdAndData(27, (byte) data, false);
+                setWorldStatic(cW, false);
+            } else {
+                data = data - 8;
+                b.setTypeIdAndData(27, (byte) data, false);
             }
         } catch (Exception e) {
             e.printStackTrace();
