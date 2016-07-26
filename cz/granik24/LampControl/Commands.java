@@ -16,8 +16,6 @@ public class Commands implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        boolean off = false;
-
         if (args.length == 1) {
             if (args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("version")) {
                 sender.sendMessage(ChatColor.YELLOW + "-- " + Main.pluginInfo.getName() + " v" + Main.pluginInfo.getVersion() + " --");
@@ -56,6 +54,7 @@ public class Commands implements CommandExecutor {
                     int affected = 0;
                     int affected2 = 0;
                     int found = 0;
+                    boolean off = false;
                     for (int x = min.getBlockX(); x <= max.getBlockX(); x++) {
                         for (int y = min.getBlockY(); y <= max.getBlockY(); y++)
                             for (int z = min.getBlockZ(); z <= max.getBlockZ(); z++)
@@ -85,13 +84,13 @@ public class Commands implements CommandExecutor {
                                 }
                     }
 
-                    if (affected < 1) {
+                    if (affected < 1 && affected2 < 1) {
                         sender.sendMessage(ChatColor.LIGHT_PURPLE + "No lamps were affected.");
                     } else if (!off)
-                        sender.sendMessage(ChatColor.WHITE + "" + affected2 + ChatColor.LIGHT_PURPLE + " out of " + ChatColor.WHITE + found + ChatColor.LIGHT_PURPLE + " lamps have been turned on.");
+                        sender.sendMessage(ChatColor.WHITE + "" + affected + ChatColor.LIGHT_PURPLE + " out of " + ChatColor.WHITE + found + ChatColor.LIGHT_PURPLE + " were affected.");
 
                     else
-                        sender.sendMessage(ChatColor.WHITE + "" + affected + ChatColor.LIGHT_PURPLE + " out of " + ChatColor.WHITE + found + ChatColor.LIGHT_PURPLE + " lamps have been turned off.");
+                        sender.sendMessage(ChatColor.WHITE + "" + affected2 + ChatColor.LIGHT_PURPLE + " out of " + ChatColor.WHITE + found + ChatColor.LIGHT_PURPLE + " were affected.");
 
                     return true;
                 }
