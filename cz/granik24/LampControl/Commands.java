@@ -17,30 +17,29 @@ public class Commands implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("version")) {
+            if (!args[0].equalsIgnoreCase("off")) {
                 sender.sendMessage(ChatColor.YELLOW + "-- " + Main.pluginInfo.getName() + " v" + Main.pluginInfo.getVersion() + " --");
                 sender.sendMessage(ChatColor.RED + "/lamp or //lamp - Will turn on selected lamps");
+                sender.sendMessage(ChatColor.RED + "/lamp off or //lamp off - Will turn off selected lamps");
                 return true;
             }
         } else if (args.length > 2) {
             sender.sendMessage(ChatColor.RED + "Too many arguments!");
             sender.sendMessage(ChatColor.RED + "Use only /lamp or //lamp.");
             return true;
-        }
-
-        if (sender instanceof Player) {
-            if (sender.hasPermission("lampcontrol.worldedit") || sender.isOp()) {
+        } else if (sender instanceof Player) {
+            Player p = (Player) sender;
+            if (p.hasPermission("lampcontrol.worldedit") || p.isOp()) {
                 if (Bukkit.getServer().getPluginManager().getPlugin("WorldEdit") == null) {
-                    sender.sendMessage(ChatColor.RED + Main.prefix + "WorldEdit isn't installed. Install it, if you need this feature.");
+                    p.sendMessage(ChatColor.RED + Main.prefix + "WorldEdit isn't installed. Install it, if you need this feature.");
                     return true;
                 } else {
 
-                    Player player = (Player) sender;
                     WorldEditPlugin worldEdit = (WorldEditPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
-                    Selection selection = worldEdit.getSelection(player);
+                    Selection selection = worldEdit.getSelection(p);
 
                     if (selection == null) {
-                        sender.sendMessage(ChatColor.RED + "Make a region selection first.");
+                        p.sendMessage(ChatColor.RED + "Make a region selection first.");
                         return true;
                     }
 
@@ -52,55 +51,94 @@ public class Commands implements CommandExecutor {
                     org.bukkit.Location min = selection.getMinimumPoint();
                     org.bukkit.Location max = selection.getMaximumPoint();
                     int affected = 0;
-                    int affected2 = 0;
-                    int found = 0;
-                    boolean off = false;
                     for (int x = min.getBlockX(); x <= max.getBlockX(); x++) {
                         for (int y = min.getBlockY(); y <= max.getBlockY(); y++)
                             for (int z = min.getBlockZ(); z <= max.getBlockZ(); z++)
 
                                 if (!checkForSelection || selection.contains(new org.bukkit.Location(min.getWorld(), x, y, z))) {
                                     Block block = min.getWorld().getBlockAt(new org.bukkit.Location(min.getWorld(), x, y, z));
-
                                     if (block.getType().equals(Material.REDSTONE_LAMP_OFF)) {
-                                        found++;
                                         try {
                                             SwitchBlock.switchLamp(block, true);
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
                                         affected++;
-
-                                    } else if (block.getType().equals(Material.REDSTONE_LAMP_ON)) {
-                                        found++;
-                                        try {
-                                            SwitchBlock.switchLamp(block, false);
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                        affected2++;
-                                        off = true;
                                     }
                                 }
                     }
 
-                    if (affected < 1 && affected2 < 1) {
-                        sender.sendMessage(ChatColor.LIGHT_PURPLE + "No lamps were affected.");
-                    } else if (!off)
-                        sender.sendMessage(ChatColor.WHITE + "" + affected + ChatColor.LIGHT_PURPLE + " out of " + ChatColor.WHITE + found + ChatColor.LIGHT_PURPLE + " were affected.");
-
-                    else
-                        sender.sendMessage(ChatColor.WHITE + "" + affected2 + ChatColor.LIGHT_PURPLE + " out of " + ChatColor.WHITE + found + ChatColor.LIGHT_PURPLE + " were affected.");
-
+                    if (affected < 1) {
+                        p.sendMessage(ChatColor.LIGHT_PURPLE + "No lamps were affected.");
+                    } else
+                        p.sendMessage(ChatColor.WHITE + "" + affected + ChatColor.LIGHT_PURPLE + " lamps were turned ON.");
                     return true;
                 }
             } else {
-                sender.sendMessage(ChatColor.RED + "You do not have permissions to perform this command");
+                p.sendMessage(ChatColor.RED + "You do not have permissions to perform this command");
                 return true;
             }
         } else {
             sender.sendMessage("This command cannot be run from the console.");
             return true;
         }
+        if (args[0].equalsIgnoreCase("off")) {
+            if (sender instanceof Player) {
+                Player p = (Player) sender;
+                if (p.hasPermission("lampcontrol.worldedit") || p.isOp()) {
+                    if (Bukkit.getServer().getPluginManager().getPlugin("WorldEdit") == null) {
+                        p.sendMessage(ChatColor.RED + Main.prefix + "WorldEdit isn't installed. Install it, if you need this feature.");
+                        return true;
+                    } else {
+
+                        WorldEditPlugin worldEdit = (WorldEditPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
+                        Selection selection = worldEdit.getSelection(p);
+
+                        if (selection == null) {
+                            p.sendMessage(ChatColor.RED + "Make a region selection first.");
+                            return true;
+                        }
+
+                        boolean checkForSelection = false;
+                        if (!(selection instanceof CuboidSelection)) {
+                            checkForSelection = true;
+                        }
+
+                        org.bukkit.Location min = selection.getMinimumPoint();
+                        org.bukkit.Location max = selection.getMaximumPoint();
+                        int affected = 0;
+                        for (int x = min.getBlockX(); x <= max.getBlockX(); x++) {
+                            for (int y = min.getBlockY(); y <= max.getBlockY(); y++)
+                                for (int z = min.getBlockZ(); z <= max.getBlockZ(); z++)
+
+                                    if (!checkForSelection || selection.contains(new org.bukkit.Location(min.getWorld(), x, y, z))) {
+                                        Block block = min.getWorld().getBlockAt(new org.bukkit.Location(min.getWorld(), x, y, z));
+                                        if (block.getType().equals(Material.REDSTONE_LAMP_ON)) {
+                                            try {
+                                                SwitchBlock.switchLamp(block, false);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                            affected++;
+                                        }
+                                    }
+                        }
+
+                        if (affected < 1) {
+                            p.sendMessage(ChatColor.LIGHT_PURPLE + "No lamps were affected.");
+                        } else
+                            p.sendMessage(ChatColor.WHITE + "" + affected + ChatColor.LIGHT_PURPLE + " lamps were turned OFF.");
+                        return true;
+                    }
+                } else {
+                    p.sendMessage(ChatColor.RED + "You do not have permissions to perform this command");
+                    return true;
+                }
+            } else {
+                sender.sendMessage("This command cannot be run from the console.");
+                return true;
+            }
+        }
+        return true;
     }
 }

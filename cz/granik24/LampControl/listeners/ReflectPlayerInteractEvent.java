@@ -225,7 +225,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
         }
 
         if (correctSound == null) {
-            System.out.println("Sound not found!");
+            System.out.println("Sound not found! Contact developer for help.");
             Arrays.stream(sounds).forEach(sound -> System.out.println(sound.toString()));
             return;
         }
