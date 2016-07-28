@@ -1,16 +1,14 @@
 name: LampControl
 author: Granik24, jacklink01
-version: 3.0
+version: 1.4
 main: cz.granik24.LampControl.Main
 
 commands:
    lamp:
       description: Turn on lamps with WorldEdit
-      usage: /<command>
+      usage: /<command> [off]
       aliases: [lc, lampcontrol]
    /lamp:
       description: Turn on lamps with WorldEdit
-      usage: /<command>
-   /lc:
-      description: Turn on lamps with WorldEdit
-      usage: /<command>
+      usage: /<command> [off]
+      aliases: [/lc, /lampcontrol]

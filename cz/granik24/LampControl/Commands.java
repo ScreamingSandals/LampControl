@@ -1,3 +1,8 @@
+/*
+	Code has been adapted from jacklink01.
+	Code is modified by Granik24.
+	GNU General Public License version 3 (GPLv3)
+*/
 package cz.granik24.LampControl;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;

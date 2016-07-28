@@ -1,9 +1,8 @@
 /*
 	Code has been adapted from richie3366's LumosMaxima.
+	Code is modified by Granik24.
 	GNU General Public License version 3 (GPLv3)
-	Forked by Granik24
 */
-
 package cz.granik24.LampControl.listeners;
 
 
@@ -25,8 +24,8 @@ public class LampListener implements Listener {
     public void onBlockPhysics(BlockPhysicsEvent e) {
         boolean lamp = e.getBlock().getType().equals(Material.REDSTONE_LAMP_ON);
 
-        if (!Main.woodPlateControl || !Main.stonePlateControl || lamp && !this.plugin.isInRedstoneMaterials(e.getChangedType())) {
-            e.setCancelled(true);
+        if (!Main.woodPlateControl || !Main.stonePlateControl && lamp && !this.plugin.isInRedstoneMaterials(e.getChangedType())) {
+                e.setCancelled(true);
         }
     }
 }

@@ -1,3 +1,8 @@
+/*
+	Code has been adapted from richie3366's LumosMaxima.
+	Code is modified by Granik24.
+	GNU General Public License version 3 (GPLv3)
+*/
 package cz.granik24.LampControl;
 
 import org.bukkit.Material;
