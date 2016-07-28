@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Main extends JavaPlugin {
-    public static final String prefix = "[LampControl] ";
+    public static String pluginPrefix = "[LampControl]";
     public static boolean opUsesHand = true, toggleLamps = true, takeItemOnUse = false, usePermissions = false, woodPlateControl = false, stonePlateControl = false, controlRails = true;
     public static PluginDescriptionFile pluginInfo;
     private static final int CONFIG_VERSION = 5;
@@ -102,6 +102,7 @@ public class Main extends JavaPlugin {
             saveDefaultConfig();
         }
         reloadConfig();
+        pluginPrefix = getConfig().getString("pluginPrefix").replace("&", "§");
         toolMaterial = Material.getMaterial(getConfig().getInt("lampControlItem"));
         usePermissions = getConfig().getBoolean("usePermissions");
         woodPlateControl = getConfig().getBoolean("woodPlateControl");
