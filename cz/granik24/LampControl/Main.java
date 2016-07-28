@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Main extends JavaPlugin {
-    public static String pluginPrefix = "[LampControl]";
+    public static String pluginPrefix = "[LampControl] ";
     public static boolean opUsesHand = true, toggleLamps = true, takeItemOnUse = false, usePermissions = false, woodPlateControl = false, stonePlateControl = false, controlRails = true;
     public static PluginDescriptionFile pluginInfo;
     private static final int CONFIG_VERSION = 5;

@@ -64,7 +64,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
 
             if (checkBuildPerms.isCancelled()) {
                 SwitchBlock.switchLamp(b, false);
-                e.getPlayer().sendMessage(Main.pluginPrefix + ChatColor.RED + " You don't have permissions to build here!");
+                e.getPlayer().sendMessage(Main.pluginPrefix + ChatColor.RED + "You don't have permissions to build here!");
                 return;
             }
 
@@ -91,7 +91,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
 
             if (checkBuildPerms.isCancelled()) {
                 SwitchBlock.switchLamp(b, true);
-                e.getPlayer().sendMessage(Main.pluginPrefix + ChatColor.RED + " You don't have permissions to build here!");
+                e.getPlayer().sendMessage(Main.pluginPrefix + ChatColor.RED + "You don't have permissions to build here!");
                 return;
             }
 
@@ -121,7 +121,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
                 Bukkit.getPluginManager().callEvent(checkBuildPerms);
 
                 if (checkBuildPerms.isCancelled()) {
-                    e.getPlayer().sendMessage(Main.pluginPrefix + ChatColor.RED + " You don't have permissions to build here!");
+                    e.getPlayer().sendMessage(Main.pluginPrefix + ChatColor.RED + "You don't have permissions to build here!");
                     return;
                 } else {
                     int i = 1;
@@ -193,7 +193,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
                 Bukkit.getPluginManager().callEvent(checkBuildPerms);
 
                 if (checkBuildPerms.isCancelled()) {
-                    e.getPlayer().sendMessage(Main.pluginPrefix + ChatColor.RED + " You don't have permissions to build here!");
+                    e.getPlayer().sendMessage(Main.pluginPrefix + ChatColor.RED + "You don't have permissions to build here!");
                     return;
                 } else {
                     SwitchBlock.switchRail(b, false);
