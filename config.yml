@@ -10,7 +10,7 @@
 
 
 # Now, you can configure plugin prefix :P
-pluginPrefix: "&8[&eLamp&cControl&8]"
+pluginPrefix: "&8[&eLamp&cControl&8] "
 
 # The item ID of the item with which you would like players to be able to turn on lamps.
 # (default: flint/steel 259)
