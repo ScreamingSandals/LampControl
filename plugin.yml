@@ -1,6 +1,6 @@
 name: LampControl
 author: Ceph, jacklink01
-version: 1.4
+version: 1.5.1
 main: cz.ceph.LampControl.Main
 
 commands:

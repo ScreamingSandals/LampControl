@@ -18,8 +18,8 @@ public enum MessagesManager {
     NO_WORLDEDIT("no-worldedit", "&cWorldEdit isn't installed. &aInstall &cit, if you need this feature."),
     NO_SELECTION("no-selection", "&cMake a region selection first."),
     NO_LAMPS_AFFECTED("no-lamps-affected", "&dNo lamps were affected."),
-    ON_LAMPS("affected-lamps", "&f%affected &dlamps were turned on."),
-    OFF_LAMPS("affected-lamps", "&f%affected &dlamps were turned off."),
+    ON_LAMPS("on-lamps", "&f%affected &dlamps were turned on."),
+    OFF_LAMPS("off-lamps", "&f%affected &dlamps were turned off."),
     CONSOLE("console", "&cThis command cannot be run from the console.."),
     NO_PERMS("no-permissions", "&cYou don't have permissions to build here!");
 
