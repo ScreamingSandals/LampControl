@@ -52,6 +52,8 @@ public class Main extends JavaPlugin {
 
         // Load configuration.
         loadConfig();
+
+        // Load messages
         loadMessages();
 
         // Check for old config
@@ -104,7 +106,7 @@ public class Main extends JavaPlugin {
             this.redstone_materials.add(Material.STONE_PLATE);
     }
 
-    // Load config from file
+    // Load config from the file
     @SuppressWarnings("deprecation")
     private void loadConfig() {
         if (!new File(getDataFolder(), "config.yml").exists()) {
@@ -121,6 +123,7 @@ public class Main extends JavaPlugin {
         controlRails = getConfig().getBoolean("controlRails");
     }
 
+    // Load messages from the file
     private void loadMessages() {
         File messages = new File(getDataFolder(), "messages.yml");
         if (!messages.exists()) {
