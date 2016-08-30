@@ -1,4 +1,4 @@
-package cz.granik24.LampControl;
+package cz.ceph.LampControl;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
@@ -9,7 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * Created by Granik24 on 17.07.2016.
+ * Created by Ceph on 17.07.2016.
  */
 
 public class ReflectEvent {

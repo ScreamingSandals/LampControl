@@ -2,15 +2,10 @@
 #	LampControl Configuration File
 #	=====================================
 #
-#	Plugin by Granik24 adapted from jacklink01
-# 	Like this plugin? Donate! http://voidteam.net/donate :)
+#	Plugin by Ceph adapted from jacklink01
 #
 #	Need a new config file? Just delete this one and a new one will be created.
 #
-
-
-# Now, you can configure plugin prefix :P
-pluginPrefix: "&8[&eLamp&cControl&8] "
 
 # The item ID of the item with which you would like players to be able to turn on lamps.
 # (default: flint/steel 259)

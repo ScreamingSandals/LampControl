@@ -3,10 +3,10 @@
 	Code is modified by Granik24.
 	GNU General Public License version 3 (GPLv3)
 */
-package cz.granik24.LampControl.listeners;
+package cz.ceph.LampControl.listeners;
 
 
-import cz.granik24.LampControl.Main;
+import cz.ceph.LampControl.Main;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

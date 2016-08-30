@@ -1,9 +1,9 @@
 /*
 	Code has been adapted from richie3366's LumosMaxima.
-	Code is modified by Granik24.
+	Code is modified by Ceph.
 	GNU General Public License version 3 (GPLv3)
 */
-package cz.granik24.LampControl;
+package cz.ceph.LampControl;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -12,7 +12,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * Created by Granik24 on 17.07.2016.
+ * Created by Ceph on 17.07.2016.
  */
 
 public class SwitchBlock {

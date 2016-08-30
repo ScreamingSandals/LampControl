@@ -1,13 +1,14 @@
 /*
-	Code has been adapted from jacklink01.
-	Code is modified by Granik24.
+	Code has been adapted from jacklink01's LampControl.
+	Code is modified by Ceph.
 	GNU General Public License version 3 (GPLv3)
 */
-package cz.granik24.LampControl.listeners;
+package cz.ceph.LampControl.listeners;
 
-import cz.granik24.LampControl.Main;
-import cz.granik24.LampControl.ReflectEvent;
-import cz.granik24.LampControl.SwitchBlock;
+import cz.ceph.LampControl.Main;
+import cz.ceph.LampControl.MessagesManager;
+import cz.ceph.LampControl.ReflectEvent;
+import cz.ceph.LampControl.SwitchBlock;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -69,7 +70,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
 
             if (checkBuildPerms.isCancelled()) {
                 SwitchBlock.switchLamp(b, false);
-                e.getPlayer().sendMessage(Main.pluginPrefix + ChatColor.RED + "You don't have permissions to build here!");
+                e.getPlayer().sendMessage(MessagesManager.PREFIX + MessagesManager.NO_PERMS.toString());
                 return;
             }
 
@@ -96,7 +97,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
 
             if (checkBuildPerms.isCancelled()) {
                 SwitchBlock.switchLamp(b, true);
-                e.getPlayer().sendMessage(Main.pluginPrefix + ChatColor.RED + "You don't have permissions to build here!");
+                e.getPlayer().sendMessage(MessagesManager.PREFIX + MessagesManager.NO_PERMS.toString());
                 return;
             }
 
@@ -126,7 +127,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
                 Bukkit.getPluginManager().callEvent(checkBuildPerms);
 
                 if (checkBuildPerms.isCancelled()) {
-                    e.getPlayer().sendMessage(Main.pluginPrefix + ChatColor.RED + "You don't have permissions to build here!");
+                    e.getPlayer().sendMessage(MessagesManager.PREFIX + MessagesManager.NO_PERMS.toString());
                     return;
                 } else {
                     int i = 1;
@@ -198,7 +199,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
                 Bukkit.getPluginManager().callEvent(checkBuildPerms);
 
                 if (checkBuildPerms.isCancelled()) {
-                    e.getPlayer().sendMessage(Main.pluginPrefix + ChatColor.RED + "You don't have permissions to build here!");
+                    e.getPlayer().sendMessage(MessagesManager.PREFIX + MessagesManager.NO_PERMS.toString());
                     return;
                 } else {
                     SwitchBlock.switchRail(b, false);

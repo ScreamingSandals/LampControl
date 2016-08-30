@@ -1,9 +1,9 @@
 /*
 	Code has been adapted from jacklink01.
-	Code is modified by Granik24.
+	Code is modified by Ceph.
 	GNU General Public License version 3 (GPLv3)
 */
-package cz.granik24.LampControl;
+package cz.ceph.LampControl;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.bukkit.selections.CuboidSelection;
@@ -29,13 +29,13 @@ public class Commands implements CommandExecutor {
                 return true;
             }
         } else if (args.length >= 2) {
-            sender.sendMessage(Main.pluginPrefix + ChatColor.RED + "Too many arguments!");
+            sender.sendMessage(MessagesManager.PREFIX + MessagesManager.TOO_MANY_ARGUMENTS.toString());
             return true;
         } else if (sender instanceof Player) {
             Player p = (Player) sender;
             if (p.hasPermission("lampcontrol.worldedit") || p.isOp()) {
                 if (Bukkit.getServer().getPluginManager().getPlugin("WorldEdit") == null) {
-                    p.sendMessage(Main.pluginPrefix + ChatColor.RED + "WorldEdit isn't installed. Install it, if you need this feature.");
+                    p.sendMessage(MessagesManager.PREFIX + MessagesManager.NO_WORLDEDIT.toString());
                     return true;
                 } else {
 
@@ -43,7 +43,7 @@ public class Commands implements CommandExecutor {
                     Selection selection = worldEdit.getSelection(p);
 
                     if (selection == null) {
-                        p.sendMessage(Main.pluginPrefix + ChatColor.LIGHT_PURPLE + "Make a region selection first.");
+                        p.sendMessage(MessagesManager.PREFIX + MessagesManager.NO_SELECTION.toString());
                         return true;
                     }
 
@@ -73,13 +73,13 @@ public class Commands implements CommandExecutor {
                     }
 
                     if (affected < 1) {
-                        p.sendMessage(Main.pluginPrefix + ChatColor.LIGHT_PURPLE + "No lamps were affected.");
+                        p.sendMessage(MessagesManager.PREFIX + MessagesManager.NO_LAMPS_AFFECTED.toString());
                     } else
-                        p.sendMessage(Main.pluginPrefix + ChatColor.WHITE + "" + affected + ChatColor.LIGHT_PURPLE + " lamps were turned on.");
+                        p.sendMessage(MessagesManager.PREFIX + MessagesManager.ON_LAMPS.toString().replace("%affected", "" + affected + ""));
                     return true;
                 }
             } else {
-                p.sendMessage(Main.pluginPrefix + ChatColor.RED + "You do not have permissions to perform this command");
+                p.sendMessage(MessagesManager.PREFIX + MessagesManager.NO_PERMS.toString());
                 return true;
             }
         } else {
@@ -91,7 +91,7 @@ public class Commands implements CommandExecutor {
                 Player p = (Player) sender;
                 if (p.hasPermission("lampcontrol.worldedit") || p.isOp()) {
                     if (Bukkit.getServer().getPluginManager().getPlugin("WorldEdit") == null) {
-                        p.sendMessage(Main.pluginPrefix + ChatColor.RED + "WorldEdit isn't installed. Install it, if you need this feature.");
+                        p.sendMessage(MessagesManager.PREFIX + MessagesManager.NO_WORLDEDIT.toString());
                         return true;
                     } else {
 
@@ -99,7 +99,7 @@ public class Commands implements CommandExecutor {
                         Selection selection = worldEdit.getSelection(p);
 
                         if (selection == null) {
-                            p.sendMessage(Main.pluginPrefix + ChatColor.LIGHT_PURPLE + "Make a region selection first.");
+                            p.sendMessage(MessagesManager.PREFIX + MessagesManager.NO_SELECTION.toString());
                             return true;
                         }
 
@@ -129,17 +129,17 @@ public class Commands implements CommandExecutor {
                         }
 
                         if (affected < 1) {
-                            p.sendMessage(Main.pluginPrefix + ChatColor.LIGHT_PURPLE + "No lamps were affected.");
+                            p.sendMessage(MessagesManager.PREFIX + MessagesManager.NO_LAMPS_AFFECTED.toString());
                         } else
-                            p.sendMessage(Main.pluginPrefix + ChatColor.WHITE + "" + affected + ChatColor.LIGHT_PURPLE + " lamps were turned off.");
+                            p.sendMessage(MessagesManager.PREFIX + MessagesManager.OFF_LAMPS.toString().replace("%affected", "" + affected + ""));
                         return true;
                     }
                 } else {
-                    p.sendMessage(Main.pluginPrefix + ChatColor.RED + "You do not have permissions to perform this command");
+                    p.sendMessage(MessagesManager.PREFIX + MessagesManager.NO_PERMS.toString());
                     return true;
                 }
             } else {
-                sender.sendMessage("This command cannot be run from the console.");
+                sender.sendMessage(MessagesManager.PREFIX + MessagesManager.CONSOLE.toString());
                 return true;
             }
         }

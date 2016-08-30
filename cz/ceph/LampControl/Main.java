@@ -1,16 +1,18 @@
 /*
 	Code has been adapted from jacklink01.
-	Code is modified by Granik24.
+	Code is modified by Ceph.
 	GNU General Public License version 3 (GPLv3)
 */
-package cz.granik24.LampControl;
+package cz.ceph.LampControl;
 
-import cz.granik24.LampControl.listeners.LampListener;
-import cz.granik24.LampControl.listeners.ReflectPlayerInteractEvent;
+import cz.ceph.LampControl.listeners.LampListener;
+import cz.ceph.LampControl.listeners.ReflectPlayerInteractEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -19,9 +21,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Main extends JavaPlugin {
-    public static String pluginPrefix = "[LampControl] ";
     public static boolean opUsesHand = true, toggleLamps = true, takeItemOnUse = false, usePermissions = false, woodPlateControl = false, stonePlateControl = false, controlRails = true;
     public static PluginDescriptionFile pluginInfo;
+    public static File MessagesFile;
+    public static YamlConfiguration YamlConfig;
     private static final int CONFIG_VERSION = 5;
 
     public Material toolMaterial;
@@ -48,14 +51,15 @@ public class Main extends JavaPlugin {
         }
 
         // Load configuration.
-        reloadConfiguration();
+        loadConfig();
+        loadMessages();
 
         // Check for old config
         if (!getConfig().isSet("config-version") || getConfig().getInt("config-version") < CONFIG_VERSION) {
             File file = new File(this.getDataFolder(), "config.yml");
             file.delete();
             saveDefaultConfig();
-            getLogger().info("Created a new config.yml for this version.");
+            getLogger().info("Older config version found, created new one.");
         }
 
         // Register listeners
@@ -100,14 +104,13 @@ public class Main extends JavaPlugin {
             this.redstone_materials.add(Material.STONE_PLATE);
     }
 
-    //load values from config
+    // Load config from file
     @SuppressWarnings("deprecation")
-    private void reloadConfiguration() {
+    private void loadConfig() {
         if (!new File(getDataFolder(), "config.yml").exists()) {
             saveDefaultConfig();
         }
         reloadConfig();
-        pluginPrefix = getConfig().getString("pluginPrefix").replace("&", "§");
         toolMaterial = Material.getMaterial(getConfig().getInt("lampControlItem"));
         usePermissions = getConfig().getBoolean("usePermissions");
         woodPlateControl = getConfig().getBoolean("woodPlateControl");
@@ -118,11 +121,21 @@ public class Main extends JavaPlugin {
         controlRails = getConfig().getBoolean("controlRails");
     }
 
+    private void loadMessages() {
+        File messages = new File(getDataFolder(), "messages.yml");
+        if (!messages.exists()) {
+            saveResource("messages.yml", false);
+        }
+        YamlConfig = YamlConfiguration.loadConfiguration(messages);
+        MessagesManager.setFile(YamlConfig);
+        MessagesFile = messages;
+    }
+
     public boolean isInRedstoneMaterials(Material mat) {
         return redstone_materials.contains(mat);
     }
 
-    //get spigot version
+    // Get what version of Spigot we're using
     public static String getNMSVersion() {
         final String packageName = Bukkit.getServer().getClass().getPackage().getName();
         return packageName.substring(packageName.lastIndexOf('.') + 1);
