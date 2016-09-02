@@ -83,7 +83,7 @@ public class Commands implements CommandExecutor {
                 return true;
             }
         } else {
-            sender.sendMessage("This command cannot be run from the console.");
+            sender.sendMessage(MessagesManager.PREFIX + "This command cannot be run from the console.");
             return true;
         }
         if (args[0].equalsIgnoreCase("off")) {

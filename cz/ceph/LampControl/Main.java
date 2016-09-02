@@ -12,7 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class Main extends JavaPlugin {
     public static PluginDescriptionFile pluginInfo;
     public static File MessagesFile;
     public static YamlConfiguration YamlConfig;
-    private static final int CONFIG_VERSION = 5;
+    private static final int CONFIG_VERSION = 6;
 
     public Material toolMaterial;
     private ReflectEvent reflectEvent;

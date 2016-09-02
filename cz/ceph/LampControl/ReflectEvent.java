@@ -43,7 +43,7 @@ public class ReflectEvent {
 
         if (playerInteractEvent == null)
             try {
-                throw new Exception("PlayerInteractEvent not found. Try contacting developer with log.");
+                throw new Exception(MessagesManager.PREFIX + "PlayerInteractEvent not found. Try contacting developer with log.");
             } catch (Exception e) {
                 e.printStackTrace();
                 return;
