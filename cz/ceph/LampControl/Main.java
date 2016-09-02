@@ -58,9 +58,7 @@ public class Main extends JavaPlugin {
 
         // Check for old config
         if (!getConfig().isSet("config-version") || getConfig().getInt("config-version") < CONFIG_VERSION) {
-            File file = new File(this.getDataFolder(), "config.yml");
-            file.delete();
-            saveDefaultConfig();
+            saveResource("config.yml", true);
             getLogger().info("Older config version found, created new one.");
         }
 

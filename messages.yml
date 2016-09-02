@@ -17,5 +17,5 @@ console: "&cThis command cannot be run from the console.."
 no-permissions: "&cYou don't have permissions to build here!"
 
 # %affected works only only in this section :P
-on-lamp: "&f%affected &dlamps were turned on."
-off-lamp: "&f%affected &dlamps were turned off."
+on-lamps: "&f%affected &dlamps were turned on."
+off-lamps: "&f%affected &dlamps were turned off."
