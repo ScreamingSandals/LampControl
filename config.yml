@@ -32,7 +32,7 @@ controlRails: true
 takeItemOnUse: false
 
 # Don't edit this or I, your God, will reset this config.
-config-version: 5
+config-version: 6
 
 # And, there are some permissions for you :P
 # lampcontrol.use -> Basic permission for using this plugin
