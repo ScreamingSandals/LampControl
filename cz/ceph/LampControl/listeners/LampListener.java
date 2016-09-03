@@ -24,7 +24,7 @@ public class LampListener implements Listener {
     public void onBlockPhysics(BlockPhysicsEvent e) {
         boolean lamp = e.getBlock().getType().equals(Material.REDSTONE_LAMP_ON);
 
-        if (!Main.woodPlateControl || !Main.stonePlateControl && lamp && !this.plugin.isInRedstoneMaterials(e.getChangedType())) {
+        if (!Main.woodPlateControl || !Main.stonePlateControl || lamp && !this.plugin.isInRedstoneMaterials(e.getChangedType())) {
                 e.setCancelled(true);
         }
     }
