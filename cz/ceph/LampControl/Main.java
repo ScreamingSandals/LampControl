@@ -77,30 +77,30 @@ public class Main extends JavaPlugin {
         pluginInfo = this.getDescription();
         getLogger().info(pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was enabled!");
 
-        this.rMats.add(Material.DETECTOR_RAIL);
-        this.rMats.add(Material.POWERED_RAIL);
-        this.rMats.add(Material.REDSTONE_WIRE);
-        this.rMats.add(Material.REDSTONE_BLOCK);
-        this.rMats.add(Material.PISTON_MOVING_PIECE);
-        this.rMats.add(Material.REDSTONE_TORCH_OFF);
-        this.rMats.add(Material.REDSTONE_TORCH_ON);
-        this.rMats.add(Material.DIODE_BLOCK_OFF);
-        this.rMats.add(Material.DIODE_BLOCK_ON);
-        this.rMats.add(Material.REDSTONE_COMPARATOR_OFF);
-        this.rMats.add(Material.REDSTONE_COMPARATOR_ON);
-        this.rMats.add(Material.DIODE_BLOCK_ON);
-        this.rMats.add(Material.LEVER);
-        this.rMats.add(Material.STONE_BUTTON);
-        this.rMats.add(Material.WOOD_BUTTON);
-        this.rMats.add(Material.GOLD_PLATE);
-        this.rMats.add(Material.IRON_PLATE);
-        this.rMats.add(Material.TRIPWIRE);
-        this.rMats.add(Material.TRIPWIRE_HOOK);
-        this.rMats.addAll(Arrays.stream(Material.values()).filter(mat -> mat.toString().equalsIgnoreCase("DAYLIGHT_DETECTOR") || mat.toString().equalsIgnoreCase("DAYLIGHT_DETECTOR_INVERTED")).collect(Collectors.toList()));
+        rMats.add(Material.DETECTOR_RAIL);
+        rMats.add(Material.POWERED_RAIL);
+        rMats.add(Material.REDSTONE_WIRE);
+        rMats.add(Material.REDSTONE_BLOCK);
+        rMats.add(Material.PISTON_MOVING_PIECE);
+        rMats.add(Material.REDSTONE_TORCH_OFF);
+        rMats.add(Material.REDSTONE_TORCH_ON);
+        rMats.add(Material.DIODE_BLOCK_OFF);
+        rMats.add(Material.DIODE_BLOCK_ON);
+        rMats.add(Material.REDSTONE_COMPARATOR_OFF);
+        rMats.add(Material.REDSTONE_COMPARATOR_ON);
+        rMats.add(Material.DIODE_BLOCK_ON);
+        rMats.add(Material.LEVER);
+        rMats.add(Material.STONE_BUTTON);
+        rMats.add(Material.WOOD_BUTTON);
+        rMats.add(Material.GOLD_PLATE);
+        rMats.add(Material.IRON_PLATE);
+        rMats.add(Material.TRIPWIRE);
+        rMats.add(Material.TRIPWIRE_HOOK);
+        rMats.addAll(Arrays.stream(Material.values()).filter(mat -> mat.toString().equalsIgnoreCase("DAYLIGHT_DETECTOR") || mat.toString().equalsIgnoreCase("DAYLIGHT_DETECTOR_INVERTED")).collect(Collectors.toList()));
         if (stonePlateControl)
-            this.rMats.add(Material.WOOD_PLATE);
+            rMats.add(Material.WOOD_PLATE);
         if (woodPlateControl)
-            this.rMats.add(Material.STONE_PLATE);
+            rMats.add(Material.STONE_PLATE);
     }
 
     // Load config from the file
