@@ -8,7 +8,6 @@ package cz.ceph.LampControl;
 import cz.ceph.LampControl.listeners.LampListener;
 import cz.ceph.LampControl.listeners.ReflectPlayerInteractEvent;
 import cz.ceph.LampControl.utils.Commands;
-import cz.ceph.LampControl.utils.MessagesManager;
 import cz.ceph.LampControl.utils.ReflectEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -25,7 +24,7 @@ import java.util.stream.Collectors;
 public class Main extends JavaPlugin {
     public static boolean opUsesHand = true, toggleLamps = true, takeItemOnUse = false, usePermissions = false, woodPlateControl = false, stonePlateControl = false, controlRails = true;
     public static PluginDescriptionFile pluginInfo;
-    private static YamlConfiguration YamlConfig;
+    public static YamlConfiguration messagesConfig;
     private static final int CONFIG_VERSION = 6;
 
     public Material toolMaterial;
@@ -126,8 +125,7 @@ public class Main extends JavaPlugin {
         if (!messages.exists()) {
             saveResource("messages.yml", false);
         }
-        YamlConfig = YamlConfiguration.loadConfiguration(messages);
-        MessagesManager.setFile(YamlConfig);
+        messagesConfig = YamlConfiguration.loadConfiguration(messages);
     }
 
     public boolean containMaterials(Material mat) {

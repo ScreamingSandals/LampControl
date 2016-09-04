@@ -5,8 +5,8 @@
 */
 package cz.ceph.LampControl.utils;
 
+import cz.ceph.LampControl.Main;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 /**
  * Created by Ceph on 09.08.2016.
@@ -25,20 +25,16 @@ public enum MessagesManager {
 
     private String path;
     private String def;
-    private static YamlConfiguration Config;
+
 
     MessagesManager(String path, String start) {
         this.path = path;
         this.def = start;
     }
 
-    public static void setFile(YamlConfiguration config) {
-        Config = config;
-    }
-
     public String toString() {
         if (this == PREFIX)
-            return ChatColor.translateAlternateColorCodes('&', Config.getString(this.path, def)) + " ";
-        return ChatColor.translateAlternateColorCodes('&', Config.getString(this.path, def));
+            return ChatColor.translateAlternateColorCodes('&', Main.messagesConfig.getString(this.path, def)) + " ";
+        return ChatColor.translateAlternateColorCodes('&', Main.messagesConfig.getString(this.path, def));
     }
 }
