@@ -7,6 +7,9 @@ package cz.ceph.LampControl;
 
 import cz.ceph.LampControl.listeners.LampListener;
 import cz.ceph.LampControl.listeners.ReflectPlayerInteractEvent;
+import cz.ceph.LampControl.utils.Commands;
+import cz.ceph.LampControl.utils.MessagesManager;
+import cz.ceph.LampControl.utils.ReflectEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -22,19 +25,18 @@ import java.util.stream.Collectors;
 public class Main extends JavaPlugin {
     public static boolean opUsesHand = true, toggleLamps = true, takeItemOnUse = false, usePermissions = false, woodPlateControl = false, stonePlateControl = false, controlRails = true;
     public static PluginDescriptionFile pluginInfo;
-    public static File MessagesFile;
-    public static YamlConfiguration YamlConfig;
+    private static YamlConfiguration YamlConfig;
     private static final int CONFIG_VERSION = 6;
 
     public Material toolMaterial;
     private ReflectEvent reflectEvent;
-    private List<Material> redstone_materials = new ArrayList<>();
+    private List<Material> rMats = new ArrayList<>();
 
 
     @Override
     public void onDisable() {
         // Output info to console on disable
-        getLogger().info("Disabled LampControl! Don't worry, I'll be back. Muhaha");
+        getLogger().info(pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was disabled!");
     }
 
     @Override
@@ -49,10 +51,8 @@ public class Main extends JavaPlugin {
             saveDefaultConfig();
         }
 
-        // Load configuration.
+        // Load config and messages.
         loadConfig();
-
-        // Load messages
         loadMessages();
 
         // Check for old config
@@ -67,7 +67,7 @@ public class Main extends JavaPlugin {
         reflectEvent.registerPlayerInteractEvent(new ReflectPlayerInteractEvent(this));
         getServer().getPluginManager().registerEvents(lampListener, this);
 
-        // Register command executors
+        // Register commands executors
         Commands commandExecutor = new Commands();
         getCommand("lamp").setExecutor(commandExecutor);
         getCommand("/lamp").setExecutor(commandExecutor);
@@ -75,32 +75,32 @@ public class Main extends JavaPlugin {
 
         // Output info to console on load
         pluginInfo = this.getDescription();
-        getLogger().info(pluginInfo.getName() + " v" + pluginInfo.getVersion() + " is enabled!");
+        getLogger().info(pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was enabled!");
 
-        this.redstone_materials.add(Material.DETECTOR_RAIL);
-        this.redstone_materials.add(Material.POWERED_RAIL);
-        this.redstone_materials.add(Material.REDSTONE_WIRE);
-        this.redstone_materials.add(Material.REDSTONE_BLOCK);
-        this.redstone_materials.add(Material.PISTON_MOVING_PIECE);
-        this.redstone_materials.add(Material.REDSTONE_TORCH_OFF);
-        this.redstone_materials.add(Material.REDSTONE_TORCH_ON);
-        this.redstone_materials.add(Material.DIODE_BLOCK_OFF);
-        this.redstone_materials.add(Material.DIODE_BLOCK_ON);
-        this.redstone_materials.add(Material.REDSTONE_COMPARATOR_OFF);
-        this.redstone_materials.add(Material.REDSTONE_COMPARATOR_ON);
-        this.redstone_materials.add(Material.DIODE_BLOCK_ON);
-        this.redstone_materials.add(Material.LEVER);
-        this.redstone_materials.add(Material.STONE_BUTTON);
-        this.redstone_materials.add(Material.WOOD_BUTTON);
-        this.redstone_materials.add(Material.GOLD_PLATE);
-        this.redstone_materials.add(Material.IRON_PLATE);
-        this.redstone_materials.add(Material.TRIPWIRE);
-        this.redstone_materials.add(Material.TRIPWIRE_HOOK);
-        this.redstone_materials.addAll(Arrays.stream(Material.values()).filter(mat -> mat.toString().equalsIgnoreCase("DAYLIGHT_DETECTOR") || mat.toString().equalsIgnoreCase("DAYLIGHT_DETECTOR_INVERTED")).collect(Collectors.toList()));
-        if (this.stonePlateControl)
-            this.redstone_materials.add(Material.WOOD_PLATE);
-        if (this.woodPlateControl)
-            this.redstone_materials.add(Material.STONE_PLATE);
+        this.rMats.add(Material.DETECTOR_RAIL);
+        this.rMats.add(Material.POWERED_RAIL);
+        this.rMats.add(Material.REDSTONE_WIRE);
+        this.rMats.add(Material.REDSTONE_BLOCK);
+        this.rMats.add(Material.PISTON_MOVING_PIECE);
+        this.rMats.add(Material.REDSTONE_TORCH_OFF);
+        this.rMats.add(Material.REDSTONE_TORCH_ON);
+        this.rMats.add(Material.DIODE_BLOCK_OFF);
+        this.rMats.add(Material.DIODE_BLOCK_ON);
+        this.rMats.add(Material.REDSTONE_COMPARATOR_OFF);
+        this.rMats.add(Material.REDSTONE_COMPARATOR_ON);
+        this.rMats.add(Material.DIODE_BLOCK_ON);
+        this.rMats.add(Material.LEVER);
+        this.rMats.add(Material.STONE_BUTTON);
+        this.rMats.add(Material.WOOD_BUTTON);
+        this.rMats.add(Material.GOLD_PLATE);
+        this.rMats.add(Material.IRON_PLATE);
+        this.rMats.add(Material.TRIPWIRE);
+        this.rMats.add(Material.TRIPWIRE_HOOK);
+        this.rMats.addAll(Arrays.stream(Material.values()).filter(mat -> mat.toString().equalsIgnoreCase("DAYLIGHT_DETECTOR") || mat.toString().equalsIgnoreCase("DAYLIGHT_DETECTOR_INVERTED")).collect(Collectors.toList()));
+        if (stonePlateControl)
+            this.rMats.add(Material.WOOD_PLATE);
+        if (woodPlateControl)
+            this.rMats.add(Material.STONE_PLATE);
     }
 
     // Load config from the file
@@ -128,14 +128,13 @@ public class Main extends JavaPlugin {
         }
         YamlConfig = YamlConfiguration.loadConfiguration(messages);
         MessagesManager.setFile(YamlConfig);
-        MessagesFile = messages;
     }
 
-    public boolean isInRedstoneMaterials(Material mat) {
-        return redstone_materials.contains(mat);
+    public boolean containMaterials(Material mat) {
+        return rMats.contains(mat);
     }
 
-    // Get what version of Spigot we're using
+    // Get what version of Spigot you're using
     public static String getNMSVersion() {
         final String packageName = Bukkit.getServer().getClass().getPackage().getName();
         return packageName.substring(packageName.lastIndexOf('.') + 1);

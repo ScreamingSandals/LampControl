@@ -6,10 +6,13 @@
 package cz.ceph.LampControl.listeners;
 
 import cz.ceph.LampControl.Main;
-import cz.ceph.LampControl.MessagesManager;
-import cz.ceph.LampControl.ReflectEvent;
-import cz.ceph.LampControl.SwitchBlock;
-import org.bukkit.*;
+import cz.ceph.LampControl.utils.MessagesManager;
+import cz.ceph.LampControl.utils.ReflectEvent;
+import cz.ceph.LampControl.utils.SwitchBlock;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -26,8 +29,7 @@ import java.util.Arrays;
  */
 
 public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
-
-    Main plugin;
+    private Main plugin;
 
     public ReflectPlayerInteractEvent(Main plugin) {
         this.plugin = plugin;
@@ -38,7 +40,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
     public void execute(Event instance) {
         PlayerInteractEvent e = (PlayerInteractEvent) instance;
 
-        //lamps
+        // Lamps section
         if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
 
         if (e.getPlayer().isSneaking()) return;
@@ -110,7 +112,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
             playSound(e.getClickedBlock().getLocation(), 0.5F, 1F);
         }
 
-        //powered rails
+        // Rails section
         else if (e.getClickedBlock().getType().equals(Material.POWERED_RAIL)) {
             if (Main.usePermissions && !e.getPlayer().hasPermission("lampcontrol.use")) return;
 
@@ -217,7 +219,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
 
     }
 
-    //play sound for 1.7 - 1.10
+    // 1.7 - 1.10 sounds
     private void playSound(Location loc, float v, float v1) {
         Sound[] sounds = Sound.values();
         Sound correctSound = null;
