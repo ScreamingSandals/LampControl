@@ -3,12 +3,10 @@
 	Code is modified by Ceph.
 	GNU General Public License version 3 (GPLv3)
 */
-package cz.ceph.LampControl.listeners;
+package cz.ceph.LampControl.events;
 
 import cz.ceph.LampControl.Main;
 import cz.ceph.LampControl.utils.MessagesManager;
-import cz.ceph.LampControl.utils.ReflectEvent;
-import cz.ceph.LampControl.utils.SwitchBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -65,13 +63,14 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
             Block b = e.getClickedBlock();
             BlockState blockState = b.getState();
 
-            SwitchBlock.switchLamp(b, false);
+            plugin.getSwitchBlock().initWorld(b.getWorld());
+            plugin.getSwitchBlock().switchLamp(b, false);
 
             BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(b, blockState, b, new ItemStack(Material.REDSTONE_LAMP_OFF), e.getPlayer(), true);
             Bukkit.getPluginManager().callEvent(checkBuildPerms);
 
             if (checkBuildPerms.isCancelled()) {
-                SwitchBlock.switchLamp(b, false);
+                plugin.getSwitchBlock().switchLamp(b, false);
                 e.getPlayer().sendMessage(MessagesManager.PREFIX + MessagesManager.NO_PERMS.toString());
                 return;
             }
@@ -92,13 +91,14 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
             Block b = e.getClickedBlock();
             BlockState blockState = b.getState();
 
-            SwitchBlock.switchLamp(b, true);
+            plugin.getSwitchBlock().initWorld(b.getWorld());
+            plugin.getSwitchBlock().switchLamp(b, true);
 
             BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(b, blockState, b, new ItemStack(Material.REDSTONE_LAMP_ON), e.getPlayer(), true);
             Bukkit.getPluginManager().callEvent(checkBuildPerms);
 
             if (checkBuildPerms.isCancelled()) {
-                SwitchBlock.switchLamp(b, true);
+                plugin.getSwitchBlock().switchLamp(b, true);
                 e.getPlayer().sendMessage(MessagesManager.PREFIX + MessagesManager.NO_PERMS.toString());
                 return;
             }
@@ -127,65 +127,27 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
             if (data < 7) {
                 BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(b, blockState, b, new ItemStack(Material.POWERED_RAIL), e.getPlayer(), true);
                 Bukkit.getPluginManager().callEvent(checkBuildPerms);
-
                 if (checkBuildPerms.isCancelled()) {
                     e.getPlayer().sendMessage(MessagesManager.PREFIX + MessagesManager.NO_PERMS.toString());
                     return;
                 } else {
-                    int i = 1;
-                    while (i < 9) {
-                        Block railBlock = b.getRelative(BlockFace.NORTH, i);
-                        int railData = (int) railBlock.getData();
+                    BlockFace[] sides = new BlockFace[]{BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST};
+                    for (BlockFace side : sides) {
+                        innerForEach:
+                        for (int i = 1; i < 9; i++) {
+                            Block railBlock = b.getRelative(side, i);
+                            int railData = (int) railBlock.getData();
 
-                        if (railBlock.getType().equals(Material.POWERED_RAIL) && railData < 7) {
-                            SwitchBlock.switchRail(railBlock, true);
-                        } else {
-                            break;
+                            if (railBlock.getType().equals(Material.POWERED_RAIL) && railData < 7) {
+                                plugin.getSwitchBlock().initWorld(railBlock.getWorld());
+                                plugin.getSwitchBlock().switchRail(railBlock, true);
+                            } else {
+                                break innerForEach;
+                            }
                         }
-
-                        i++;
                     }
-                    i = 1;
-                    while (i < 9) {
-                        Block railBlock = b.getRelative(BlockFace.SOUTH, i);
-                        int railData = (int) railBlock.getData();
-
-                        if (railBlock.getType().equals(Material.POWERED_RAIL) && railData < 7) {
-                            SwitchBlock.switchRail(railBlock, true);
-                        } else {
-                            break;
-                        }
-
-                        i++;
-                    }
-                    i = 1;
-                    while (i < 9) {
-                        Block railBlock = b.getRelative(BlockFace.EAST, i);
-                        int railData = (int) railBlock.getData();
-
-                        if (railBlock.getType().equals(Material.POWERED_RAIL) && railData < 7) {
-                            SwitchBlock.switchRail(railBlock, true);
-                        } else {
-                            break;
-                        }
-
-                        i++;
-                    }
-                    i = 1;
-                    while (i < 9) {
-                        Block railBlock = b.getRelative(BlockFace.WEST, i);
-                        int railData = (int) railBlock.getData();
-
-                        if (railBlock.getType().equals(Material.POWERED_RAIL) && railData < 7) {
-                            SwitchBlock.switchRail(railBlock, true);
-                        } else {
-                            break;
-                        }
-
-                        i++;
-                    }
-
-                    SwitchBlock.switchRail(b, true);
+                    plugin.getSwitchBlock().initWorld(b.getWorld());
+                    plugin.getSwitchBlock().switchRail(b, true);
                 }
 
                 if (Main.takeItemOnUse) {
@@ -204,7 +166,8 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
                     e.getPlayer().sendMessage(MessagesManager.PREFIX + MessagesManager.NO_PERMS.toString());
                     return;
                 } else {
-                    SwitchBlock.switchRail(b, false);
+                    plugin.getSwitchBlock().initWorld(b.getWorld());
+                    plugin.getSwitchBlock().switchRail(b, false);
                 }
 
                 if (Main.takeItemOnUse) {

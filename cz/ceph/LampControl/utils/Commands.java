@@ -11,6 +11,7 @@ import com.sk89q.worldedit.bukkit.selections.Selection;
 import cz.ceph.LampControl.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -19,6 +20,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Commands implements CommandExecutor {
+
+    private Main main;
+
+    public Commands(Main main) {
+        this.main = main;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length == 1) {
@@ -54,22 +62,24 @@ public class Commands implements CommandExecutor {
 
                     org.bukkit.Location min = selection.getMinimumPoint();
                     org.bukkit.Location max = selection.getMaximumPoint();
+                    main.getSwitchBlock().initWorld(min.getWorld());
                     int affected = 0;
                     for (int x = min.getBlockX(); x <= max.getBlockX(); x++) {
                         for (int y = min.getBlockY(); y <= max.getBlockY(); y++)
-                            for (int z = min.getBlockZ(); z <= max.getBlockZ(); z++)
-
-                                if (!checkForSelection || selection.contains(new org.bukkit.Location(min.getWorld(), x, y, z))) {
-                                    Block block = min.getWorld().getBlockAt(new org.bukkit.Location(min.getWorld(), x, y, z));
+                            for (int z = min.getBlockZ(); z <= max.getBlockZ(); z++) {
+                                Location loc = new Location(min.getWorld(), x, y, z);
+                                if (!checkForSelection || selection.contains(loc)) {
+                                    Block block = min.getWorld().getBlockAt(loc);
                                     if (block.getType().equals(Material.REDSTONE_LAMP_OFF)) {
                                         try {
-                                            SwitchBlock.switchLamp(block, true);
+                                            main.getSwitchBlock().switchLamp(block, true);
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
                                         affected++;
                                     }
                                 }
+                            }
                     }
 
                     if (affected < 1) {
@@ -110,22 +120,24 @@ public class Commands implements CommandExecutor {
 
                         org.bukkit.Location min = selection.getMinimumPoint();
                         org.bukkit.Location max = selection.getMaximumPoint();
+                        main.getSwitchBlock().initWorld(min.getWorld());
                         int affected = 0;
                         for (int x = min.getBlockX(); x <= max.getBlockX(); x++) {
                             for (int y = min.getBlockY(); y <= max.getBlockY(); y++)
-                                for (int z = min.getBlockZ(); z <= max.getBlockZ(); z++)
-
-                                    if (!checkForSelection || selection.contains(new org.bukkit.Location(min.getWorld(), x, y, z))) {
-                                        Block block = min.getWorld().getBlockAt(new org.bukkit.Location(min.getWorld(), x, y, z));
+                                for (int z = min.getBlockZ(); z <= max.getBlockZ(); z++) {
+                                    Location loc = new Location(min.getWorld(), x, y, z);
+                                    if (!checkForSelection || selection.contains(loc)) {
+                                        Block block = min.getWorld().getBlockAt(loc);
                                         if (block.getType().equals(Material.REDSTONE_LAMP_ON)) {
                                             try {
-                                                SwitchBlock.switchLamp(block, false);
+                                                main.getSwitchBlock().switchLamp(block, false);
                                             } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
                                             affected++;
                                         }
                                     }
+                                }
                         }
 
                         if (affected < 1) {

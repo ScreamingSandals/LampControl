@@ -6,9 +6,10 @@
 package cz.ceph.LampControl;
 
 import cz.ceph.LampControl.listeners.LampListener;
-import cz.ceph.LampControl.listeners.ReflectPlayerInteractEvent;
+import cz.ceph.LampControl.events.ReflectPlayerInteractEvent;
 import cz.ceph.LampControl.utils.Commands;
-import cz.ceph.LampControl.utils.ReflectEvent;
+import cz.ceph.LampControl.events.ReflectEvent;
+import cz.ceph.LampControl.utils.SwitchBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -30,6 +31,7 @@ public class Main extends JavaPlugin {
     public Material toolMaterial;
     private ReflectEvent reflectEvent;
     private List<Material> rMats = new ArrayList<>();
+    private SwitchBlock switchBlock;
 
 
     @Override
@@ -60,6 +62,8 @@ public class Main extends JavaPlugin {
             getLogger().info("Older config version found, created new one.");
         }
 
+        switchBlock = new SwitchBlock();
+
         // Register listeners
         LampListener lampListener = new LampListener(this);
         reflectEvent.initListener(lampListener);
@@ -67,7 +71,7 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(lampListener, this);
 
         // Register commands executors
-        Commands commandExecutor = new Commands();
+        Commands commandExecutor = new Commands(this);
         getCommand("lamp").setExecutor(commandExecutor);
         getCommand("/lamp").setExecutor(commandExecutor);
         getCommand("/lc").setExecutor(commandExecutor);
@@ -136,5 +140,9 @@ public class Main extends JavaPlugin {
     public static String getNMSVersion() {
         final String packageName = Bukkit.getServer().getClass().getPackage().getName();
         return packageName.substring(packageName.lastIndexOf('.') + 1);
+    }
+
+    public SwitchBlock getSwitchBlock() {
+        return switchBlock;
     }
 }

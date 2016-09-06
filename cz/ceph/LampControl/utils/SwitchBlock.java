@@ -7,6 +7,7 @@ package cz.ceph.LampControl.utils;
 
 import cz.ceph.LampControl.Main;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import java.lang.reflect.Field;
@@ -18,68 +19,71 @@ import java.lang.reflect.InvocationTargetException;
 
 public class SwitchBlock {
 
+    private Object craftWorld;
+    private Field isClientSideField;
 
-    private static Object getNMCWorld(Object cW) throws ClassNotFoundException {
-        return Class.forName("net.minecraft.server." + Main.getNMSVersion() + ".World", false, Main.class.getClassLoader()).cast(cW);
-    }
 
-    private static Object getCraftWorld(Object worldInstance) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        return Class.forName("org.bukkit.craftbukkit." + Main.getNMSVersion() + ".CraftWorld", false, Main.class.getClassLoader()).cast(worldInstance);
-    }
-
-    private static Object getInstanceOfCW(Object cW) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        return cW.getClass().getDeclaredMethod("getHandle").invoke(cW);
-    }
-
-    public static void switchLamp(Block b, boolean light) {
+    public void initWorld(World world) {
         try {
-            Object cW = getNMCWorld(getInstanceOfCW(getCraftWorld(b.getWorld())));
-            if (light) {
-                setWorldStatic(cW, true);
-                b.setType(Material.REDSTONE_LAMP_ON);
-                setWorldStatic(cW, false);
-            } else {
-                b.setType(Material.REDSTONE_LAMP_OFF);
-            }
-        } catch (Exception e) {
+            craftWorld = getNMCWorld(getInstanceOfCW(getCraftWorld(world)));
+            isClientSideField = craftWorld.getClass().getField("isClientSide");
+        } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
-        }
-    }
-
-    @SuppressWarnings("deprecation")
-    public static void switchRail(Block b, boolean power) {
-        try {
-            Object cW = getNMCWorld(getInstanceOfCW(getCraftWorld(b.getWorld())));
-            int data = (int) b.getData();
-
-            if (power) {
-                data = data + 8;
-
-                setWorldStatic(cW, true);
-                b.setTypeIdAndData(27, (byte) data, false);
-                setWorldStatic(cW, false);
-            } else {
-                data = data - 8;
-                b.setTypeIdAndData(27, (byte) data, false);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static void setWorldStatic(Object cW, boolean static_boolean) throws IllegalAccessException {
-        Field field = null;
-        try {
-            field = cW.getClass().getField("isClientSide");
         } catch (NoSuchFieldException e) {
             try {
-                field = cW.getClass().getField("isStatic");
+                isClientSideField = craftWorld.getClass().getField("isStatic");
             } catch (NoSuchFieldException e1) {
                 e1.printStackTrace();
             }
         }
 
-        field.setAccessible(true);
-        field.set(cW, static_boolean);
+        isClientSideField.setAccessible(true);
+    }
+
+    public void setStatic(boolean value) {
+        try {
+            isClientSideField.set(craftWorld, value);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void switchLamp(Block block, boolean light) {
+        if(light) {
+            setStatic(true);
+            block.setType(Material.REDSTONE_LAMP_ON);
+            setStatic(false);
+        } else {
+            block.setType(Material.REDSTONE_LAMP_OFF);
+        }
+    }
+
+    private Object getNMCWorld(Object cW) throws ClassNotFoundException {
+        return Class.forName("net.minecraft.server." + Main.getNMSVersion() + ".World", false, Main.class.getClassLoader()).cast(cW);
+    }
+
+    private Object getCraftWorld(Object worldInstance) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        return Class.forName("org.bukkit.craftbukkit." + Main.getNMSVersion() + ".CraftWorld", false, Main.class.getClassLoader()).cast(worldInstance);
+    }
+
+    private Object getInstanceOfCW(Object cW) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        return cW.getClass().getDeclaredMethod("getHandle").invoke(cW);
+    }
+
+    public void switchRail(Block block, boolean power) {
+        try {
+            int data = (int) block.getData();
+            if (power) {
+                data = data + 8;
+                setStatic(true);
+                block.setTypeIdAndData(27, (byte) data, false);
+                setStatic(false);
+            } else {
+                data = data - 8;
+                block.setTypeIdAndData(27, (byte) data, false);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
