@@ -3,9 +3,10 @@
 	Code is modified by Ceph.
 	GNU General Public License version 3 (GPLv3)
 */
-package cz.ceph.LampControl.utils;
+package cz.ceph.lampcontrol.utils;
 
-import cz.ceph.LampControl.Main;
+import cz.ceph.lampcontrol.LampControl;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -59,17 +60,18 @@ public class SwitchBlock {
     }
 
     private Object getNMCWorld(Object cW) throws ClassNotFoundException {
-        return Class.forName("net.minecraft.server." + Main.getNMSVersion() + ".World", false, Main.class.getClassLoader()).cast(cW);
+        return Class.forName("net.minecraft.server." + getNMSVersion() + ".World", false, LampControl.class.getClassLoader()).cast(cW);
     }
 
     private Object getCraftWorld(Object worldInstance) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        return Class.forName("org.bukkit.craftbukkit." + Main.getNMSVersion() + ".CraftWorld", false, Main.class.getClassLoader()).cast(worldInstance);
+        return Class.forName("org.bukkit.craftbukkit." + getNMSVersion() + ".CraftWorld", false, LampControl.class.getClassLoader()).cast(worldInstance);
     }
 
     private Object getInstanceOfCW(Object cW) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         return cW.getClass().getDeclaredMethod("getHandle").invoke(cW);
     }
 
+    @SuppressWarnings("deprecation")
     public void switchRail(Block block, boolean power) {
         try {
             int data = (int) block.getData();
@@ -85,5 +87,10 @@ public class SwitchBlock {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static String getNMSVersion() {
+        final String packageName = Bukkit.getServer().getClass().getPackage().getName();
+        return packageName.substring(packageName.lastIndexOf('.') + 1);
     }
 }

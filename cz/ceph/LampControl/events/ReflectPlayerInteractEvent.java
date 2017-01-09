@@ -3,10 +3,10 @@
 	Code is modified by Ceph.
 	GNU General Public License version 3 (GPLv3)
 */
-package cz.ceph.LampControl.events;
+package cz.ceph.lampcontrol.events;
 
-import cz.ceph.LampControl.Main;
-import cz.ceph.LampControl.utils.MessagesManager;
+import cz.ceph.lampcontrol.LampControl;
+import cz.ceph.lampcontrol.utils.MessagesManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -27,9 +27,9 @@ import java.util.Arrays;
  */
 
 public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
-    private Main plugin;
+    private LampControl plugin;
 
-    public ReflectPlayerInteractEvent(Main plugin) {
+    public ReflectPlayerInteractEvent(LampControl plugin) {
         this.plugin = plugin;
     }
 
@@ -43,7 +43,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
 
         if (e.getPlayer().isSneaking()) return;
 
-        if (Main.opUsesHand && e.getPlayer().isOp() || e.getPlayer().hasPermission("lampcontrol.hand")) {
+        if (LampControl.opUsesHand && e.getPlayer().isOp() || e.getPlayer().hasPermission("lampcontrol.hand")) {
             if (e.getPlayer().getItemInHand() == null || !e.getPlayer().getItemInHand().getType().equals(Material.AIR) && !e.getPlayer().getItemInHand().getType().equals(this.plugin.toolMaterial)) {
                 return;
             }
@@ -54,9 +54,9 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
         }
 
         if (e.getClickedBlock().getType().equals(Material.REDSTONE_LAMP_ON)) {
-            if (Main.usePermissions && !e.getPlayer().hasPermission("lampcontrol.use")) return;
+            if (LampControl.usePermissions && !e.getPlayer().hasPermission("lampcontrol.use")) return;
 
-            if (!Main.toggleLamps) return;
+            if (!LampControl.toggleLamps) return;
 
             e.setCancelled(true);
 
@@ -75,7 +75,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
                 return;
             }
 
-            if (Main.takeItemOnUse) {
+            if (LampControl.takeItemOnUse) {
                 ItemStack item = e.getPlayer().getItemInHand();
                 item.setAmount(item.getAmount() - 1);
                 e.getPlayer().setItemInHand(null);
@@ -86,7 +86,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
 
             e.setCancelled(true);
 
-            if (Main.usePermissions && !e.getPlayer().hasPermission("lampcontrol.use")) return;
+            if (LampControl.usePermissions && !e.getPlayer().hasPermission("lampcontrol.use")) return;
 
             Block b = e.getClickedBlock();
             BlockState blockState = b.getState();
@@ -103,7 +103,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
                 return;
             }
 
-            if (Main.takeItemOnUse) {
+            if (LampControl.takeItemOnUse) {
                 ItemStack item = e.getPlayer().getItemInHand();
                 item.setAmount(item.getAmount() - 1);
                 e.getPlayer().setItemInHand(null);
@@ -114,9 +114,9 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
 
         // Rails section
         else if (e.getClickedBlock().getType().equals(Material.POWERED_RAIL)) {
-            if (Main.usePermissions && !e.getPlayer().hasPermission("lampcontrol.use")) return;
+            if (LampControl.usePermissions && !e.getPlayer().hasPermission("lampcontrol.use")) return;
 
-            if (!Main.controlRails) return;
+            if (!LampControl.controlRails) return;
 
             e.setCancelled(true);
 
@@ -150,7 +150,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
                     plugin.getSwitchBlock().switchRail(b, true);
                 }
 
-                if (Main.takeItemOnUse) {
+                if (LampControl.takeItemOnUse) {
                     ItemStack item = e.getPlayer().getItemInHand();
                     item.setAmount(item.getAmount() - 1);
                     e.getPlayer().setItemInHand(null);
@@ -170,7 +170,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
                     plugin.getSwitchBlock().switchRail(b, false);
                 }
 
-                if (Main.takeItemOnUse) {
+                if (LampControl.takeItemOnUse) {
                     ItemStack item = e.getPlayer().getItemInHand();
                     item.setAmount(item.getAmount() - 1);
                     e.getPlayer().setItemInHand(null);

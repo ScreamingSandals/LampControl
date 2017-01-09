@@ -3,9 +3,9 @@
 	Code is modified by Ceph.
 	GNU General Public License version 3 (GPLv3)
 */
-package cz.ceph.LampControl.utils;
+package cz.ceph.lampcontrol.utils;
 
-import cz.ceph.LampControl.Main;
+import cz.ceph.lampcontrol.LampControl;
 import org.bukkit.ChatColor;
 
 /**
@@ -34,7 +34,7 @@ public enum MessagesManager {
 
     public String toString() {
         if (this == PREFIX)
-            return ChatColor.translateAlternateColorCodes('&', Main.messagesConfig.getString(this.path, def)) + " ";
-        return ChatColor.translateAlternateColorCodes('&', Main.messagesConfig.getString(this.path, def));
+            return ChatColor.translateAlternateColorCodes('&', LampControl.messagesConfig.getString(this.path, def)) + " ";
+        return ChatColor.translateAlternateColorCodes('&', LampControl.messagesConfig.getString(this.path, def));
     }
 }
