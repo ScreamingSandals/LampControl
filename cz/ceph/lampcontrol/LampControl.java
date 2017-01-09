@@ -1,15 +1,14 @@
 package cz.ceph.lampcontrol;
 
+import cz.ceph.lampcontrol.commands.Commands;
 import cz.ceph.lampcontrol.config.MainConfig;
 import cz.ceph.lampcontrol.events.ReflectEvent;
 import cz.ceph.lampcontrol.events.ReflectPlayerInteractEvent;
 import cz.ceph.lampcontrol.listeners.LampListener;
 import cz.ceph.lampcontrol.localization.Localizations;
-import cz.ceph.lampcontrol.commands.Commands;
 import cz.ceph.lampcontrol.utils.StringUtils;
 import cz.ceph.lampcontrol.utils.SwitchBlock;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -36,9 +35,6 @@ public class LampControl extends JavaPlugin {
     private static LampControl pluginMain;
     public static Logger debug = Logger.getLogger("Minecraft");
     public static PluginDescriptionFile pluginInfo;
-
-    //old things
-    public static YamlConfiguration messagesConfig;
 
     @Override
     public void onLoad() {
@@ -78,16 +74,13 @@ public class LampControl extends JavaPlugin {
 
         pluginMain = this;
 
-        // old things
-        loadMessages();
-
         pluginInfo = this.getDescription();
         debug.log(Level.INFO, pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was enabled!");
     }
 
     @Override
     public void onDisable() {
-        getLogger().info(pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was disabled!");
+        debug.log(Level.INFO, pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was disabled!");
     }
 
 
@@ -103,20 +96,11 @@ public class LampControl extends JavaPlugin {
         return localizations;
     }
 
-    // Load messages from the file
-    private void loadMessages() {
-        File messages = new File(getDataFolder(), "messages.yml");
-        if (!messages.exists()) {
-            saveResource("messages.yml", false);
-        }
-        messagesConfig = YamlConfiguration.loadConfiguration(messages);
+    public SwitchBlock getSwitchBlock() {
+        return switchBlock;
     }
 
     public boolean containMaterials(Material mat) {
         return cachedRedstoneMaterials.contains(mat);
-    }
-
-    public SwitchBlock getSwitchBlock() {
-        return switchBlock;
     }
 }
