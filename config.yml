@@ -2,17 +2,24 @@
 #	LampControl Config File
 #	=====================================
 #
-#	Plugin by Ceph adapted from jacklink01
+#	Plugin by Ceph
 #
-#	Need a new config file? Just delete this one and a new one will be created.
+#	Need a new config file? Just delete this one and a new one will be created, but without comments.
 #
 
-# The item ID of the item with which you would like players to be able to turn on lamps.
-# (default: flint/steel 259)
-lampControlItem: 259
+
+pluginPrefix: "&8[&eLamp&cControl&8]&r"
+
+# The Material name of the item with which you would like players to be able to turn on lamps.
+# (default: FLINT_AND_STEEL)
+lampTool: FLINT_AND_STEEL
 
 # If set to true, then LampControl will check if players have permission, otherwise it will let everyone control lamps.
-usePermissions: true
+permissions: true
+
+# Default language for LampControl.
+# Existing languages: (en, cz, sk)
+language: "en"
 
 # In the event that you would like to prevent plates from affecting lamps, you may set these to false.
 woodPlateControl: true

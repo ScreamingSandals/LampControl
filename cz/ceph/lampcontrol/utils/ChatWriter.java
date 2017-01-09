@@ -4,10 +4,6 @@ import org.bukkit.ChatColor;
 
 import static cz.ceph.lampcontrol.LampControl.getMain;
 
-/**
- * Created by Ceph on 08.01.2017.
- */
-
 public class ChatWriter {
 
     public static String prefix(String string) {

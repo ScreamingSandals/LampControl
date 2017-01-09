@@ -1,7 +1,6 @@
 package cz.ceph.lampcontrol.events;
 
 import cz.ceph.lampcontrol.LampControl;
-import cz.ceph.lampcontrol.utils.MessagesManager;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;

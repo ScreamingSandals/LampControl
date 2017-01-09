@@ -3,7 +3,7 @@
 	Code is modified by Ceph.
 	GNU General Public License version 3 (GPLv3)
 */
-package cz.ceph.lampcontrol.utils;
+package cz.ceph.lampcontrol.commands;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.bukkit.selections.CuboidSelection;
@@ -18,6 +18,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import static cz.ceph.lampcontrol.LampControl.getMain;
 
 public class Commands implements CommandExecutor {
 
@@ -37,13 +39,13 @@ public class Commands implements CommandExecutor {
                 return true;
             }
         } else if (args.length >= 2) {
-            sender.sendMessage(MessagesManager.PREFIX + MessagesManager.TOO_MANY_ARGUMENTS.toString());
+            sender.sendMessage(getMain().getLocalizations().get(getMain().language, "error.too_many_arguments"));
             return true;
         } else if (sender instanceof Player) {
             Player p = (Player) sender;
             if (p.hasPermission("lampcontrol.worldedit") || p.isOp()) {
                 if (Bukkit.getServer().getPluginManager().getPlugin("WorldEdit") == null) {
-                    p.sendMessage(MessagesManager.PREFIX + MessagesManager.NO_WORLDEDIT.toString());
+                    p.sendMessage(getMain().getLocalizations().get(getMain().language, "error.no_worldedit"));
                     return true;
                 } else {
 
@@ -51,7 +53,7 @@ public class Commands implements CommandExecutor {
                     Selection selection = worldEdit.getSelection(p);
 
                     if (selection == null) {
-                        p.sendMessage(MessagesManager.PREFIX + MessagesManager.NO_SELECTION.toString());
+                        p.sendMessage(getMain().getLocalizations().get(getMain().language, "error.no_selection"));
                         return true;
                     }
 
@@ -83,17 +85,17 @@ public class Commands implements CommandExecutor {
                     }
 
                     if (affected < 1) {
-                        p.sendMessage(MessagesManager.PREFIX + MessagesManager.NO_LAMPS_AFFECTED.toString());
+                        p.sendMessage(getMain().getLocalizations().get(getMain().language, "info.no_lamps_affecetd"));
                     } else
-                        p.sendMessage(MessagesManager.PREFIX + MessagesManager.ON_LAMPS.toString().replace("%affected", "" + affected + ""));
+                        p.sendMessage(getMain().getLocalizations().get(getMain().language, "info.affected_lamps").replace("%affected", "" + affected + ""));
                     return true;
                 }
             } else {
-                p.sendMessage(MessagesManager.PREFIX + MessagesManager.NO_PERMS.toString());
+                p.sendMessage(getMain().getLocalizations().get(getMain().language, "error.no_permissions"));
                 return true;
             }
         } else {
-            sender.sendMessage(MessagesManager.PREFIX + "This command cannot be run from the console.");
+            sender.sendMessage(getMain().getLocalizations().get(getMain().language, "error.command_use"));
             return true;
         }
 
@@ -102,7 +104,7 @@ public class Commands implements CommandExecutor {
                 Player p = (Player) sender;
                 if (p.hasPermission("lampcontrol.worldedit") || p.isOp()) {
                     if (Bukkit.getServer().getPluginManager().getPlugin("WorldEdit") == null) {
-                        p.sendMessage(MessagesManager.PREFIX + MessagesManager.NO_WORLDEDIT.toString());
+                        p.sendMessage(getMain().getLocalizations().get(getMain().language, "error.no_worldedit"));
                         return true;
                     } else {
 
@@ -110,7 +112,7 @@ public class Commands implements CommandExecutor {
                         Selection selection = worldEdit.getSelection(p);
 
                         if (selection == null) {
-                            p.sendMessage(MessagesManager.PREFIX + MessagesManager.NO_SELECTION.toString());
+                            p.sendMessage(getMain().getLocalizations().get(getMain().language, "error.no_selection"));
                             return true;
                         }
 
@@ -142,17 +144,17 @@ public class Commands implements CommandExecutor {
                         }
 
                         if (affected < 1) {
-                            p.sendMessage(MessagesManager.PREFIX + MessagesManager.NO_LAMPS_AFFECTED.toString());
+                            p.sendMessage(getMain().getLocalizations().get(getMain().language, "info.no_lamps_affecetd"));
                         } else
-                            p.sendMessage(MessagesManager.PREFIX + MessagesManager.OFF_LAMPS.toString().replace("%affected", "" + affected + ""));
+                            p.sendMessage(getMain().getLocalizations().get(getMain().language, "info.affected_lamps").replace("%affected", "" + affected + ""));
                         return true;
                     }
                 } else {
-                    p.sendMessage(MessagesManager.PREFIX + MessagesManager.NO_PERMS.toString());
+                    p.sendMessage(getMain().getLocalizations().get(getMain().language, "error.no_permissions"));
                     return true;
                 }
             } else {
-                sender.sendMessage(MessagesManager.PREFIX + MessagesManager.CONSOLE.toString());
+                sender.sendMessage(getMain().getLocalizations().get(getMain().language, "error.command_use"));
                 return true;
             }
         }

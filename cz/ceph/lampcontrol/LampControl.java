@@ -1,15 +1,12 @@
-/*
-	Code has been adapted from jacklink01.
-	Code is modified by Ceph.
-	GNU General Public License version 3 (GPLv3)
-*/
 package cz.ceph.lampcontrol;
 
 import cz.ceph.lampcontrol.config.MainConfig;
 import cz.ceph.lampcontrol.events.ReflectEvent;
 import cz.ceph.lampcontrol.events.ReflectPlayerInteractEvent;
 import cz.ceph.lampcontrol.listeners.LampListener;
-import cz.ceph.lampcontrol.utils.Commands;
+import cz.ceph.lampcontrol.localization.Localizations;
+import cz.ceph.lampcontrol.commands.Commands;
+import cz.ceph.lampcontrol.utils.StringUtils;
 import cz.ceph.lampcontrol.utils.SwitchBlock;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -28,11 +25,13 @@ public class LampControl extends JavaPlugin {
     private MainConfig mainConfig;
     private ReflectEvent reflectEvent;
     private SwitchBlock switchBlock;
+    private Localizations localizations;
 
     public Map<String, Boolean> cachedBooleanValues;
     public List<Material> cachedRedstoneMaterials = new ArrayList<>();
 
     public Material lampTool;
+    public String language;
 
     private static LampControl pluginMain;
     public static Logger debug = Logger.getLogger("Minecraft");
@@ -49,13 +48,18 @@ public class LampControl extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        debug.log(Level.SEVERE, "Loading config.yml");
+        debug.log(Level.INFO, "Initializing config file");
         mainConfig = new MainConfig(new File(getDataFolder(), "config.yml"));
 
-        debug.log(Level.SEVERE, "Loading default config values into cache");
+        debug.log(Level.INFO, "Initializing default config values into cache");
         mainConfig.initializeConfig();
 
-        debug.log(Level.SEVERE, "Registering LampListener");
+        debug.log(Level.INFO, "Initializing languages");
+        localizations = new Localizations(this);
+        localizations.findAndLoadFiles();
+        debug.log(Level.INFO, "Available languages: [{0}]", StringUtils.arrToString(", ", localizations.getAvailableLanguages()));
+
+        debug.log(Level.INFO, "Registering LampListener");
         LampListener lampListener = new LampListener(this);
 
         reflectEvent.initListener(lampListener);
@@ -63,10 +67,10 @@ public class LampControl extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(lampListener, this);
 
-        debug.log(Level.SEVERE, "Registering SwitchBlock function");
+        debug.log(Level.INFO, "Registering SwitchBlock function");
         switchBlock = new SwitchBlock();
 
-        debug.log(Level.SEVERE, "Registering commands");
+        debug.log(Level.INFO, "Registering commands");
         Commands commandExecutor = new Commands(this);
         getCommand("lamp").setExecutor(commandExecutor);
         getCommand("/lamp").setExecutor(commandExecutor);
@@ -78,7 +82,7 @@ public class LampControl extends JavaPlugin {
         loadMessages();
 
         pluginInfo = this.getDescription();
-        debug.log(Level.SEVERE, pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was enabled!");
+        debug.log(Level.INFO, pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was enabled!");
     }
 
     @Override
@@ -93,6 +97,10 @@ public class LampControl extends JavaPlugin {
 
     public MainConfig getMainConfig() {
         return mainConfig;
+    }
+
+    public Localizations getLocalizations() {
+        return localizations;
     }
 
     // Load messages from the file

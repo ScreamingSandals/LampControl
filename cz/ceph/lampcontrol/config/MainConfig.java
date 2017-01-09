@@ -18,7 +18,9 @@ public class MainConfig extends BaseConfiguration {
     private static final int CONFIG_VERSION = 5;
 
     private static final String PATH_PLUGIN_PREFIX = "pluginPrefix";
+    private static final String PATH_LAMPTOOL = "lampTool";
     private static final String PATH_PERMISSIONS = "permissions";
+    private static final String PATH_LANGUAGE = "language";
 
     public MainConfig(File file) {
         super(file, CONFIG_VERSION);
@@ -27,6 +29,9 @@ public class MainConfig extends BaseConfiguration {
     @Override
     public void setDefault() {
         setString(PATH_PLUGIN_PREFIX, "&8[&eLamp&cControl&8]&r");
+        setString(PATH_LAMPTOOL, "FLINT_AND_STEEL");
+        setBoolean(PATH_PERMISSIONS, true);
+        setString(PATH_LANGUAGE, "en");
     }
 
     public String getCustomString(String name) {
@@ -39,7 +44,7 @@ public class MainConfig extends BaseConfiguration {
 
     public void initializeConfig() {
 
-        LampControl.debug.log(Level.INFO, "Loading RedstoneMaterials into cache.");
+        LampControl.debug.log(Level.INFO, "Loading Redstone Materials into cache.");
         if (!areMaterialsConfigured()) {
             getMain().cachedRedstoneMaterials.add(Material.DETECTOR_RAIL);
             getMain().cachedRedstoneMaterials.add(Material.POWERED_RAIL);
@@ -69,8 +74,9 @@ public class MainConfig extends BaseConfiguration {
             //TODO: add loading from config
         }
 
-        getMain().lampTool = Material.getMaterial(getString("lampTool"));
+        getMain().lampTool = Material.getMaterial(getString(PATH_LAMPTOOL));
         getMain().cachedBooleanValues.put(PATH_PERMISSIONS, getBoolean(PATH_PERMISSIONS));
+        getMain().language = getString(PATH_LANGUAGE);
 
         /*
         woodPlateControl = getConfig().getBoolean("woodPlateControl");
