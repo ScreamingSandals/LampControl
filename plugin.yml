@@ -1,7 +1,7 @@
 name: LampControl
 author: Ceph
-version: 3.0
-lampControl: cz.ceph.LampControl.LampControl
+version: 3.1
+lampControl: cz.ceph.lampcontrol.LampControl
 
 commands:
    lamp:
