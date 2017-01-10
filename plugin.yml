@@ -2,13 +2,3 @@ name: LampControl
 author: Ceph
 version: 3.1
 lampControl: cz.ceph.lampcontrol.LampControl
-
-commands:
-   lamp:
-      description: Turn on/off lamps with WorldEdit
-      usage: /<command> [off]
-      aliases: [lc, lampcontrol]
-   /lamp:
-      description: Turn on/off lamps with WorldEdit
-      usage: /<command> [off]
-      aliases: [/lc, /lampcontrol]

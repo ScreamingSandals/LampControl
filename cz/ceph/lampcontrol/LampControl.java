@@ -1,12 +1,12 @@
 package cz.ceph.lampcontrol;
 
 import cz.ceph.lampcontrol.commands.Commands;
+import cz.ceph.lampcontrol.commands.core.CommandHandler;
 import cz.ceph.lampcontrol.config.MainConfig;
 import cz.ceph.lampcontrol.events.ReflectEvent;
 import cz.ceph.lampcontrol.events.ReflectPlayerInteractEvent;
 import cz.ceph.lampcontrol.listeners.LampListener;
 import cz.ceph.lampcontrol.localization.Localizations;
-import cz.ceph.lampcontrol.utils.StringUtils;
 import cz.ceph.lampcontrol.utils.SwitchBlock;
 import org.bukkit.Material;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -16,7 +16,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class LampControl extends JavaPlugin {
@@ -25,6 +24,7 @@ public class LampControl extends JavaPlugin {
     private ReflectEvent reflectEvent;
     private SwitchBlock switchBlock;
     private Localizations localizations;
+    private CommandHandler commands;
 
     public Map<String, Boolean> cachedBooleanValues;
     public List<Material> cachedRedstoneMaterials = new ArrayList<>();
@@ -33,7 +33,7 @@ public class LampControl extends JavaPlugin {
     public String language;
 
     private static LampControl pluginMain;
-    public static Logger debug = Logger.getLogger("Minecraft");
+    public static Logger debug;
     public static PluginDescriptionFile pluginInfo;
 
     @Override
@@ -44,18 +44,21 @@ public class LampControl extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        debug.log(Level.INFO, "Initializing config file");
+        debug.info("Initializing config file");
         mainConfig = new MainConfig(new File(getDataFolder(), "config.yml"));
 
-        debug.log(Level.INFO, "Initializing default config values into cache");
+        debug.info("Initializing default config values into cache");
         mainConfig.initializeConfig();
 
-        debug.log(Level.INFO, "Initializing languages");
+        debug.info("Initializing languages");
         localizations = new Localizations(this);
         localizations.findAndLoadFiles();
-        debug.log(Level.INFO, "Available languages: [{0}]", StringUtils.arrToString(", ", localizations.getAvailableLanguages()));
+        debug.info("Available languages: [ " + localizations.getAvailableLanguages().toString() + "]");
 
-        debug.log(Level.INFO, "Registering LampListener");
+        debug.info("Registering cmd");
+        commands = new CommandHandler(this);
+
+        debug.info("Registering LampListener");
         LampListener lampListener = new LampListener(this);
 
         reflectEvent.initListener(lampListener);
@@ -63,10 +66,10 @@ public class LampControl extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(lampListener, this);
 
-        debug.log(Level.INFO, "Registering SwitchBlock function");
+        debug.info("Registering SwitchBlock function");
         switchBlock = new SwitchBlock();
 
-        debug.log(Level.INFO, "Registering commands");
+        debug.info("Registering commands");
         Commands commandExecutor = new Commands(this);
         getCommand("lamp").setExecutor(commandExecutor);
         getCommand("/lamp").setExecutor(commandExecutor);
@@ -75,12 +78,12 @@ public class LampControl extends JavaPlugin {
         pluginMain = this;
 
         pluginInfo = this.getDescription();
-        debug.log(Level.INFO, pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was enabled!");
+        debug.info(pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was enabled!");
     }
 
     @Override
     public void onDisable() {
-        debug.log(Level.INFO, pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was disabled!");
+        debug.info(pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was disabled!");
     }
 
 
