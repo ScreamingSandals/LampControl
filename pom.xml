@@ -75,10 +75,6 @@
             <resource>
                 <directory>src/main/resources/languages</directory>
                 <filtering>false</filtering>
-            </resource>
-            <resource>
-                <directory>src/main/resources/languages</directory>
-                <filtering>false</filtering>
                 <excludes>
                     <exclude>**/*.java</exclude>
                     <exclude>*.yml</exclude>
