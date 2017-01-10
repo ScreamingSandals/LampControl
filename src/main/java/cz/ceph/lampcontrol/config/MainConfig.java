@@ -19,8 +19,12 @@ public class MainConfig extends BaseConfiguration {
 
     private static final String PATH_PLUGIN_PREFIX = "pluginPrefix";
     private static final String PATH_LAMPTOOL = "lampTool";
-    private static final String PATH_PERMISSIONS = "permissions";
+    private static final String PATH_USE_PERMISSIONS = "use.permissions";
+    private static final String PATH_USE_ITEMS = "use.items";
     private static final String PATH_LANGUAGE = "language";
+    private static final String PATH_MANAGE_LAMPS = "manage.lamps";
+    private static final String PATH_MANAGE_RAILS = "manage.rails";
+    private static final String PATH_MANAGE_OP = "manage.op";
 
     public MainConfig(File file) {
         super(file, CONFIG_VERSION);
@@ -30,7 +34,8 @@ public class MainConfig extends BaseConfiguration {
     public void setDefault() {
         setString(PATH_PLUGIN_PREFIX, "&8[&eLamp&cControl&8]&r");
         setString(PATH_LAMPTOOL, "FLINT_AND_STEEL");
-        setBoolean(PATH_PERMISSIONS, true);
+        setBoolean(PATH_USE_PERMISSIONS, true);
+        setBoolean(PATH_USE_ITEMS, false);
         setString(PATH_LANGUAGE, "en");
     }
 
@@ -75,7 +80,12 @@ public class MainConfig extends BaseConfiguration {
         }
 
         getMain().lampTool = Material.getMaterial(getString(PATH_LAMPTOOL));
-        getMain().cachedBooleanValues.put(PATH_PERMISSIONS, getBoolean(PATH_PERMISSIONS));
+        getMain().cachedBooleanValues.put("use-permissions", getBoolean(PATH_USE_PERMISSIONS));
+        getMain().cachedBooleanValues.put("use-items", getBoolean(PATH_USE_ITEMS));
+        getMain().cachedBooleanValues.put("manage-lamps", getBoolean(PATH_MANAGE_LAMPS));
+        getMain().cachedBooleanValues.put("manage-rails", getBoolean(PATH_MANAGE_RAILS));
+        getMain().cachedBooleanValues.put("manage-op", getBoolean(PATH_MANAGE_OP));
+        getMain().cachedBooleanValues.put("manage-op", getBoolean(PATH_MANAGE_OP));
         getMain().language = getString(PATH_LANGUAGE);
 
         /*

@@ -20,14 +20,18 @@ public class Localizations {
 
     public void findAndLoadFiles() {
         try {
-            for (File file : plugin.getDataFolder().listFiles()) {
-                if (file.getName().startsWith("lang.")) {
+            File langFile = new File(plugin.getDataFolder() + File.separator + "languages");
+
+            if (langFile.exists() && langFile.isDirectory()) {
+                for (File file : langFile.listFiles()) {
                     String[] parts = file.getName().split("\\.");
                     langFiles.put(parts[1], YamlConfiguration.loadConfiguration(file));
                 }
+            } else {
+                LampControl.debug.warning("No languages found!");
             }
         } catch (NullPointerException e) {
-            plugin.getLogger().warning("There was an error during loading of languages!");
+            LampControl.debug.warning("There was an error during loading of languages!");
         }
     }
 

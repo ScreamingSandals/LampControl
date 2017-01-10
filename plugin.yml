@@ -1,4 +1,4 @@
 name: LampControl
 author: Ceph
-version: 3.1
+version: "${spigot.plugin.version}"
 lampControl: cz.ceph.lampcontrol.LampControl

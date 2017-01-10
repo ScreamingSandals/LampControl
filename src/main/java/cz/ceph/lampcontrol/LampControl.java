@@ -55,7 +55,7 @@ public class LampControl extends JavaPlugin {
         localizations.findAndLoadFiles();
         debug.info("Available languages: [ " + localizations.getAvailableLanguages().toString() + "]");
 
-        debug.info("Registering cmd");
+        debug.info("Registering CommandHandler");
         commands = new CommandHandler(this);
 
         debug.info("Registering LampListener");
