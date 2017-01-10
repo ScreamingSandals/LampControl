@@ -19,7 +19,7 @@ public class BasicCommand implements IBasicCommand {
     }
 
     public String getPermission() {
-        return "lampcontrol.basic";
+        return "lampcontrol.command.basic";
     }
 
     public String getDescription() {

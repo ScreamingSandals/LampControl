@@ -113,7 +113,7 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
-        return Collections.<String, Command>emptyMap();
+        return Collections.emptyMap();
     }
 
     private boolean containsCommand(String command) {

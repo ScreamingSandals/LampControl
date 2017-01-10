@@ -24,7 +24,6 @@ public class LampControl extends JavaPlugin {
     private ReflectEvent reflectEvent;
     private SwitchBlock switchBlock;
     private Localizations localizations;
-    private CommandHandler commands;
 
     public Map<String, Boolean> cachedBooleanValues;
     public List<Material> cachedRedstoneMaterials = new ArrayList<>();
@@ -56,7 +55,8 @@ public class LampControl extends JavaPlugin {
         debug.info("Available languages: [ " + localizations.getAvailableLanguages().toString() + "]");
 
         debug.info("Registering CommandHandler");
-        commands = new CommandHandler(this);
+        CommandHandler commands = new CommandHandler(this);
+        commands.loadCommands(LampControl.class);
 
         debug.info("Registering LampListener");
         LampListener lampListener = new LampListener(this);
