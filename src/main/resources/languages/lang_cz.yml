@@ -1,0 +1,10 @@
+error:
+  no_worldedit: "&cWorldEdit neni nainstalovan. &aNainstalujte jej, &cpokud chcete pouzit tuto moznost."
+  no_selection: "&cNejdrive vytvorte vyber."
+  console_use: "&cPouze hraci mohou pouzit tento prikaz."
+  no_permissions: "&cNemate &fdostatecna &7opravneni &fpro uskutecneni."
+info:
+  lampcontrol_use_help: "&dPouzijte &e/help &dpro dalsi pomoc."
+  no_lamps_affecetd: "&dZadne lampy nebyly ovlivneny."
+  affected_lamps_on: "&f%affected &dbylo rozsviceno."
+  affected_lamps_off: "&f%affected &dbylo zhasnuto."

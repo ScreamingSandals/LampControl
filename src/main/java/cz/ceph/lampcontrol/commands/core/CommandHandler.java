@@ -52,7 +52,7 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
             List<JarEntry> entries = Collections.list(jarFile.entries());
             entries.forEach(jarEntry -> {
                 try {
-                    if (!jarEntry.getName().endsWith(".class") || !jarEntry.getName().contains("cz/lampcontrol"))
+                    if (!jarEntry.getName().endsWith(".class") || !jarEntry.getName().contains("cz/ceph"))
                         return;
                     Class<?> clazz = Class.forName(jarEntry.getName().replace("/", ".").replace(".class", ""));
 

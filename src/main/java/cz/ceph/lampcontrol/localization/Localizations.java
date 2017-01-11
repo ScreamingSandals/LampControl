@@ -20,12 +20,14 @@ public class Localizations {
 
     public void findAndLoadFiles() {
         try {
-            File langFile = new File(plugin.getDataFolder() + File.separator + "languages");
+            File langFile = new File(plugin.getDataFolder(), "languages");
 
             if (langFile.exists() && langFile.isDirectory()) {
                 for (File file : langFile.listFiles()) {
-                    String[] parts = file.getName().split("\\.");
-                    langFiles.put(parts[1], YamlConfiguration.loadConfiguration(file));
+                    if (file.getName().startsWith("lang_")) {
+                        String[] parts = file.getName().split("_");
+                        langFiles.put(parts[1].replace(".yml", ""), YamlConfiguration.loadConfiguration(file));
+                    }
                 }
             } else {
                 LampControl.debug.warning("No languages found!");

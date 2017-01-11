@@ -34,6 +34,7 @@ public class ReflectEvent {
     public void registerPlayerInteractEvent(Callback function) {
         boolean isTwoHandVersion = false;
         Class<? extends Event> playerInteractEvent = null;
+
         try {
             playerInteractEvent = (Class<? extends Event>) Class.forName("org.bukkit.event.player.PlayerInteractEvent", false, javaPlugin.getClass().getClassLoader());
             isTwoHandVersion = playerInteractEvent.getDeclaredMethod("getHand") != null;
@@ -53,6 +54,7 @@ public class ReflectEvent {
 
         boolean finalIsTwoHandVersion = isTwoHandVersion;
         Bukkit.getPluginManager().registerEvent(playerInteractEvent, listener, EventPriority.NORMAL, (listener, event) -> {
+
             if (finalIsTwoHandVersion) {
                 try {
                     Method m = event.getClass().getDeclaredMethod("getHand");

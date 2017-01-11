@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
  * Created by SiOnzee on 10.01.2017.
  */
 
-public interface IBasicCommand {
+public interface IBasicCommand extends ICommand {
 
     /**
      * Invoke when command execute player

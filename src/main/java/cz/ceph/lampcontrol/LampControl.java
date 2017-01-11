@@ -1,6 +1,5 @@
 package cz.ceph.lampcontrol;
 
-import cz.ceph.lampcontrol.commands.Commands;
 import cz.ceph.lampcontrol.commands.core.CommandHandler;
 import cz.ceph.lampcontrol.config.MainConfig;
 import cz.ceph.lampcontrol.events.ReflectEvent;
@@ -14,6 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -24,6 +24,7 @@ public class LampControl extends JavaPlugin {
     private ReflectEvent reflectEvent;
     private SwitchBlock switchBlock;
     private Localizations localizations;
+    private CommandHandler commandHandler;
 
     public Map<String, Boolean> cachedBooleanValues;
     public List<Material> cachedRedstoneMaterials = new ArrayList<>();
@@ -32,7 +33,7 @@ public class LampControl extends JavaPlugin {
     public String language;
 
     private static LampControl pluginMain;
-    public static Logger debug;
+    public static Logger debug = Logger.getLogger("LampControl");
     public static PluginDescriptionFile pluginInfo;
 
     @Override
@@ -42,8 +43,10 @@ public class LampControl extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        pluginMain = this;
 
         debug.info("Initializing config file");
+        cachedBooleanValues = new HashMap<>();
         mainConfig = new MainConfig(new File(getDataFolder(), "config.yml"));
 
         debug.info("Initializing default config values into cache");
@@ -54,12 +57,11 @@ public class LampControl extends JavaPlugin {
         localizations.findAndLoadFiles();
         debug.info("Available languages: [ " + localizations.getAvailableLanguages().toString() + "]");
 
-        debug.info("Registering CommandHandler");
-        CommandHandler commands = new CommandHandler(this);
-        commands.loadCommands(LampControl.class);
+        debug.info("Initializing CommandHandler");
+        commandHandler = new CommandHandler(this);
 
         debug.info("Registering LampListener");
-        LampListener lampListener = new LampListener(this);
+        LampListener lampListener = new LampListener();
 
         reflectEvent.initListener(lampListener);
         reflectEvent.registerPlayerInteractEvent(new ReflectPlayerInteractEvent(this));
@@ -70,12 +72,7 @@ public class LampControl extends JavaPlugin {
         switchBlock = new SwitchBlock();
 
         debug.info("Registering commands");
-        Commands commandExecutor = new Commands(this);
-        getCommand("lamp").setExecutor(commandExecutor);
-        getCommand("/lamp").setExecutor(commandExecutor);
-        getCommand("/lc").setExecutor(commandExecutor);
-
-        pluginMain = this;
+        commandHandler.loadCommands(LampControl.class);
 
         pluginInfo = this.getDescription();
         debug.info(pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was enabled!");
@@ -83,9 +80,11 @@ public class LampControl extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        debug.info("Unloading commands");
+        commandHandler.unloadAll();
+
         debug.info(pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was disabled!");
     }
-
 
     public static LampControl getMain() {
         return pluginMain;
@@ -101,6 +100,10 @@ public class LampControl extends JavaPlugin {
 
     public SwitchBlock getSwitchBlock() {
         return switchBlock;
+    }
+
+    public CommandHandler getCommandHandler() {
+        return commandHandler;
     }
 
     public boolean containMaterials(Material mat) {
