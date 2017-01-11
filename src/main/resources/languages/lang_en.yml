@@ -8,3 +8,7 @@ info:
   no_lamps_affecetd: "&dNo lamps were affected."
   affected_lamps_on: "&f%affected &dlamps were turned on."
   affected_lamps_off: "&f%affected &dlamps were turned off."
+command:
+  help_description: "Main help command for LampControl."
+  on_lamp_description: "Will turn &aon &flamps in selection."
+  off_lamp_description: "Will turn &coff &flamps in selection."

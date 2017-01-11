@@ -8,3 +8,7 @@ info:
   no_lamps_affecetd: "&dZadne lampy nebyly ovlivneny."
   affected_lamps_on: "&f%affected &dbylo rozsviceno."
   affected_lamps_off: "&f%affected &dbylo zhasnuto."
+command:
+  help_description: "Hlavni prikaz pro pomoc."
+  on_lamp_description: "&aRozsviti &fvybrane lampy."
+  off_lamp_description: "&cZhasne &fvybrane lampy."

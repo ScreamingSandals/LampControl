@@ -14,29 +14,34 @@ import static cz.ceph.lampcontrol.LampControl.getMain;
  * Created by Ceph on 10.01.2017.
  */
 
-@RegisterCommand("help")
+@RegisterCommand(value = "lampcontrol", alias = "lc")
 public class HelpCommand implements IBasicCommand {
 
     public boolean onCommand(CommandSender sender, String[] args) {
+        sender.sendMessage(" ");
         sender.sendMessage(ChatWriter.noPrefix("&e------ &eLamp&cControl &fHelp Menu &e------"));
 
         for (ICommand command : getMain().getCommandHandler().getAvailableCommands().values()) {
             sender.sendMessage(ChatWriter.noPrefix(command.getUsage() + " &8---&f " + command.getDescription()));
         }
+        sender.sendMessage(" ");
 
         return true;
     }
 
+    @Override
     public String getPermission() {
         return "lampcontrol.command.help";
     }
 
+    @Override
     public String getDescription() {
-        return "Main help command for LampControl.";
+        return getMain().getLocalizations().get(getMain().language, "command.help_description");
     }
 
+    @Override
     public String getUsage() {
-        return "/lampcontrol help";
+        return "/lampcontrol or /lc";
     }
 
     @Override

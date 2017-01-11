@@ -18,19 +18,22 @@ import static cz.ceph.lampcontrol.LampControl.getMain;
  * Created by Ceph on 10.01.2017.
  */
 
-@RegisterCommand(value = "on")
+@RegisterCommand(value = "onlamp", alias = {"lamp", "lampon"})
 public class OnCommand implements IBasicCommand {
 
+    @Override
     public String getPermission() {
         return "lampcontrol.command.on";
     }
 
+    @Override
     public String getDescription() {
-        return "On command that will set off all lamp in selection.";
+        return getMain().getLocalizations().get(getMain().language, "command.on_lamp_description");
     }
 
+    @Override
     public String getUsage() {
-        return "/lampcontrol on";
+        return "/onlamp or /lampon";
     }
 
     @Override
