@@ -5,6 +5,8 @@ import com.sk89q.worldedit.bukkit.selections.CuboidSelection;
 import com.sk89q.worldedit.bukkit.selections.Selection;
 import cz.ceph.lampcontrol.commands.core.IBasicCommand;
 import cz.ceph.lampcontrol.commands.core.RegisterCommand;
+import cz.ceph.lampcontrol.localization.Localizations;
+import cz.ceph.lampcontrol.utils.ChatWriter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,6 +24,7 @@ import static cz.ceph.lampcontrol.LampControl.getMain;
 public class OffCommand implements IBasicCommand {
 
     private String language = getMain().language;
+    private Localizations localizations = getMain().getLocalizations();
 
     @Override
     public String getPermission() {
@@ -41,7 +44,7 @@ public class OffCommand implements IBasicCommand {
     @Override
     public boolean onPlayerCommand(Player player, String[] args) {
         if (Bukkit.getServer().getPluginManager().getPlugin("WorldEdit") == null) {
-            player.sendMessage(getMain().getLocalizations().get(language, "error.no_worldedit"));
+            player.sendMessage(ChatWriter.prefix(localizations.get(language, "error.no_worldedit")));
             return true;
 
         } else {
@@ -49,7 +52,7 @@ public class OffCommand implements IBasicCommand {
             Selection selection = worldEdit.getSelection(player);
 
             if (selection == null) {
-                player.sendMessage(getMain().getLocalizations().get(language, "error.no_selection"));
+                player.sendMessage(ChatWriter.prefix(localizations.get(language, "error.no_selection")));
                 return true;
             }
 
@@ -84,16 +87,16 @@ public class OffCommand implements IBasicCommand {
             }
 
             if (affected < 1) {
-                player.sendMessage(getMain().getLocalizations().get(language, "info.no_lamps_affecetd"));
+                player.sendMessage(ChatWriter.prefix(localizations.get(language, "info.no_lamps_affecetd")));
             } else
-                player.sendMessage(getMain().getLocalizations().get(language, "info.affected_lamps_off").replace("%affected", "" + affected + ""));
+                player.sendMessage(ChatWriter.prefix(localizations.get(language, "info.affected_lamps_off").replace("%affected", "" + affected + "")));
             return true;
         }
     }
 
     @Override
     public boolean onConsoleCommand(ConsoleCommandSender sender, String[] args) {
-        sender.sendMessage(getMain().getLocalizations().get(language, "error.console_use"));
+        sender.sendMessage(ChatWriter.prefix(localizations.get(language, "error.console_use")));
         return true;
     }
 }

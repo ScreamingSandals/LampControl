@@ -1,6 +1,7 @@
 package cz.ceph.lampcontrol.events;
 
 import cz.ceph.lampcontrol.LampControl;
+import cz.ceph.lampcontrol.localization.Localizations;
 import cz.ceph.lampcontrol.utils.ChatWriter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -28,6 +29,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
 
     private LampControl plugin;
     private String language = getMain().language;
+    private Localizations localizations = getMain().getLocalizations();
 
     public ReflectPlayerInteractEvent(LampControl plugin) {
         this.plugin = plugin;
@@ -76,7 +78,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
 
             if (blockPlaceEvent.isCancelled()) {
                 plugin.getSwitchBlock().switchLamp(b, false);
-                e.getPlayer().sendMessage(ChatWriter.prefix(getMain().getLocalizations().get(language, "error.no_permissions")));
+                e.getPlayer().sendMessage(ChatWriter.prefix(localizations.get(language, "error.no_permissions")));
                 return;
             }
 
@@ -105,7 +107,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
 
             if (checkBuildPerms.isCancelled()) {
                 plugin.getSwitchBlock().switchLamp(b, true);
-                e.getPlayer().sendMessage(ChatWriter.prefix(getMain().getLocalizations().get(language, "error.no_permissions")));
+                e.getPlayer().sendMessage(ChatWriter.prefix(localizations.get(language, "error.no_permissions")));
                 return;
             }
 
@@ -140,7 +142,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
                 BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(b, blockState, b, new ItemStack(Material.POWERED_RAIL), e.getPlayer(), true);
                 Bukkit.getPluginManager().callEvent(checkBuildPerms);
                 if (checkBuildPerms.isCancelled()) {
-                    e.getPlayer().sendMessage(ChatWriter.prefix(getMain().getLocalizations().get(language, "error.no_permissions")));
+                    e.getPlayer().sendMessage(ChatWriter.prefix(localizations.get(language, "error.no_permissions")));
                     return;
                 } else {
                     BlockFace[] sides = new BlockFace[]{BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST};
@@ -175,7 +177,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
                 Bukkit.getPluginManager().callEvent(checkBuildPerms);
 
                 if (checkBuildPerms.isCancelled()) {
-                    e.getPlayer().sendMessage(ChatWriter.prefix(getMain().getLocalizations().get(language, "error.no_permissions")));
+                    e.getPlayer().sendMessage(ChatWriter.prefix(localizations.get(language, "error.no_permissions")));
                     return;
                 } else {
                     plugin.getSwitchBlock().initWorld(b.getWorld());

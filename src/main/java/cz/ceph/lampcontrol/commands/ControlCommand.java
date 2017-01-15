@@ -2,6 +2,7 @@ package cz.ceph.lampcontrol.commands;
 
 import cz.ceph.lampcontrol.commands.core.IBasicCommand;
 import cz.ceph.lampcontrol.commands.core.RegisterCommand;
+import cz.ceph.lampcontrol.localization.Localizations;
 import cz.ceph.lampcontrol.utils.ChatWriter;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -16,6 +17,7 @@ import static cz.ceph.lampcontrol.LampControl.getMain;
 public class ControlCommand implements IBasicCommand {
 
     private String language = getMain().language;
+    private Localizations localizations = getMain().getLocalizations();
 
     @Override
     public String getPermission() {
@@ -24,7 +26,7 @@ public class ControlCommand implements IBasicCommand {
 
     @Override
     public String getDescription() {
-        return getMain().getLocalizations().get(language, "command.on_lamp_description");
+        return localizations.get(language, "command.on_lamp_description");
     }
 
     @Override
@@ -34,7 +36,7 @@ public class ControlCommand implements IBasicCommand {
 
     @Override
     public boolean onConsoleCommand(ConsoleCommandSender sender, String[] args) {
-        sender.sendMessage(ChatWriter.prefix(getMain().getLocalizations().get(language, "error.console_use")));
+        sender.sendMessage(ChatWriter.prefix(localizations.get(language, "error.console_use")));
         return true;
     }
 
