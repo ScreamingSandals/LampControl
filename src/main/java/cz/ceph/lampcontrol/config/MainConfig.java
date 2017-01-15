@@ -1,11 +1,12 @@
 package cz.ceph.lampcontrol.config;
 
-import cz.ceph.lampcontrol.LampControl;
 import org.bukkit.Material;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.logging.Level;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static cz.ceph.lampcontrol.LampControl.getMain;
@@ -27,6 +28,12 @@ public class MainConfig extends BaseConfiguration {
     private static final String PATH_MANAGE_LAMPS = "manage.lamps";
     private static final String PATH_MANAGE_RAILS = "manage.rails";
     private static final String PATH_MANAGE_OP = "manage.op";
+    private static final String PATH_MATERIALS_CONFIGURED = "materials.configured";
+    private static final String PATH_MATERIALS_LIST = "materials.customMaterials";
+
+    private List<Material> cachedRedstoneMaterials = getMain().cachedRedstoneMaterials;
+    private Map<String, Boolean> cachedBooleanValues = getMain().cachedBooleanValues;
+    private List<String> materialsConfigDefault = new ArrayList<>();
 
     public MainConfig(File file) {
         super(file, CONFIG_VERSION);
@@ -34,6 +41,10 @@ public class MainConfig extends BaseConfiguration {
 
     @Override
     public void setDefault() {
+        materialsConfigDefault.add("add");
+        materialsConfigDefault.add("materials");
+        materialsConfigDefault.add("here");
+
         setString(PATH_PLUGIN_PREFIX, "&8[&eLamp&cControl&8]&r");
         setString(PATH_LAMPTOOL, "FLINT_AND_STEEL");
         setBoolean(PATH_USE_PERMISSIONS, true);
@@ -44,6 +55,8 @@ public class MainConfig extends BaseConfiguration {
         setBoolean(PATH_MANAGE_LAMPS, true);
         setBoolean(PATH_MANAGE_RAILS, true);
         setBoolean(PATH_MANAGE_OP, true);
+        setBoolean(PATH_MATERIALS_CONFIGURED, false);
+        setList(PATH_MATERIALS_LIST, materialsConfigDefault);
         setInt(FILE_VERSION_PATH, 7);
     }
 
@@ -53,47 +66,52 @@ public class MainConfig extends BaseConfiguration {
 
     public void initializeConfig() {
         getMain().lampTool = Material.getMaterial(getString(PATH_LAMPTOOL));
-        getMain().cachedBooleanValues.put("use-permissions", getBoolean(PATH_USE_PERMISSIONS));
-        getMain().cachedBooleanValues.put("use-items", getBoolean(PATH_USE_ITEMS));
-        getMain().cachedBooleanValues.put("use-plate-wooden", getBoolean(PATH_USE_PLATE_WOODEN));
-        getMain().cachedBooleanValues.put("use-plate-stone", getBoolean(PATH_USE_PLATE_STONE));
-        getMain().cachedBooleanValues.put("manage-lamps", getBoolean(PATH_MANAGE_LAMPS));
-        getMain().cachedBooleanValues.put("manage-rails", getBoolean(PATH_MANAGE_RAILS));
-        getMain().cachedBooleanValues.put("manage-op", getBoolean(PATH_MANAGE_OP));
-        getMain().cachedBooleanValues.put("manage-op", getBoolean(PATH_MANAGE_OP));
+        cachedBooleanValues.put("use-permissions", getBoolean(PATH_USE_PERMISSIONS));
+        cachedBooleanValues.put("use-items", getBoolean(PATH_USE_ITEMS));
+        cachedBooleanValues.put("use-plate-wooden", getBoolean(PATH_USE_PLATE_WOODEN));
+        cachedBooleanValues.put("use-plate-stone", getBoolean(PATH_USE_PLATE_STONE));
+        cachedBooleanValues.put("manage-lamps", getBoolean(PATH_MANAGE_LAMPS));
+        cachedBooleanValues.put("manage-rails", getBoolean(PATH_MANAGE_RAILS));
+        cachedBooleanValues.put("manage-op", getBoolean(PATH_MANAGE_OP));
+        cachedBooleanValues.put("manage-op", getBoolean(PATH_MANAGE_OP));
         getMain().language = getString(PATH_LANGUAGE);
 
-        //if (!areMaterialsConfigured()) {
-            getMain().cachedRedstoneMaterials.add(Material.DETECTOR_RAIL);
-            getMain().cachedRedstoneMaterials.add(Material.POWERED_RAIL);
-            getMain().cachedRedstoneMaterials.add(Material.REDSTONE_WIRE);
-            getMain().cachedRedstoneMaterials.add(Material.REDSTONE_BLOCK);
-            getMain().cachedRedstoneMaterials.add(Material.PISTON_MOVING_PIECE);
-            getMain().cachedRedstoneMaterials.add(Material.REDSTONE_TORCH_OFF);
-            getMain().cachedRedstoneMaterials.add(Material.REDSTONE_TORCH_ON);
-            getMain().cachedRedstoneMaterials.add(Material.DIODE_BLOCK_OFF);
-            getMain().cachedRedstoneMaterials.add(Material.DIODE_BLOCK_ON);
-            getMain().cachedRedstoneMaterials.add(Material.REDSTONE_COMPARATOR_OFF);
-            getMain().cachedRedstoneMaterials.add(Material.REDSTONE_COMPARATOR_ON);
-            getMain().cachedRedstoneMaterials.add(Material.DIODE_BLOCK_ON);
-            getMain().cachedRedstoneMaterials.add(Material.LEVER);
-            getMain().cachedRedstoneMaterials.add(Material.STONE_BUTTON);
-            getMain().cachedRedstoneMaterials.add(Material.WOOD_BUTTON);
-            getMain().cachedRedstoneMaterials.add(Material.GOLD_PLATE);
-            getMain().cachedRedstoneMaterials.add(Material.IRON_PLATE);
-            getMain().cachedRedstoneMaterials.add(Material.TRIPWIRE);
-            getMain().cachedRedstoneMaterials.add(Material.TRIPWIRE_HOOK);
-            getMain().cachedRedstoneMaterials.addAll(Arrays.stream(Material.values()).filter(mat -> mat.toString().equalsIgnoreCase("DAYLIGHT_DETECTOR") || mat.toString().equalsIgnoreCase("DAYLIGHT_DETECTOR_INVERTED")).collect(Collectors.toList()));
-            if (getMain().cachedBooleanValues.get("use-plate-wooden"))
-                getMain().cachedRedstoneMaterials.add(Material.WOOD_PLATE);
-            if (getMain().cachedBooleanValues.get("use-plate-stone"))
-                getMain().cachedRedstoneMaterials.add(Material.STONE_PLATE);
-        //} else {
-            //TODO: add loading from config
-        //}
+        if (!areMaterialsConfigured()) {
+            cachedRedstoneMaterials.add(Material.DETECTOR_RAIL);
+            cachedRedstoneMaterials.add(Material.POWERED_RAIL);
+            cachedRedstoneMaterials.add(Material.REDSTONE_WIRE);
+            cachedRedstoneMaterials.add(Material.REDSTONE_BLOCK);
+            cachedRedstoneMaterials.add(Material.PISTON_MOVING_PIECE);
+            cachedRedstoneMaterials.add(Material.REDSTONE_TORCH_OFF);
+            cachedRedstoneMaterials.add(Material.REDSTONE_TORCH_ON);
+            cachedRedstoneMaterials.add(Material.DIODE_BLOCK_OFF);
+            cachedRedstoneMaterials.add(Material.DIODE_BLOCK_ON);
+            cachedRedstoneMaterials.add(Material.REDSTONE_COMPARATOR_OFF);
+            cachedRedstoneMaterials.add(Material.REDSTONE_COMPARATOR_ON);
+            cachedRedstoneMaterials.add(Material.DIODE_BLOCK_ON);
+            cachedRedstoneMaterials.add(Material.LEVER);
+            cachedRedstoneMaterials.add(Material.STONE_BUTTON);
+            cachedRedstoneMaterials.add(Material.WOOD_BUTTON);
+            cachedRedstoneMaterials.add(Material.GOLD_PLATE);
+            cachedRedstoneMaterials.add(Material.IRON_PLATE);
+            cachedRedstoneMaterials.add(Material.TRIPWIRE);
+            cachedRedstoneMaterials.add(Material.TRIPWIRE_HOOK);
+            cachedRedstoneMaterials.addAll(Arrays.stream(Material.values()).filter(mat -> mat.toString().equalsIgnoreCase("DAYLIGHT_DETECTOR") || mat.toString().equalsIgnoreCase("DAYLIGHT_DETECTOR_INVERTED")).collect(Collectors.toList()));
+            if (cachedBooleanValues.get("use-plate-wooden"))
+                cachedRedstoneMaterials.add(Material.WOOD_PLATE);
+            if (cachedBooleanValues.get("use-plate-stone"))
+                cachedRedstoneMaterials.add(Material.STONE_PLATE);
+        } else {
+            List<String> configMatList = getStringList("customMaterials");
+
+            for (String mat : configMatList) {
+                cachedRedstoneMaterials.add(Material.getMaterial(mat));
+            }
+        }
     }
 
-    //private boolean areMaterialsConfigured() {
-        //return getBoolean("materials.custom");
+    private boolean areMaterialsConfigured() {
+        return getBoolean(PATH_MATERIALS_CONFIGURED);
     }
+}
 
