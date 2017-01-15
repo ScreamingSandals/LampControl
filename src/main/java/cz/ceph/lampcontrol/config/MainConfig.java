@@ -29,6 +29,7 @@ public class MainConfig extends BaseConfiguration {
     private static final String PATH_MANAGE_RAILS = "manage.rails";
     private static final String PATH_MANAGE_OP = "manage.op";
     private static final String PATH_MATERIALS_CONFIGURED = "materials.configured";
+    private static final String PATH_MATERIALS_USEITEM = "materials.useItem";
     private static final String PATH_MATERIALS_LIST = "materials.customMaterials";
 
     private List<Material> cachedRedstoneMaterials = getMain().cachedRedstoneMaterials;
@@ -97,16 +98,21 @@ public class MainConfig extends BaseConfiguration {
             cachedRedstoneMaterials.add(Material.TRIPWIRE);
             cachedRedstoneMaterials.add(Material.TRIPWIRE_HOOK);
             cachedRedstoneMaterials.addAll(Arrays.stream(Material.values()).filter(mat -> mat.toString().equalsIgnoreCase("DAYLIGHT_DETECTOR") || mat.toString().equalsIgnoreCase("DAYLIGHT_DETECTOR_INVERTED")).collect(Collectors.toList()));
-            if (cachedBooleanValues.get("use-plate-wooden"))
+            if (cachedBooleanValues.get(PATH_USE_PLATE_WOODEN))
                 cachedRedstoneMaterials.add(Material.WOOD_PLATE);
-            if (cachedBooleanValues.get("use-plate-stone"))
+            if (cachedBooleanValues.get(PATH_USE_PLATE_STONE))
                 cachedRedstoneMaterials.add(Material.STONE_PLATE);
+            if (cachedBooleanValues.get(PATH_USE_ITEMS)) {
+                setString(PATH_MATERIALS_USEITEM, "FLINT_AND_STEEL");
+            }
         } else {
             List<String> configMatList = getStringList("customMaterials");
 
             for (String mat : configMatList) {
                 cachedRedstoneMaterials.add(Material.getMaterial(mat));
             }
+
+            getString(PATH_MATERIALS_USEITEM);
         }
     }
 
