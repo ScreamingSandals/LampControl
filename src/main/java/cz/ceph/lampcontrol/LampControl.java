@@ -32,9 +32,9 @@ public class LampControl extends JavaPlugin {
     public Material lampTool;
     public String language;
 
-    private static LampControl pluginMain;
     public static Logger debug = Logger.getLogger("LampControl");
-    public static PluginDescriptionFile pluginInfo;
+    private static LampControl pluginMain;
+    private static PluginDescriptionFile pluginInfo;
 
     @Override
     public void onLoad() {
@@ -109,4 +109,5 @@ public class LampControl extends JavaPlugin {
     public boolean containMaterials(Material mat) {
         return cachedRedstoneMaterials.contains(mat);
     }
+
 }

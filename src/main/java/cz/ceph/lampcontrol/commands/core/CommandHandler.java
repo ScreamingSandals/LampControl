@@ -225,6 +225,7 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
         Arrays.stream(instance.getClass().getDeclaredFields()).forEach(field -> {
             field.setAccessible(true);
             Object targetInstance = LampControl.class;
+
             try {
                 field.set(instance, targetInstance);
             } catch (Throwable e) {

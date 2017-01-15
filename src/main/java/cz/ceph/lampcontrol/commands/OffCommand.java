@@ -21,6 +21,8 @@ import static cz.ceph.lampcontrol.LampControl.getMain;
 @RegisterCommand(value = "offlamp", alias = "lampoff")
 public class OffCommand implements IBasicCommand {
 
+    private String language = getMain().language;
+
     @Override
     public String getPermission() {
         return "lampcontrol.command.off";
@@ -28,7 +30,7 @@ public class OffCommand implements IBasicCommand {
 
     @Override
     public String getDescription() {
-        return getMain().getLocalizations().get(getMain().language, "command.off_lamp_description");
+        return getMain().getLocalizations().get(language, "command.off_lamp_description");
     }
 
     @Override
@@ -39,7 +41,7 @@ public class OffCommand implements IBasicCommand {
     @Override
     public boolean onPlayerCommand(Player player, String[] args) {
         if (Bukkit.getServer().getPluginManager().getPlugin("WorldEdit") == null) {
-            player.sendMessage(getMain().getLocalizations().get(getMain().language, "error.no_worldedit"));
+            player.sendMessage(getMain().getLocalizations().get(language, "error.no_worldedit"));
             return true;
 
         } else {
@@ -47,7 +49,7 @@ public class OffCommand implements IBasicCommand {
             Selection selection = worldEdit.getSelection(player);
 
             if (selection == null) {
-                player.sendMessage(getMain().getLocalizations().get(getMain().language, "error.no_selection"));
+                player.sendMessage(getMain().getLocalizations().get(language, "error.no_selection"));
                 return true;
             }
 
@@ -82,16 +84,16 @@ public class OffCommand implements IBasicCommand {
             }
 
             if (affected < 1) {
-                player.sendMessage(getMain().getLocalizations().get(getMain().language, "info.no_lamps_affecetd"));
+                player.sendMessage(getMain().getLocalizations().get(language, "info.no_lamps_affecetd"));
             } else
-                player.sendMessage(getMain().getLocalizations().get(getMain().language, "info.affected_lamps_off").replace("%affected", "" + affected + ""));
+                player.sendMessage(getMain().getLocalizations().get(language, "info.affected_lamps_off").replace("%affected", "" + affected + ""));
             return true;
         }
     }
 
     @Override
     public boolean onConsoleCommand(ConsoleCommandSender sender, String[] args) {
-        sender.sendMessage(getMain().getLocalizations().get(getMain().language, "error.console_use"));
+        sender.sendMessage(getMain().getLocalizations().get(language, "error.console_use"));
         return true;
     }
 }

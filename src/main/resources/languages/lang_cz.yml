@@ -6,8 +6,8 @@ error:
 info:
   lampcontrol_use_help: "&dPouzijte &e/help &dpro dalsi pomoc."
   no_lamps_affecetd: "&dZadne lampy nebyly ovlivneny."
-  affected_lamps_on: "&f%affected &dbylo rozsviceno."
-  affected_lamps_off: "&f%affected &dbylo zhasnuto."
+  affected_lamps_on: "&f%affected &dlamp bylo rozsviceno."
+  affected_lamps_off: "&f%affected &dlamp bylo zhasnuto."
 command:
   help_description: "Hlavni prikaz pro pomoc."
   on_lamp_description: "&aRozsviti &fvybrane lampy."
