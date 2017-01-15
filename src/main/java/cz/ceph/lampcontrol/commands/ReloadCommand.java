@@ -32,7 +32,7 @@ public class ReloadCommand implements IBasicCommand {
     @Override
     public boolean onConsoleCommand(ConsoleCommandSender sender, String[] args) {
         getMain().getMainConfig().initializeConfig();
-        sender.sendMessage(getMain().getLocalizations().get(getMain().language,"info.reloaded"));
+        sender.sendMessage(getMain().getLocalizations().get(getMain().language,"info.config_reloaded"));
 
         return true;
     }
@@ -40,7 +40,7 @@ public class ReloadCommand implements IBasicCommand {
     @Override
     public boolean onPlayerCommand(Player player, String[] args) {
         getMain().getMainConfig().initializeConfig();
-        player.sendMessage(getMain().getLocalizations().get(getMain().language,"info.reloaded"));
+        player.sendMessage(getMain().getLocalizations().get(getMain().language,"info.config_reloaded"));
 
         return false;
     }

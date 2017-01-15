@@ -8,6 +8,7 @@ info:
   no_lamps_affecetd: "&dZiadne lampy neboli ovplivnene."
   affected_lamps_on: "&f%affected &dlamp bolo rozsvietených."
   affected_lamps_off: "&f%affected &dlamp bolo zhasnutých."
+  config_reloaded: "Konfigurace bola znova nacitana."
 command:
   help_description: "Hlavny prikaz pre pomoc."
   on_lamp_description: "&aRozsvieti &fvybrane lampy."
