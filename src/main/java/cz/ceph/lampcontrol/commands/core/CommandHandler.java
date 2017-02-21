@@ -1,6 +1,7 @@
 package cz.ceph.lampcontrol.commands.core;
 
 import cz.ceph.lampcontrol.LampControl;
+import cz.ceph.lampcontrol.utils.ChatWriter;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
@@ -198,7 +199,7 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
                 return regexCommand.onConsoleCommand((ConsoleCommandSender) commandSender, matcher);
 
             if (!commandSender.hasPermission(hozCommand.getPermission())) {
-                commandSender.sendMessage(plugin.getLocalizations().get(plugin.language, "error.no_permissions"));
+                commandSender.sendMessage(ChatWriter.prefix(LampControl.localizations.get("error.no_permissions")));
                 return false;
             }
             return regexCommand.onPlayerCommand(player, matcher);
@@ -211,7 +212,7 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
             Player player = (Player) commandSender;
 
             if (!commandSender.hasPermission(hozCommand.getPermission())) {
-                commandSender.sendMessage(plugin.getLocalizations().get(plugin.language, "error.no_permissions"));
+                commandSender.sendMessage(ChatWriter.prefix(LampControl.localizations.get("error.no_permissions")));
                 return false;
             }
             return basicCommand.onPlayerCommand(player, args);

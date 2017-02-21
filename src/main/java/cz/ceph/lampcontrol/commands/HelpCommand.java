@@ -1,5 +1,6 @@
 package cz.ceph.lampcontrol.commands;
 
+import cz.ceph.lampcontrol.LampControl;
 import cz.ceph.lampcontrol.commands.core.IBasicCommand;
 import cz.ceph.lampcontrol.commands.core.ICommand;
 import cz.ceph.lampcontrol.commands.core.RegisterCommand;
@@ -36,7 +37,7 @@ public class HelpCommand implements IBasicCommand {
 
     @Override
     public String getDescription() {
-        return getMain().getLocalizations().get(getMain().language, "command.help_description");
+        return LampControl.localizations.get("command.help_description");
     }
 
     @Override

@@ -23,18 +23,18 @@ public class LampControl extends JavaPlugin {
     private MainConfig mainConfig;
     private ReflectEvent reflectEvent;
     private SwitchBlock switchBlock;
-    private Localizations localizations;
     private CommandHandler commandHandler;
 
     public Map<String, Boolean> cachedBooleanValues;
     public List<Material> cachedRedstoneMaterials = new ArrayList<>();
 
     public Material lampTool;
-    public String language;
 
+    public static Localizations localizations;
     public static Logger debug = Logger.getLogger("LampControl");
     private static LampControl pluginMain;
     private static PluginDescriptionFile pluginInfo;
+    public static String language;
 
     @Override
     public void onLoad() {
@@ -56,7 +56,8 @@ public class LampControl extends JavaPlugin {
         debug.info("Initializing languages");
         localizations = new Localizations(this);
         localizations.loadLocales();
-        debug.info("Available languages: [ " + localizations.getAvailableLanguages().toString() + "]");
+        debug.info("Available languages: " + localizations.getAvailableLanguages().toString() + "");
+        debug.info("Selected language: " + language + "");
 
         debug.info("Initializing CommandHandler");
         commandHandler = new CommandHandler(this);

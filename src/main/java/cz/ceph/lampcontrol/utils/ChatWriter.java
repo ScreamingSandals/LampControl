@@ -13,8 +13,4 @@ public class ChatWriter {
     public static String noPrefix(String string) {
         return ChatColor.translateAlternateColorCodes('&', ChatColor.WHITE + string);
     }
-
-    public static String noPermissions() {
-        return ChatColor.translateAlternateColorCodes('&', "You &cdon't &fhave enough &7permissions &fto do this.");
-    }
 }

@@ -3,6 +3,7 @@ package cz.ceph.lampcontrol.commands;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.bukkit.selections.CuboidSelection;
 import com.sk89q.worldedit.bukkit.selections.Selection;
+import cz.ceph.lampcontrol.LampControl;
 import cz.ceph.lampcontrol.commands.core.IBasicCommand;
 import cz.ceph.lampcontrol.commands.core.RegisterCommand;
 import cz.ceph.lampcontrol.localization.Localizations;
@@ -23,9 +24,6 @@ import static cz.ceph.lampcontrol.LampControl.getMain;
 @RegisterCommand(value = "onlamp", alias = {"lamp", "lampon"})
 public class OnCommand implements IBasicCommand {
 
-    private String language = getMain().language;
-    private Localizations localizations = getMain().getLocalizations();
-
     @Override
     public String getPermission() {
         return "lampcontrol.command.on";
@@ -33,7 +31,7 @@ public class OnCommand implements IBasicCommand {
 
     @Override
     public String getDescription() {
-        return getMain().getLocalizations().get(language, "command.on_lamp_description");
+        return LampControl.localizations.get("command.on_lamp_description");
     }
 
     @Override
@@ -44,7 +42,7 @@ public class OnCommand implements IBasicCommand {
     @Override
     public boolean onPlayerCommand(Player player, String[] args) {
         if (Bukkit.getServer().getPluginManager().getPlugin("WorldEdit") == null) {
-            player.sendMessage(ChatWriter.prefix(localizations.get(language, "error.no_worldedit")));
+            player.sendMessage(ChatWriter.prefix(LampControl.localizations.get("error.no_worldedit")));
             return true;
 
         } else {
@@ -52,7 +50,7 @@ public class OnCommand implements IBasicCommand {
             Selection selection = worldEdit.getSelection(player);
 
             if (selection == null) {
-                player.sendMessage(ChatWriter.prefix(localizations.get(language, "error.no_selection")));
+                player.sendMessage(ChatWriter.prefix(LampControl.localizations.get("error.no_selection")));
                 return true;
             }
 
@@ -89,16 +87,16 @@ public class OnCommand implements IBasicCommand {
             }
 
             if (affected < 1) {
-                player.sendMessage(ChatWriter.prefix(localizations.get(language, "info.no_lamps_affecetd")));
+                player.sendMessage(ChatWriter.prefix(LampControl.localizations.get("info.no_lamps_affecetd")));
             } else
-                player.sendMessage(ChatWriter.prefix(localizations.get(language, "info.affected_lamps_on").replace("%affected", "" + affected + "")));
+                player.sendMessage(ChatWriter.prefix(LampControl.localizations.get("info.affected_lamps_on").replace("%affected", "" + affected + "")));
             return true;
         }
     }
 
     @Override
     public boolean onConsoleCommand(ConsoleCommandSender sender, String[] args) {
-        sender.sendMessage(ChatWriter.prefix(localizations.get(language, "error.console_use")));
+        sender.sendMessage(ChatWriter.prefix(LampControl.localizations.get("error.console_use")));
         return true;
     }
 }

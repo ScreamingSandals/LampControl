@@ -1,5 +1,6 @@
 package cz.ceph.lampcontrol.config;
 
+import cz.ceph.lampcontrol.LampControl;
 import org.bukkit.Material;
 
 import java.io.File;
@@ -75,7 +76,7 @@ public class MainConfig extends BaseConfiguration {
         cachedBooleanValues.put("manage-rails", getBoolean(PATH_MANAGE_RAILS));
         cachedBooleanValues.put("manage-op", getBoolean(PATH_MANAGE_OP));
         cachedBooleanValues.put("manage-op", getBoolean(PATH_MANAGE_OP));
-        getMain().language = getString(PATH_LANGUAGE);
+        LampControl.language = getString(PATH_LANGUAGE);
 
         if (!areMaterialsConfigured()) {
             cachedRedstoneMaterials.add(Material.DETECTOR_RAIL);

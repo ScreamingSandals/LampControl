@@ -41,7 +41,8 @@ public class Localizations {
         return langFiles.keySet();
     }
 
-    public String get(String lang, String key) {
+    public String get(String key) {
+        String lang = LampControl.language;
         return get(lang, key, "{d" + lang + ":" + key + "}");
     }
 

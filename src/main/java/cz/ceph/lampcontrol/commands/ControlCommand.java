@@ -1,5 +1,6 @@
 package cz.ceph.lampcontrol.commands;
 
+import cz.ceph.lampcontrol.LampControl;
 import cz.ceph.lampcontrol.commands.core.IBasicCommand;
 import cz.ceph.lampcontrol.commands.core.RegisterCommand;
 import cz.ceph.lampcontrol.localization.Localizations;
@@ -16,9 +17,6 @@ import static cz.ceph.lampcontrol.LampControl.getMain;
 @RegisterCommand(value = "lampcontrol", alias = {"controllamp", "lc"})
 public class ControlCommand implements IBasicCommand {
 
-    private String language = getMain().language;
-    private Localizations localizations = getMain().getLocalizations();
-
     @Override
     public String getPermission() {
         return "lampcontrol.command.reload";
@@ -26,7 +24,7 @@ public class ControlCommand implements IBasicCommand {
 
     @Override
     public String getDescription() {
-        return localizations.get(language, "command.on_lamp_description");
+        return LampControl.localizations.get("command.on_lamp_description");
     }
 
     @Override
@@ -36,12 +34,14 @@ public class ControlCommand implements IBasicCommand {
 
     @Override
     public boolean onConsoleCommand(ConsoleCommandSender sender, String[] args) {
-        sender.sendMessage(ChatWriter.prefix(localizations.get(language, "error.console_use")));
+        sender.sendMessage(ChatWriter.prefix(LampControl.localizations.get("error.console_use")));
         return true;
     }
 
     @Override
     public boolean onPlayerCommand(Player player, String[] args) {
         return true;
+
+        // still wip shit
     }
 }
