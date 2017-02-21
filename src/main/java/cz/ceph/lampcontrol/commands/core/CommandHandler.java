@@ -92,7 +92,7 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
         }
         if (clazzInstance == null)
             LampControl.debug.info("[ERROR] Cannot create instance of " + clazz.getSimpleName() + " . Creating instance returned null.");
-        return ICommand.class.cast(handle(clazzInstance));
+        return ICommand.class.cast(clazzInstance);
     }
 
     @Override
@@ -134,17 +134,17 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
     private void registerCommand(RegisterCommand annotation, ICommand iCommand) {
 
         if (annotation == null) {
-            LampControl.debug.info("[Commands] [ERROR] Command annotation is null, cannot assign command name.");
+            LampControl.debug.info("[CommandHandler] [ERROR] Command annotation is null, cannot assign command name.");
             return;
         }
 
         if (iCommand == null) {
-            LampControl.debug.info("[Commands] [ERROR] Cannot register command" + annotation.value() + " due to nullable instance.");
+            LampControl.debug.info("[CommandHandler] [ERROR] Cannot register command" + annotation.value() + " due to nullable instance.");
             return;
         }
 
         if (commandMap == null) {
-            LampControl.debug.info("[Commands] [ERROR] CommandMap is null, can't add commands to CommandMap.");
+            LampControl.debug.info("[CommandHandler] [ERROR] CommandMap is null, can't add commands to CommandMap.");
             return;
         }
 
@@ -167,7 +167,7 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
         });
 
         availableCommands.put(commandName, iCommand);
-        LampControl.debug.info("[Commands] Registered command \"" + commandName + "\"");
+        LampControl.debug.info("[CommandHandler] Registered command \"" + commandName + "\"");
     }
 
     public Map<String, ICommand> getAvailableCommands() {
@@ -220,18 +220,4 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
         return false;
     }
 
-    private <T> T handle(T instance) {
-        if (instance == null) return instance;
-        Arrays.stream(instance.getClass().getDeclaredFields()).forEach(field -> {
-            field.setAccessible(true);
-            Object targetInstance = LampControl.class;
-
-            try {
-                field.set(instance, targetInstance);
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-        });
-        return instance;
-    }
 }

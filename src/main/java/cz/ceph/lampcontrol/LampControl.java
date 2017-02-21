@@ -47,6 +47,7 @@ public class LampControl extends JavaPlugin {
 
         debug.info("Initializing config file");
         cachedBooleanValues = new HashMap<>();
+
         mainConfig = new MainConfig(new File(getDataFolder(), "config.yml"));
 
         debug.info("Initializing default config values into cache");
@@ -54,7 +55,7 @@ public class LampControl extends JavaPlugin {
 
         debug.info("Initializing languages");
         localizations = new Localizations(this);
-        localizations.findAndLoadFiles();
+        localizations.loadLocales();
         debug.info("Available languages: [ " + localizations.getAvailableLanguages().toString() + "]");
 
         debug.info("Initializing CommandHandler");

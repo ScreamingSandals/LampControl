@@ -34,7 +34,6 @@ public class MainConfig extends BaseConfiguration {
 
     private List<Material> cachedRedstoneMaterials = getMain().cachedRedstoneMaterials;
     private Map<String, Boolean> cachedBooleanValues = getMain().cachedBooleanValues;
-    private List<String> materialsConfigDefault = new ArrayList<>();
 
     public MainConfig(File file) {
         super(file, CONFIG_VERSION);
@@ -42,6 +41,7 @@ public class MainConfig extends BaseConfiguration {
 
     @Override
     public void setDefault() {
+        List<String> materialsConfigDefault = new ArrayList<>();
         materialsConfigDefault.add("add");
         materialsConfigDefault.add("materials");
         materialsConfigDefault.add("here");
@@ -98,11 +98,11 @@ public class MainConfig extends BaseConfiguration {
             cachedRedstoneMaterials.add(Material.TRIPWIRE);
             cachedRedstoneMaterials.add(Material.TRIPWIRE_HOOK);
             cachedRedstoneMaterials.addAll(Arrays.stream(Material.values()).filter(mat -> mat.toString().equalsIgnoreCase("DAYLIGHT_DETECTOR") || mat.toString().equalsIgnoreCase("DAYLIGHT_DETECTOR_INVERTED")).collect(Collectors.toList()));
-            if (cachedBooleanValues.get(PATH_USE_PLATE_WOODEN))
+            if (cachedBooleanValues.get("use-plate-wooden"))
                 cachedRedstoneMaterials.add(Material.WOOD_PLATE);
-            if (cachedBooleanValues.get(PATH_USE_PLATE_STONE))
+            if (cachedBooleanValues.get("use-plate-stone"))
                 cachedRedstoneMaterials.add(Material.STONE_PLATE);
-            if (cachedBooleanValues.get(PATH_USE_ITEMS)) {
+            if (cachedBooleanValues.get("use-items")) {
                 setString(PATH_MATERIALS_USEITEM, "FLINT_AND_STEEL");
             }
         } else {

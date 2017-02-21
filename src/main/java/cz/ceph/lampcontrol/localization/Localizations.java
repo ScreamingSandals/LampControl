@@ -18,7 +18,7 @@ public class Localizations {
         langFiles = new HashMap<>();
     }
 
-    public void findAndLoadFiles() {
+    public void loadLocales() {
         try {
             File langFile = new File(plugin.getDataFolder(), "languages");
 

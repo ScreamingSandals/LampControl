@@ -16,8 +16,13 @@ import static cz.ceph.lampcontrol.LampControl.getMain;
 @RegisterCommand(value = "lampreload", alias = "reloadlamp")
 public class ReloadCommand implements IBasicCommand {
 
-    private String language = getMain().language;
-    private Localizations localizations = getMain().getLocalizations();
+    private String language;
+    private Localizations localizations;
+
+    public ReloadCommand() {
+        language = getMain().language;
+        localizations = getMain().getLocalizations();
+    }
 
     @Override
     public String getPermission() {
