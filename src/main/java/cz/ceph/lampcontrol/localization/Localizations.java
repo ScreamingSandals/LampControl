@@ -43,7 +43,7 @@ public class Localizations {
 
     public String get(String key) {
         String lang = LampControl.language;
-        return get(lang, key, "{d" + lang + ":" + key + "}");
+        return get(lang, key, "{" + lang + "_" + key + "}");
     }
 
     public String get(String lang, String key, String fallback) {
