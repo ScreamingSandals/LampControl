@@ -28,8 +28,6 @@ import static cz.ceph.lampcontrol.LampControl.getMain;
 public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
 
     private LampControl plugin;
-    private String language = getMain().language;
-    private Localizations localizations = getMain().getLocalizations();
 
     public ReflectPlayerInteractEvent(LampControl plugin) {
         this.plugin = plugin;

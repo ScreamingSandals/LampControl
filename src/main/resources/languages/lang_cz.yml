@@ -13,4 +13,4 @@ command:
   help_description: "Hlavni prikaz pro pomoc."
   on_lamp_description: "&aRozsviti &fvybrane lampy."
   off_lamp_description: "&cZhasne &fvybrane lampy."
-  reload: "Znovu nacte hodnoty z konfigurace."
+  reload_description: "Znovu nacte hodnoty z konfigurace."

@@ -13,4 +13,4 @@ command:
   help_description: "Main help command for LampControl."
   on_lamp_description: "Will turn &aon &flamps in selection."
   off_lamp_description: "Will turn &coff &flamps in selection."
-  reload: "Will load all values from config again."
+  reload_description: "Will load all values from config again."
