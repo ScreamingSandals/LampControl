@@ -1,6 +1,12 @@
-Lamp Control
+<img src="https://media-elerium.cursecdn.com/avatars/69/892/636163187051763690.png" width="20%">
+
+Lamp Control ![alt tag](http://lsaproject.cz:8080/buildStatus/icon?job=LampControl)
 ===========
 
-Turn on lamps with flint/steel, WorldEdit, and more!
+Performance friendly plugin, that affects Redstone Lamps in Minecraft. Try it by yourself!
 
-Bukkit-dev: [here](https://dev.bukkit.org/bukkit-plugins/lampcontrol/)
+Bukkit: [here](https://dev.bukkit.org/bukkit-plugins/lampcontrol/),
+
+Spigot: [here](https://www.spigotmc.org/resources/lampcontrol.26520/)
+
+Jenkins: [here](http://lsaproject.cz:8080/job/LampControl/)
