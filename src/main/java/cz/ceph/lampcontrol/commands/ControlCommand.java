@@ -36,6 +36,9 @@ public class ControlCommand implements IBasicCommand {
     public boolean onConsoleCommand(ConsoleCommandSender sender, String[] args) {
         sender.sendMessage(ChatWriter.prefix(LampControl.localizations.get("error.console_use")));
         return true;
+
+
+        // needs to be done
     }
 
     @Override
