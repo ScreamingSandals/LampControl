@@ -84,6 +84,7 @@ public class LampControl extends JavaPlugin {
     public void onDisable() {
         debug.info("Unloading commands");
         commandHandler.unloadAll();
+        getMainConfig().clearConfig();
 
         debug.info(pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was disabled!");
     }

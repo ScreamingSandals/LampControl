@@ -32,6 +32,7 @@ public class MainConfig extends BaseConfiguration {
     private static final String PATH_MATERIALS_CONFIGURED = "materials.configured";
     private static final String PATH_MATERIALS_USEITEM = "materials.useItem";
     private static final String PATH_MATERIALS_LIST = "materials.customMaterials";
+    private boolean isConfigInitialized = false;
 
     private List<Material> cachedRedstoneMaterials = getMain().cachedRedstoneMaterials;
     private Map<String, Boolean> cachedBooleanValues = getMain().cachedBooleanValues;
@@ -67,6 +68,10 @@ public class MainConfig extends BaseConfiguration {
     }
 
     public void initializeConfig() {
+        if (isConfigInitialized) {
+            clearConfig();
+        }
+
         getMain().lampTool = Material.getMaterial(getString(PATH_LAMPTOOL));
         cachedBooleanValues.put("use-permissions", getBoolean(PATH_USE_PERMISSIONS));
         cachedBooleanValues.put("use-items", getBoolean(PATH_USE_ITEMS));
@@ -77,6 +82,7 @@ public class MainConfig extends BaseConfiguration {
         cachedBooleanValues.put("manage-op", getBoolean(PATH_MANAGE_OP));
         cachedBooleanValues.put("manage-op", getBoolean(PATH_MANAGE_OP));
         LampControl.language = getString(PATH_LANGUAGE);
+        isConfigInitialized = true;
 
         if (!areMaterialsConfigured()) {
             cachedRedstoneMaterials.add(Material.DETECTOR_RAIL);
@@ -106,6 +112,7 @@ public class MainConfig extends BaseConfiguration {
             if (cachedBooleanValues.get("use-items")) {
                 setString(PATH_MATERIALS_USEITEM, "FLINT_AND_STEEL");
             }
+
         } else {
             List<String> configMatList = getStringList("customMaterials");
 
@@ -115,6 +122,11 @@ public class MainConfig extends BaseConfiguration {
 
             getString(PATH_MATERIALS_USEITEM);
         }
+    }
+
+    public void clearConfig() {
+        cachedRedstoneMaterials.clear();
+        cachedBooleanValues.clear();
     }
 
     private boolean areMaterialsConfigured() {
