@@ -17,7 +17,7 @@ import static cz.ceph.lampcontrol.LampControl.getMain;
  */
 
 public class MainConfig extends BaseConfiguration {
-    private static final int CONFIG_VERSION = 7;
+    private static final int CONFIG_VERSION = 8;
 
     private static final String PATH_PLUGIN_PREFIX = "pluginPrefix";
     private static final String PATH_LAMPTOOL = "lampTool";
@@ -32,6 +32,9 @@ public class MainConfig extends BaseConfiguration {
     private static final String PATH_MATERIALS_CONFIGURED = "materials.configured";
     private static final String PATH_MATERIALS_USEITEM = "materials.useItem";
     private static final String PATH_MATERIALS_LIST = "materials.customMaterials";
+    private static final String SOUND_SUCCESS = "UI_BUTTON_CLICK, CLICK";
+    private static final String SOUND_FAIL = "//doplnit//";
+    private static final String SOUND_DEFAULT = "//doplnit";
     private boolean isConfigInitialized = false;
 
     private List<Material> cachedRedstoneMaterials = getMain().cachedRedstoneMaterials;
@@ -60,6 +63,9 @@ public class MainConfig extends BaseConfiguration {
         setBoolean(PATH_MANAGE_OP, true);
         setBoolean(PATH_MATERIALS_CONFIGURED, false);
         setList(PATH_MATERIALS_LIST, materialsConfigDefault);
+        setString(SOUND_DEFAULT, "CLICK");
+        setString(SOUND_SUCCESS, "succ");
+        setString(SOUND_FAIL, "fail");
         setInt(FILE_VERSION_PATH, 7);
     }
 

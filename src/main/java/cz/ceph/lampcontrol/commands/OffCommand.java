@@ -8,6 +8,7 @@ import cz.ceph.lampcontrol.commands.core.IBasicCommand;
 import cz.ceph.lampcontrol.commands.core.RegisterCommand;
 import cz.ceph.lampcontrol.localization.Localizations;
 import cz.ceph.lampcontrol.utils.ChatWriter;
+import cz.ceph.lampcontrol.utils.PlaySound;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -86,8 +87,10 @@ public class OffCommand implements IBasicCommand {
 
             if (affected < 1) {
                 player.sendMessage(ChatWriter.prefix(LampControl.localizations.get("info.no_lamps_affecetd")));
+                PlaySound.play(player.getLocation(), PlaySound.fail(), 0.5F, 1F);
             } else
                 player.sendMessage(ChatWriter.prefix(LampControl.localizations.get("info.affected_lamps_off").replace("%affected", "" + affected + "")));
+            PlaySound.play(player.getLocation(), PlaySound.success(), 0.5F, 1F);
             return true;
         }
     }

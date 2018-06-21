@@ -1,0 +1,16 @@
+error:
+  no_worldedit: "&cWorldEdit isn't installed. &aInstall &cit, if you need this feature."
+  no_selection: "&cMake a region selection first."
+  console_use: "&cOnly players can use this command."
+  no_permissions: "You &cdon't &fhave enough &7permissions &fto do this."
+info:
+  lampcontrol_use_help: "&dUse &e/help &dcommand for another help."
+  no_lamps_affecetd: "&dNo lamps were affected."
+  affected_lamps_on: "&f%affected &dlamps were turned on."
+  affected_lamps_off: "&f%affected &dlamps were turned off."
+  config_reloaded: "Config was reloaded."
+command:
+  help_description: "Main help command for LampControl."
+  on_lamp_description: "Will turn &aon &flamps in selection."
+  off_lamp_description: "Will turn &coff &flamps in selection."
+  reload_description: "Will load all values from config again."

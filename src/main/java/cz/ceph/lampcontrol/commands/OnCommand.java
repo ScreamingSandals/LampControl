@@ -6,8 +6,10 @@ import com.sk89q.worldedit.bukkit.selections.Selection;
 import cz.ceph.lampcontrol.LampControl;
 import cz.ceph.lampcontrol.commands.core.IBasicCommand;
 import cz.ceph.lampcontrol.commands.core.RegisterCommand;
+import cz.ceph.lampcontrol.events.ReflectPlayerInteractEvent;
 import cz.ceph.lampcontrol.localization.Localizations;
 import cz.ceph.lampcontrol.utils.ChatWriter;
+import cz.ceph.lampcontrol.utils.PlaySound;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -88,10 +90,12 @@ public class OnCommand implements IBasicCommand {
 
             if (affected < 1) {
                 player.sendMessage(ChatWriter.prefix(LampControl.localizations.get("info.no_lamps_affecetd")));
+                PlaySound.play(player.getLocation(), PlaySound.fail(), 0.5F, 1F);
             } else
                 player.sendMessage(ChatWriter.prefix(LampControl.localizations.get("info.affected_lamps_on").replace("%affected", "" + affected + "")));
+            PlaySound.play(player.getLocation(), PlaySound.success(), 0.5F, 0F);
             return true;
-        }
+       }
     }
 
     @Override

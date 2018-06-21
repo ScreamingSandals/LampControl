@@ -3,6 +3,7 @@ package cz.ceph.lampcontrol.events;
 import cz.ceph.lampcontrol.LampControl;
 import cz.ceph.lampcontrol.localization.Localizations;
 import cz.ceph.lampcontrol.utils.ChatWriter;
+import cz.ceph.lampcontrol.utils.PlaySound;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -86,7 +87,8 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
                 e.getPlayer().setItemInHand(null);
             }
 
-            playSound(e.getClickedBlock().getLocation(), 0.5F, 0F);
+            PlaySound.play(e.getClickedBlock().getLocation(), PlaySound.success(), 0.5F, 0F);
+
         } else if (e.getClickedBlock().getType().equals(Material.REDSTONE_LAMP_OFF)) {
 
             e.setCancelled(true);
@@ -115,7 +117,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
                 e.getPlayer().setItemInHand(null);
             }
 
-            playSound(e.getClickedBlock().getLocation(), 0.5F, 1F);
+            PlaySound.play(e.getClickedBlock().getLocation(), PlaySound.success(), 0.5F, 1F);
         }
         /*
          * End of lamps section
@@ -169,7 +171,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
                     e.getPlayer().updateInventory();
                 }
 
-                playSound(e.getClickedBlock().getLocation(), 0.5F, 1.0F);
+                PlaySound.play(e.getClickedBlock().getLocation(), PlaySound.success(), 0.5F, 1F);
             } else {
                 BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(b, blockState, b, new ItemStack(Material.POWERED_RAIL), e.getPlayer(), true);
                 Bukkit.getPluginManager().callEvent(checkBuildPerms);
@@ -188,7 +190,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
                     e.getPlayer().setItemInHand(null);
                 }
 
-                playSound(e.getClickedBlock().getLocation(), 0.5F, 0F);
+                PlaySound.play(e.getClickedBlock().getLocation(), PlaySound.success(), 0.5F, 0F);
             }
         }
 
@@ -197,31 +199,6 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
          */
 
 
-    }
-
-    /*
-     * If any other Spigot sounds will be added or modified, this is needed to rewrite.
-     */
-
-    private void playSound(Location loc, float v, float v1) {
-        Sound[] sounds = Sound.values();
-        Sound correctSound = null;
-        for (Sound s : sounds) {
-            if (s.toString().equalsIgnoreCase("ui_button_click"))
-                correctSound = s;
-            else if (s.toString().equalsIgnoreCase("click"))
-                correctSound = s;
-            if (correctSound != null)
-                break;
-        }
-
-        if (correctSound == null) {
-            LampControl.debug.warning("Sound not found! Contact developer for help.");
-            Arrays.stream(sounds).forEach(sound -> System.out.println(sound.toString()));
-            return;
-        }
-
-        loc.getWorld().playSound(loc, correctSound, v, v1);
     }
 
     private boolean checkPermissions(Player p, String permission) {
