@@ -23,11 +23,15 @@ public class Localizations {
             File langFile = new File(plugin.getDataFolder(), "languages");
 
             if (langFile.exists() && langFile.isDirectory()) {
-                for (File file : langFile.listFiles()) {
-                    if (file.getName().startsWith("lang_")) {
-                        String[] parts = file.getName().split("_");
-                        langFiles.put(parts[1].replace(".yml", ""), YamlConfiguration.loadConfiguration(file));
+                try {
+                    for (File file : langFile.listFiles()) {
+                        if (file.getName().startsWith("lang_")) {
+                            String[] parts = file.getName().split("_");
+                            langFiles.put(parts[1].replace(".yml", ""), YamlConfiguration.loadConfiguration(file));
+                        }
                     }
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
                 }
             } else {
                 LampControl.debug.warning("No languages found!");

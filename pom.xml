@@ -29,7 +29,7 @@
 
         <spigot.plugin.version>${project.version}</spigot.plugin.version>
 
-        <spigot.version>1.11.2-R0.1-SNAPSHOT</spigot.version>
+        <spigot.version>1.13-R0.1-SNAPSHOT</spigot.version>
     </properties>
 
     <dependencies>

@@ -10,16 +10,17 @@ import java.util.Arrays;
  * Created by iamceph on 20.06.2018.
  */
 
-public class PlaySound {
+public class SoundPlayer {
 
     public static void play(Location loc, String sound, float v, float v1) {
-        checkSound(sound);
-        loc.getWorld().playSound(loc, sound, v, v1);
+        String checkedSound = checkSound(sound);
+        loc.getWorld().playSound(loc, checkedSound, v, v1);
     }
 
-    private static void checkSound(String usedSound) {
-        Sound[] sounds= Sound.values();
+    private static String checkSound(String usedSound) {
+        Sound[] sounds = Sound.values();
         Sound correctSound = null;
+        String finalSound;
 
         for (Sound s : sounds) {
             if (s.toString().equalsIgnoreCase(usedSound))
@@ -32,9 +33,20 @@ public class PlaySound {
                 break;
         }
 
-        if (correctSound == null)
-            LampControl.debug.warning("Sound not found!");
+        if (correctSound == null) {
+            LampControl.debug.warning(LampControl.localizations.get("sound.sound_not_found"));
             Arrays.stream(sounds).forEach(sound -> System.out.println(sound.toString()));
+
+            finalSound = "ui_button_click";
+            
+        } else {
+            
+            finalSound = correctSound.toString();
+        }
+        
+        
+        return finalSound;
+
     }
 
     public static String success() {

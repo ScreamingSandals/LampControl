@@ -5,6 +5,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Lightable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -45,7 +47,7 @@ public class SwitchBlock {
     }
 
     public void switchLamp(Block block, boolean light) {
-        if(light) {
+        if (light) {
             setStatic(true);
             block.setType(Material.REDSTONE_LAMP_ON);
             setStatic(false);
@@ -55,11 +57,11 @@ public class SwitchBlock {
     }
 
     private Object getNMCWorld(Object cW) throws ClassNotFoundException {
-        return Class.forName("net.minecraft.server." + getNMSVersion() + ".World", false, LampControl.class.getClassLoader()).cast(cW);
+        return Class.forName("net.minecraft.server." + LampControl.bukkitVersion + ".World", false, LampControl.class.getClassLoader()).cast(cW);
     }
 
     private Object getCraftWorld(Object worldInstance) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        return Class.forName("org.bukkit.craftbukkit." + getNMSVersion() + ".CraftWorld", false, LampControl.class.getClassLoader()).cast(worldInstance);
+        return Class.forName("org.bukkit.craftbukkit." + LampControl.bukkitVersion + ".CraftWorld", false, LampControl.class.getClassLoader()).cast(worldInstance);
     }
 
     private Object getInstanceOfCW(Object cW) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
@@ -84,8 +86,4 @@ public class SwitchBlock {
         }
     }
 
-    private static String getNMSVersion() {
-        final String packageName = Bukkit.getServer().getClass().getPackage().getName();
-        return packageName.substring(packageName.lastIndexOf('.') + 1);
-    }
 }

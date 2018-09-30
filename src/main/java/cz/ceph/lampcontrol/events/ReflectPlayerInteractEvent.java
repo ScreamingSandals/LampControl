@@ -1,24 +1,20 @@
 package cz.ceph.lampcontrol.events;
 
 import cz.ceph.lampcontrol.LampControl;
-import cz.ceph.lampcontrol.localization.Localizations;
 import cz.ceph.lampcontrol.utils.ChatWriter;
-import cz.ceph.lampcontrol.utils.PlaySound;
+import cz.ceph.lampcontrol.utils.SoundPlayer;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.Arrays;
 
 import static cz.ceph.lampcontrol.LampControl.getMain;
 
@@ -87,7 +83,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
                 e.getPlayer().setItemInHand(null);
             }
 
-            PlaySound.play(e.getClickedBlock().getLocation(), PlaySound.success(), 0.5F, 0F);
+            SoundPlayer.play(e.getClickedBlock().getLocation(), SoundPlayer.success(), 0.5F, 0F);
 
         } else if (e.getClickedBlock().getType().equals(Material.REDSTONE_LAMP_OFF)) {
 
@@ -117,7 +113,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
                 e.getPlayer().setItemInHand(null);
             }
 
-            PlaySound.play(e.getClickedBlock().getLocation(), PlaySound.success(), 0.5F, 1F);
+            SoundPlayer.play(e.getClickedBlock().getLocation(), SoundPlayer.success(), 0.5F, 1F);
         }
         /*
          * End of lamps section
@@ -171,7 +167,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
                     e.getPlayer().updateInventory();
                 }
 
-                PlaySound.play(e.getClickedBlock().getLocation(), PlaySound.success(), 0.5F, 1F);
+                SoundPlayer.play(e.getClickedBlock().getLocation(), SoundPlayer.success(), 0.5F, 1F);
             } else {
                 BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(b, blockState, b, new ItemStack(Material.POWERED_RAIL), e.getPlayer(), true);
                 Bukkit.getPluginManager().callEvent(checkBuildPerms);
@@ -190,7 +186,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
                     e.getPlayer().setItemInHand(null);
                 }
 
-                PlaySound.play(e.getClickedBlock().getLocation(), PlaySound.success(), 0.5F, 0F);
+                SoundPlayer.play(e.getClickedBlock().getLocation(), SoundPlayer.success(), 0.5F, 0F);
             }
         }
 

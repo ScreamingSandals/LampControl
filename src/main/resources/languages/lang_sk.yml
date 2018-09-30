@@ -14,3 +14,5 @@ command:
   on_lamp_description: "&aRozsvieti &fvybrane lampy."
   off_lamp_description: "&cZhasne &fvybrane lampy."
   reload_description: "Znova nacita hodnoty z konfiguracie."
+sound:
+  sound_not_found: "Sound does not exist! Check the configuration."

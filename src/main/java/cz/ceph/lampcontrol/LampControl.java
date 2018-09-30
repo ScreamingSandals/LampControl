@@ -7,6 +7,7 @@ import cz.ceph.lampcontrol.events.ReflectPlayerInteractEvent;
 import cz.ceph.lampcontrol.listeners.LampListener;
 import cz.ceph.lampcontrol.localization.Localizations;
 import cz.ceph.lampcontrol.utils.SwitchBlock;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -27,6 +28,7 @@ public class LampControl extends JavaPlugin {
 
     public Map<String, Boolean> cachedBooleanValues;
     public List<Material> cachedRedstoneMaterials = new ArrayList<>();
+    public List<String> cachedOldMaterials = new ArrayList<>();
 
     public Material lampTool;
 
@@ -35,6 +37,8 @@ public class LampControl extends JavaPlugin {
     private static LampControl pluginMain;
     private static PluginDescriptionFile pluginInfo;
     public static String language;
+    public static String bukkitVersion;
+    public static String simpleVersion;
 
     @Override
     public void onLoad() {
@@ -44,6 +48,11 @@ public class LampControl extends JavaPlugin {
     @Override
     public void onEnable() {
         pluginMain = this;
+
+        bukkitVersion = getBukkitVersion();
+        simpleVersion = getSimpleVersion();
+        debug.info("Bukkit version is: " + bukkitVersion);
+
 
         debug.info("Initializing config file");
         cachedBooleanValues = new HashMap<>();
@@ -78,13 +87,16 @@ public class LampControl extends JavaPlugin {
 
         pluginInfo = this.getDescription();
         debug.info(pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was enabled!");
+
+
+
     }
 
     @Override
     public void onDisable() {
         debug.info("Unloading commands");
         commandHandler.unloadAll();
-        getMainConfig().clearConfig();
+        getMainConfig().clearCachedValues();
 
         debug.info(pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was disabled!");
     }
@@ -93,12 +105,22 @@ public class LampControl extends JavaPlugin {
         return pluginMain;
     }
 
-    public MainConfig getMainConfig() {
-        return mainConfig;
+    private static String getBukkitVersion() {
+        final String packageName = Bukkit.getServer().getClass().getPackage().getName();
+        return packageName.substring(packageName.lastIndexOf('.') + 1);
     }
 
-    public Localizations getLocalizations() {
-        return localizations;
+    private static String getSimpleVersion() {
+        if (!bukkitVersion.equals("1.13"))
+            return "older";
+        else {
+            return "newer";
+        }
+
+    }
+
+    public MainConfig getMainConfig() {
+        return mainConfig;
     }
 
     public SwitchBlock getSwitchBlock() {
