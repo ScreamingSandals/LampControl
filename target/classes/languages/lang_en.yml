@@ -14,3 +14,5 @@ command:
   on_lamp_description: "Will turn &aon &flamps in selection."
   off_lamp_description: "Will turn &coff &flamps in selection."
   reload_description: "Will load all values from config again."
+sound:
+  sound_not_found: "Sound does not exist! Check the configuration."

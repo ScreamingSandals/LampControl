@@ -3,6 +3,8 @@ package cz.ceph.lampcontrol.utils;
 import cz.ceph.lampcontrol.LampControl;
 import org.bukkit.Bukkit;
 
+import static cz.ceph.lampcontrol.LampControl.bukkitVersion;
+
 /**
  * Created by iamceph on 01.10.2018.
  */
@@ -10,7 +12,7 @@ import org.bukkit.Bukkit;
 public class VersionChecker {
 
     public static boolean checkVersion() {
-        return LampControl.bukkitVersion.equals("1.13");
+        return !(bukkitVersion.contains("1_13"));
     }
 
     public static String getBukkitVersion() {

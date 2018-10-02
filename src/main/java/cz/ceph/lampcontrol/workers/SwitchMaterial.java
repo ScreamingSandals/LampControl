@@ -14,7 +14,10 @@ import static cz.ceph.lampcontrol.LampControl.simpleVersion;
  */
 public class SwitchMaterial {
 
-    /* This lamp switcher depends on Minecraft version */
+    /* This vLampSwitcher method depends on Minecraft version
+     * This vLampSwitcher method returns Lamp block depends on version
+      *
+      * vLampSwitcher is used to select material by Minecraft version*/
     public static void vLampSwitcher(Boolean light, Block block) {
 
         if (simpleVersion) {

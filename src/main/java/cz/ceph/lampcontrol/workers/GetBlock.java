@@ -2,6 +2,7 @@ package cz.ceph.lampcontrol.workers;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Lightable;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -13,12 +14,16 @@ import static cz.ceph.lampcontrol.LampControl.simpleVersion;
 public class GetBlock {
 
     /* This vGetLamp method depends on Minecraft version
-     * This vGetLamp method depends on event */
+     * This vGetLamp method depends on
+      *
+      * vGetLamp is used to check if lamp is ON or OFF
+      * Check is different by Minecraft version*/
     public static Boolean vGetLamp(Boolean light, PlayerInteractEvent event) {
         Block block = event.getClickedBlock();
+        BlockData blockData = block.getBlockData();
         boolean result;
 
-        if (simpleVersion) {
+        if (simpleVersion && blockData instanceof Lightable) {
             Lightable lightable = (Lightable) block.getBlockData();
             block.getType().compareTo(Material.REDSTONE_LAMP);
 
@@ -31,11 +36,15 @@ public class GetBlock {
     }
 
     /* This vGetLamp method depends on Minecraft version
-     * This vGetLamp method returns Lamp block depends on version */
+     * This vGetLamp method returns Lamp block depends on version
+      *
+      * vGetLamp is used to check if lamp is ON or OFF
+      * Check is different by Minecraft version*/
     public static Material vGetLamp(boolean light, Block block) {
         Material mat;
+        BlockData blockData = block.getBlockData();
 
-        if (simpleVersion) {
+        if (simpleVersion && blockData instanceof Lightable) {
             Lightable lightable = (Lightable) block.getBlockData();
             block.setType(Material.REDSTONE_LAMP);
 

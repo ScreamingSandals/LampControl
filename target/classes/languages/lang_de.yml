@@ -14,3 +14,5 @@ command:
   on_lamp_description: "Schaltet ausgewählte Lampen &aein&f."
   off_lamp_description: "Schaltet ausgewählte Lampen &caus&f."
   reload_description: "Liest die Konfiguration neu ein."
+sound:
+  sound_not_found: "Sound does not exist! Check the configuration."
