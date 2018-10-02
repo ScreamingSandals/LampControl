@@ -8,6 +8,7 @@ import cz.ceph.lampcontrol.commands.core.IBasicCommand;
 import cz.ceph.lampcontrol.commands.core.RegisterCommand;
 import cz.ceph.lampcontrol.utils.ChatWriter;
 import cz.ceph.lampcontrol.utils.SoundPlayer;
+import cz.ceph.lampcontrol.workers.GetBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -72,7 +73,7 @@ public class OffCommand implements IBasicCommand {
                         if (!checkForSelection || selection.contains(loc)) {
                             Block block = min.getWorld().getBlockAt(loc);
 
-                            if (block.getType().equals(Material.REDSTONE_LAMP_ON)) {
+                            if (block.getType().equals(GetBlock.vGetLamp(true, block))) {
                                 try {
                                     getMain().getSwitchBlock().switchLamp(block, false);
                                 } catch (Exception e) {

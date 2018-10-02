@@ -8,6 +8,7 @@ import cz.ceph.lampcontrol.commands.core.IBasicCommand;
 import cz.ceph.lampcontrol.commands.core.RegisterCommand;
 import cz.ceph.lampcontrol.utils.ChatWriter;
 import cz.ceph.lampcontrol.utils.SoundPlayer;
+import cz.ceph.lampcontrol.workers.GetBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -63,6 +64,7 @@ public class OnCommand implements IBasicCommand {
             org.bukkit.Location max = selection.getMaximumPoint();
             getMain().getSwitchBlock().initWorld(min.getWorld());
 
+
             int affected = 0;
 
             for (int x = min.getBlockX(); x <= max.getBlockX(); x++) {
@@ -73,8 +75,8 @@ public class OnCommand implements IBasicCommand {
                         if (!checkForSelection || selection.contains(loc)) {
                             Block block = min.getWorld().getBlockAt(loc);
 
-                            if (block.getType().equals(Material.REDSTONE_LAMP_OFF)) {
-                                try {
+                            if (block.getType().equals(GetBlock.vGetLamp(false, block))) {
+                                    try {
                                     getMain().getSwitchBlock().switchLamp(block, true);
                                 } catch (Exception e) {
                                     e.printStackTrace();

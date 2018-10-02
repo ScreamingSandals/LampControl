@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static cz.ceph.lampcontrol.LampControl.getMain;
+import static cz.ceph.lampcontrol.LampControl.simpleVersion;
 
 /**
  * Created by Ceph on 08.01.2017.
@@ -34,8 +35,6 @@ public class MainConfig extends BaseConfiguration {
     private static final String PATH_SOUND_SUCCESS = "UI_BUTTON_CLICK, CLICK";
     private static final String PATH_SOUND_FAIL = "//doplnit//";
     private static final String PATH_SOUND_DEFAULT = "//doplnit";
-    private static final String PATH_LAMP_ON_OLD = "REDSTONE_LAMP_ON";
-    private static final String PATH_LAMP_OFF_OLD = "REDSTONE_LAMP_OFF";
     private boolean isConfigInitialized = false;
 
     private List<Material> cachedRedstoneMaterials = getMain().cachedRedstoneMaterials;
@@ -67,8 +66,6 @@ public class MainConfig extends BaseConfiguration {
         setString(PATH_SOUND_DEFAULT, "CLICK");
         setString(PATH_SOUND_SUCCESS, "succ");
         setString(PATH_SOUND_FAIL, "fail");
-        setString(PATH_LAMP_ON_OLD, "REDSTONE_LAMP_ON");
-        setString(PATH_LAMP_OFF_OLD, "REDSTONE_LAMP_OFF");
         setInt(FILE_VERSION_PATH, 9);
     }
 
@@ -98,7 +95,7 @@ public class MainConfig extends BaseConfiguration {
         }
 
         if (!areMaterialsConfigured()) {
-            if (LampControl.simpleVersion.equals("older")) {
+            if (simpleVersion) {
                 cachedOldMaterials.add("PISTON_MOVING_PIECE");
                 cachedOldMaterials.add("REDSTONE_TORCH_OFF");
                 cachedOldMaterials.add("REDSTONE_TORCH_ON");

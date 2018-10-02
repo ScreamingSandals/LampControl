@@ -6,8 +6,8 @@ import cz.ceph.lampcontrol.events.ReflectEvent;
 import cz.ceph.lampcontrol.events.ReflectPlayerInteractEvent;
 import cz.ceph.lampcontrol.listeners.LampListener;
 import cz.ceph.lampcontrol.localization.Localizations;
-import cz.ceph.lampcontrol.utils.SwitchBlock;
-import org.bukkit.Bukkit;
+import cz.ceph.lampcontrol.workers.SwitchBlock;
+import cz.ceph.lampcontrol.utils.VersionChecker;
 import org.bukkit.Material;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -38,7 +38,7 @@ public class LampControl extends JavaPlugin {
     private static PluginDescriptionFile pluginInfo;
     public static String language;
     public static String bukkitVersion;
-    public static String simpleVersion;
+    public static Boolean simpleVersion;
 
     @Override
     public void onLoad() {
@@ -49,8 +49,9 @@ public class LampControl extends JavaPlugin {
     public void onEnable() {
         pluginMain = this;
 
-        bukkitVersion = getBukkitVersion();
-        simpleVersion = getSimpleVersion();
+        bukkitVersion = VersionChecker.getBukkitVersion();
+        simpleVersion = VersionChecker.checkVersion();
+
         debug.info("Bukkit version is: " + bukkitVersion);
 
 
@@ -103,20 +104,6 @@ public class LampControl extends JavaPlugin {
 
     public static LampControl getMain() {
         return pluginMain;
-    }
-
-    private static String getBukkitVersion() {
-        final String packageName = Bukkit.getServer().getClass().getPackage().getName();
-        return packageName.substring(packageName.lastIndexOf('.') + 1);
-    }
-
-    private static String getSimpleVersion() {
-        if (!bukkitVersion.equals("1.13"))
-            return "older";
-        else {
-            return "newer";
-        }
-
     }
 
     public MainConfig getMainConfig() {

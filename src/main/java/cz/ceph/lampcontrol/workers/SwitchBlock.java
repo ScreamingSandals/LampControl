@@ -1,4 +1,4 @@
-package cz.ceph.lampcontrol.utils;
+package cz.ceph.lampcontrol.workers;
 
 import cz.ceph.lampcontrol.LampControl;
 import org.bukkit.Bukkit;
@@ -49,10 +49,10 @@ public class SwitchBlock {
     public void switchLamp(Block block, boolean light) {
         if (light) {
             setStatic(true);
-            block.setType(Material.REDSTONE_LAMP_ON);
+            SwitchMaterial.vLampSwitcher(true, block);
             setStatic(false);
         } else {
-            block.setType(Material.REDSTONE_LAMP_OFF);
+            SwitchMaterial.vLampSwitcher(false, block);
         }
     }
 
@@ -68,6 +68,8 @@ public class SwitchBlock {
         return cW.getClass().getDeclaredMethod("getHandle").invoke(cW);
     }
 
+    /*
+    // NEEDS TO BE DONE
     @SuppressWarnings("deprecation")
     public void switchRail(Block block, boolean power) {
         try {
@@ -85,5 +87,6 @@ public class SwitchBlock {
             e.printStackTrace();
         }
     }
+    */
 
 }

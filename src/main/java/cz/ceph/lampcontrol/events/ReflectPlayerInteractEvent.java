@@ -3,6 +3,7 @@ package cz.ceph.lampcontrol.events;
 import cz.ceph.lampcontrol.LampControl;
 import cz.ceph.lampcontrol.utils.ChatWriter;
 import cz.ceph.lampcontrol.utils.SoundPlayer;
+import cz.ceph.lampcontrol.workers.GetBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -54,7 +55,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
             }
         }
 
-        if (e.getClickedBlock().getType().equals(Material.REDSTONE_LAMP_ON)) {
+        if (GetBlock.vGetLamp(true, e)) {
             if (getMain().cachedBooleanValues.get("use-permissions") && !checkPermissions(player, "lampcontrol.use"))
                 return;
 
@@ -68,7 +69,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
             plugin.getSwitchBlock().initWorld(b.getWorld());
             plugin.getSwitchBlock().switchLamp(b, false);
 
-            BlockPlaceEvent blockPlaceEvent = new BlockPlaceEvent(b, blockState, b, new ItemStack(Material.REDSTONE_LAMP_OFF), player, true);
+            BlockPlaceEvent blockPlaceEvent = new BlockPlaceEvent(b, blockState, b, new ItemStack(GetBlock.vGetLamp(false, b)), player, true);
             Bukkit.getPluginManager().callEvent(blockPlaceEvent);
 
             if (blockPlaceEvent.isCancelled()) {
@@ -85,7 +86,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
 
             SoundPlayer.play(e.getClickedBlock().getLocation(), SoundPlayer.success(), 0.5F, 0F);
 
-        } else if (e.getClickedBlock().getType().equals(Material.REDSTONE_LAMP_OFF)) {
+        } else if (GetBlock.vGetLamp(false, e)) {
 
             e.setCancelled(true);
 
@@ -98,7 +99,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
             plugin.getSwitchBlock().initWorld(b.getWorld());
             plugin.getSwitchBlock().switchLamp(b, true);
 
-            BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(b, blockState, b, new ItemStack(Material.REDSTONE_LAMP_ON), e.getPlayer(), true);
+            BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(b, blockState, b, new ItemStack(GetBlock.vGetLamp(true, b)), e.getPlayer(), true);
             Bukkit.getPluginManager().callEvent(checkBuildPerms);
 
             if (checkBuildPerms.isCancelled()) {
