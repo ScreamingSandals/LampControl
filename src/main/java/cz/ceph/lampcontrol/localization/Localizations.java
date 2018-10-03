@@ -4,6 +4,9 @@ import cz.ceph.lampcontrol.LampControl;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -56,4 +59,5 @@ public class Localizations {
 
         return language.getString(key, fallback);
     }
+
 }

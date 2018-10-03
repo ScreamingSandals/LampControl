@@ -42,7 +42,7 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
             commandMap = (CommandMap) fieldCommandMap.get(simplePluginManager);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
-            plugin.getLogger().severe("Registration of command failed.");
+            LampControl.debug.info("Registration of command failed.");
         }
     }
 

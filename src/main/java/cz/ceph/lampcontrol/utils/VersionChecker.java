@@ -11,10 +11,6 @@ import static cz.ceph.lampcontrol.LampControl.bukkitVersion;
 
 public class VersionChecker {
 
-    public static boolean checkVersion() {
-        return !(bukkitVersion.contains("1_13"));
-    }
-
     public static String getBukkitVersion() {
         final String packageName = Bukkit.getServer().getClass().getPackage().getName();
         return packageName.substring(packageName.lastIndexOf('.') + 1);

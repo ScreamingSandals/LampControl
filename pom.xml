@@ -17,10 +17,6 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
-            <repository>
-                <id>sk89q-snapshots</id>
-                <url>http://maven.sk89q.com/repo/</url>
-            </repository>
     </repositories>
 
     <properties>
@@ -48,7 +44,9 @@
         <dependency>
             <groupId>com.sk89q</groupId>
             <artifactId>worldedit</artifactId>
-            <version>6.0.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <version>any</version>
+            <systemPath>${project.basedir}/worldedit-core-7.0.0-SNAPSHOT-dist.jar</systemPath>
         </dependency>
     </dependencies>
 
@@ -76,8 +74,7 @@
                 <directory>src/main/resources/languages</directory>
                 <filtering>false</filtering>
                 <excludes>
-                    <exclude>**/*.java</exclude>
-                    <exclude>*.yml</exclude>
+                    <exclude>lang_*.yml</exclude>
                 </excludes>
             </resource>
         </resources>

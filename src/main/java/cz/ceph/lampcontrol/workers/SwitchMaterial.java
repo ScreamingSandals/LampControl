@@ -1,13 +1,10 @@
 package cz.ceph.lampcontrol.workers;
 
-import cz.ceph.lampcontrol.utils.VersionChecker;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Lightable;
-import org.bukkit.event.player.PlayerInteractEvent;
 
-import static cz.ceph.lampcontrol.LampControl.simpleVersion;
 
 /**
  * Created by iamceph on 01.10.2018.
@@ -18,9 +15,10 @@ public class SwitchMaterial {
      * This vLampSwitcher method returns Lamp block depends on version
       *
       * vLampSwitcher is used to select material by Minecraft version*/
-    public static void vLampSwitcher(Boolean light, Block block) {
+    public static void lampSwitcher(Boolean light, Block block) {
+        BlockData blockData = block.getBlockData();
 
-        if (simpleVersion) {
+        if (blockData instanceof Lightable) {
             Lightable lightable = (Lightable) block.getBlockData();
             block.setType(Material.REDSTONE_LAMP);
 
@@ -30,14 +28,6 @@ public class SwitchMaterial {
             } else {
                 lightable.setLit(false);
                 block.setBlockData(lightable);
-            }
-
-        } else {
-            if (light) {
-                block.setType(Material.getMaterial("REDSTONE_LAMP_ON"));
-
-            } else {
-                block.setType(Material.getMaterial("REDSTONE_LAMP_OFF"));
             }
         }
     }

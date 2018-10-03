@@ -1,8 +1,5 @@
 package cz.ceph.lampcontrol.commands;
 
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.bukkit.selections.CuboidSelection;
-import com.sk89q.worldedit.bukkit.selections.Selection;
 import cz.ceph.lampcontrol.LampControl;
 import cz.ceph.lampcontrol.commands.core.IBasicCommand;
 import cz.ceph.lampcontrol.commands.core.RegisterCommand;
@@ -11,7 +8,6 @@ import cz.ceph.lampcontrol.utils.SoundPlayer;
 import cz.ceph.lampcontrol.workers.GetBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -46,7 +42,7 @@ public class OffCommand implements IBasicCommand {
             player.sendMessage(ChatWriter.prefix(LampControl.localizations.get("error.no_worldedit")));
             return true;
 
-        } else {
+        }/* else {
             WorldEditPlugin worldEdit = (WorldEditPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
             Selection selection = worldEdit.getSelection(player);
 
@@ -73,7 +69,7 @@ public class OffCommand implements IBasicCommand {
                         if (!checkForSelection || selection.contains(loc)) {
                             Block block = min.getWorld().getBlockAt(loc);
 
-                            if (block.getType().equals(GetBlock.vGetLamp(true, block))) {
+                            if (block.getType().equals(GetBlock.getLamp(true, block))) {
                                 try {
                                     getMain().getSwitchBlock().switchLamp(block, false);
                                 } catch (Exception e) {
@@ -92,7 +88,8 @@ public class OffCommand implements IBasicCommand {
                 player.sendMessage(ChatWriter.prefix(LampControl.localizations.get("info.affected_lamps_off").replace("%affected", "" + affected + "")));
             SoundPlayer.play(player.getLocation(), SoundPlayer.success(), 0.5F, 1F);
             return true;
-        }
+        }*/
+        return true;
     }
 
     @Override

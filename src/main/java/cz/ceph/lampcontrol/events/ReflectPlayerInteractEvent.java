@@ -55,7 +55,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
             }
         }
 
-        if (GetBlock.vGetLamp(true, event)) {
+        if (GetBlock.getLamp(false, event)) {
             if (getMain().cachedBooleanValues.get("use-permissions") && !checkPermissions(player, "lampcontrol.use"))
                 return;
 
@@ -67,9 +67,9 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
             BlockState blockState = block.getState();
 
             plugin.getSwitchBlock().initWorld(block.getWorld());
-            plugin.getSwitchBlock().switchLamp(block, false);
+            plugin.getSwitchBlock().switchLamp(block, true);
 
-            BlockPlaceEvent blockPlaceEvent = new BlockPlaceEvent(block, blockState, block, new ItemStack(GetBlock.vGetLamp(false, block)), player, true);
+            BlockPlaceEvent blockPlaceEvent = new BlockPlaceEvent(block, blockState, block, new ItemStack(GetBlock.getLamp(false, block)), player, true);
             Bukkit.getPluginManager().callEvent(blockPlaceEvent);
 
             if (blockPlaceEvent.isCancelled()) {
@@ -86,7 +86,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
 
             SoundPlayer.play(event.getClickedBlock().getLocation(), SoundPlayer.success(), 0.5F, 0F);
 
-        } else if (GetBlock.vGetLamp(false, event)) {
+        } else if (GetBlock.getLamp(true, event)) {
 
             event.setCancelled(true);
 
@@ -97,9 +97,9 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
             BlockState blockState = b.getState();
 
             plugin.getSwitchBlock().initWorld(b.getWorld());
-            plugin.getSwitchBlock().switchLamp(b, true);
+            plugin.getSwitchBlock().switchLamp(b, false);
 
-            BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(b, blockState, b, new ItemStack(GetBlock.vGetLamp(true, b)), event.getPlayer(), true);
+            BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(b, blockState, b, new ItemStack(GetBlock.getLamp(false, b)), event.getPlayer(), true);
             Bukkit.getPluginManager().callEvent(checkBuildPerms);
 
             if (checkBuildPerms.isCancelled()) {
@@ -151,14 +151,14 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
 
                             if (railBlock.getType().equals(Material.POWERED_RAIL) && railData < 7) {
                                 plugin.getSwitchBlock().initWorld(railBlock.getWorld());
-                                //plugin.getSwitchBlock().switchRail(railBlock, true);
+                                plugin.getSwitchBlock().switchRail(railBlock, true);
                             } else {
                                 break innerForEach;
                             }
                         }
                     }
                     plugin.getSwitchBlock().initWorld(b.getWorld());
-                    //plugin.getSwitchBlock().switchRail(b, true);
+                    plugin.getSwitchBlock().switchRail(b, true);
                 }
 
                 if (getMain().cachedBooleanValues.get("use-item")) {
@@ -178,7 +178,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
                     return;
                 } else {
                     plugin.getSwitchBlock().initWorld(b.getWorld());
-                    //plugin.getSwitchBlock().switchRail(b, false);
+                    plugin.getSwitchBlock().switchRail(b, false);
                 }
 
                 if (getMain().cachedBooleanValues.get("use-items")) {

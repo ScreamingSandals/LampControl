@@ -28,7 +28,6 @@ public class LampControl extends JavaPlugin {
 
     public Map<String, Boolean> cachedBooleanValues;
     public List<Material> cachedRedstoneMaterials = new ArrayList<>();
-    public List<String> cachedOldMaterials = new ArrayList<>();
 
     public Material lampTool;
 
@@ -38,7 +37,6 @@ public class LampControl extends JavaPlugin {
     private static PluginDescriptionFile pluginInfo;
     public static String language;
     public static String bukkitVersion;
-    public static Boolean simpleVersion;
 
     @Override
     public void onLoad() {
@@ -50,8 +48,6 @@ public class LampControl extends JavaPlugin {
         pluginMain = this;
 
         bukkitVersion = VersionChecker.getBukkitVersion();
-        simpleVersion = VersionChecker.checkVersion();
-
         debug.info("Bukkit version is: " + bukkitVersion);
 
 

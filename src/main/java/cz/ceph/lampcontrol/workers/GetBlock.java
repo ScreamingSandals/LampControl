@@ -1,76 +1,64 @@
 package cz.ceph.lampcontrol.workers;
 
+import cz.ceph.lampcontrol.LampControl;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Lightable;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import static cz.ceph.lampcontrol.LampControl.simpleVersion;
-
 /**
  * Created by iamceph on 02.10.2018.
  */
 public class GetBlock {
 
-    /* This vGetLamp method depends on Minecraft version
-     * This vGetLamp method depends on
-      *
-      * vGetLamp is used to check if lamp is ON or OFF
-      * Check is different by Minecraft version*/
-    public static Boolean vGetLamp(Boolean light, PlayerInteractEvent event) {
+    public static Boolean getLamp(Boolean light, PlayerInteractEvent event) {
         Block block = event.getClickedBlock();
         BlockData blockData = block.getBlockData();
-        boolean result;
 
-        if (simpleVersion && blockData instanceof Lightable) {
-            Lightable lightable = (Lightable) block.getBlockData();
-            block.getType().compareTo(Material.REDSTONE_LAMP);
+        boolean result = false;
 
-            result = light && lightable.isLit();
+        if (blockData instanceof Lightable) {
+            LampControl.debug.info("GetBlock: block instanceof light");
+            if (light) {
+                LampControl.debug.info("GetBlock:  light = true");
+                Lightable lightable = (Lightable) block.getBlockData();
 
+                result = lightable.isLit();
+            } else {
+                LampControl.debug.info("GetBlock:  light = false");
+                Lightable lightable = (Lightable) block.getBlockData();
+                result = !lightable.isLit();
+            }
         } else {
-            result = light && block.getType().equals(Material.getMaterial("REDSTONE_LAMP_ON"));
+            LampControl.debug.info("GetBlock:  not instance of light");
         }
+
         return result;
     }
 
-    /* This vGetLamp method depends on Minecraft version
-     * This vGetLamp method returns Lamp block depends on version
-      *
-      * vGetLamp is used to check if lamp is ON or OFF
-      * Check is different by Minecraft version*/
-    public static Material vGetLamp(boolean light, Block block) {
+    public static Material getLamp(boolean light, Block block) {
         Material mat;
         BlockData blockData = block.getBlockData();
 
-        if (simpleVersion && blockData instanceof Lightable) {
-            Lightable lightable = (Lightable) block.getBlockData();
-            block.setType(Material.REDSTONE_LAMP);
-
+        if (blockData instanceof Lightable) {
+            LampControl.debug.info("GetBlockMat: block instanceof light");
             if (light) {
+                LampControl.debug.info("GetBlockMat:  light = true");
+                Lightable lightable = (Lightable) block.getBlockData();
+
+                block.getType().compareTo(Material.REDSTONE_LAMP);
                 lightable.setLit(true);
                 block.setBlockData(lightable);
 
                 mat = block.getType();
             } else {
-                lightable.setLit(false);
-                block.setBlockData(lightable);
-
+                LampControl.debug.info("GetBlockMat:  light = false");
                 mat = block.getType();
             }
-
         } else {
-            if (light) {
-                block.setType(Material.getMaterial("REDSTONE_LAMP_ON"));
-
-                mat = block.getType();
-
-            } else {
-                block.setType(Material.getMaterial("REDSTONE_LAMP_OFF"));
-
-                mat = block.getType();
-            }
+            LampControl.debug.info("GetBlockMat:  not instance of light");
+            mat = block.getType();
         }
 
         return mat;

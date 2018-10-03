@@ -1,8 +1,11 @@
 package cz.ceph.lampcontrol.commands;
 
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.bukkit.selections.CuboidSelection;
-import com.sk89q.worldedit.bukkit.selections.Selection;
+import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.internal.annotation.Selection;
+import com.sk89q.worldedit.regions.CuboidRegion;
+import com.sk89q.worldedit.regions.Region;
+import com.sk89q.worldedit.session.request.RequestSelection;
 import cz.ceph.lampcontrol.LampControl;
 import cz.ceph.lampcontrol.commands.core.IBasicCommand;
 import cz.ceph.lampcontrol.commands.core.RegisterCommand;
@@ -11,7 +14,7 @@ import cz.ceph.lampcontrol.utils.SoundPlayer;
 import cz.ceph.lampcontrol.workers.GetBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -46,9 +49,10 @@ public class OnCommand implements IBasicCommand {
             player.sendMessage(ChatWriter.prefix(LampControl.localizations.get("error.no_worldedit")));
             return true;
 
-        } else {
-            WorldEditPlugin worldEdit = (WorldEditPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
-            Selection selection = worldEdit.getSelection(player);
+        }/* else {
+            EditSession es;
+            Selection selection;
+            CuboidRegion cuboidRegion;
 
             if (selection == null) {
                 player.sendMessage(ChatWriter.prefix(LampControl.localizations.get("error.no_selection")));
@@ -75,7 +79,7 @@ public class OnCommand implements IBasicCommand {
                         if (!checkForSelection || selection.contains(loc)) {
                             Block block = min.getWorld().getBlockAt(loc);
 
-                            if (block.getType().equals(GetBlock.vGetLamp(false, block))) {
+                            if (block.getType().equals(GetBlock.getLamp(false, block))) {
                                     try {
                                     getMain().getSwitchBlock().switchLamp(block, true);
                                 } catch (Exception e) {
@@ -95,7 +99,8 @@ public class OnCommand implements IBasicCommand {
                 player.sendMessage(ChatWriter.prefix(LampControl.localizations.get("info.affected_lamps_on").replace("%affected", "" + affected + "")));
             SoundPlayer.play(player.getLocation(), SoundPlayer.success(), 0.5F, 0F);
             return true;
-       }
+       }*/
+        return true;
     }
 
     @Override
