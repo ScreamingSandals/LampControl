@@ -19,19 +19,14 @@ public class GetBlock {
         boolean result = false;
 
         if (blockData instanceof Lightable) {
-            LampControl.debug.info("GetBlock: block instanceof light");
             if (light) {
-                LampControl.debug.info("GetBlock:  light = true");
                 Lightable lightable = (Lightable) block.getBlockData();
 
                 result = lightable.isLit();
             } else {
-                LampControl.debug.info("GetBlock:  light = false");
                 Lightable lightable = (Lightable) block.getBlockData();
                 result = !lightable.isLit();
             }
-        } else {
-            LampControl.debug.info("GetBlock:  not instance of light");
         }
 
         return result;
@@ -42,9 +37,7 @@ public class GetBlock {
         BlockData blockData = block.getBlockData();
 
         if (blockData instanceof Lightable) {
-            LampControl.debug.info("GetBlockMat: block instanceof light");
             if (light) {
-                LampControl.debug.info("GetBlockMat:  light = true");
                 Lightable lightable = (Lightable) block.getBlockData();
 
                 block.getType().compareTo(Material.REDSTONE_LAMP);
@@ -53,11 +46,9 @@ public class GetBlock {
 
                 mat = block.getType();
             } else {
-                LampControl.debug.info("GetBlockMat:  light = false");
                 mat = block.getType();
             }
         } else {
-            LampControl.debug.info("GetBlockMat:  not instance of light");
             mat = block.getType();
         }
 

@@ -6,6 +6,8 @@ import org.bukkit.Sound;
 
 import java.util.Arrays;
 
+import static cz.ceph.lampcontrol.LampControl.bukkitVersion;
+
 /**
  * Created by iamceph on 20.06.2018.
  */
@@ -16,8 +18,13 @@ public class SoundPlayer {
         loc.getWorld().playSound(loc, sound, v, v1);
     }
 
+    private boolean checkSound() {
+        String version = bukkitVersion;
+        return false;
+    }
+
     public static String success() {
-        return "click";
+        return "ui.button.click";
 
     }
 

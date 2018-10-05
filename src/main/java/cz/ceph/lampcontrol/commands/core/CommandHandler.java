@@ -5,6 +5,7 @@ import cz.ceph.lampcontrol.utils.ChatWriter;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
+import org.bukkit.craftbukkit.v1_13_R2.command.CraftCommandMap;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.SimplePluginManager;
 
@@ -106,15 +107,8 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
     }
 
     private Map<String, Command> getKnownCommands() {
-        try {
-            SimpleCommandMap simpleCommandMap = (SimpleCommandMap) commandMap;
-            Field field = simpleCommandMap.getClass().getDeclaredField("knownCommands");
-            field.setAccessible(true);
-            return (Map<String, Command>) field.get(simpleCommandMap);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return Collections.emptyMap();
+        CraftCommandMap simpleCommandMap = (CraftCommandMap) commandMap;
+        return simpleCommandMap.getKnownCommands();
     }
 
     private boolean containsCommand(String command) {

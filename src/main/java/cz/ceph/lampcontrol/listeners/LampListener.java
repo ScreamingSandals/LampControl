@@ -19,7 +19,8 @@ public class LampListener implements Listener {
         Block block = event.getBlock();
         lampItem = block.getType().equals(Material.REDSTONE_LAMP);
 
-        if (!getMain().cachedBooleanValues.get("use-plates") || lampItem && !getMain().containMaterials(event.getChangedType())) {
+        if (lampItem || !getMain().cachedBooleanValues.get("use-plates") && !getMain().containMaterials(event.getChangedType())) {
+            LampControl.debug.info("Material" + event.getChangedType() + "is in list as " + getMain().cachedRedstoneMaterials.contains(event.getChangedType()));
             event.setCancelled(true);
         }
     }

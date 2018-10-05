@@ -161,7 +161,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
                     plugin.getSwitchBlock().switchRail(b, true);
                 }
 
-                if (getMain().cachedBooleanValues.get("use-item")) {
+                if (getMain().cachedBooleanValues.get("use-items")) {
                     ItemStack item = event.getPlayer().getItemInHand();
                     item.setAmount(item.getAmount() - 1);
                     event.getPlayer().setItemInHand(null);

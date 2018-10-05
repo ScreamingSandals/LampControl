@@ -4,6 +4,7 @@ D:\Java\GitKraken\LampControl\src\main\java\cz\ceph\lampcontrol\utils\VersionChe
 D:\Java\GitKraken\LampControl\src\main\java\cz\ceph\lampcontrol\commands\OnCommand.java
 D:\Java\GitKraken\LampControl\src\main\java\cz\ceph\lampcontrol\utils\ChatWriter.java
 D:\Java\GitKraken\LampControl\src\main\java\cz\ceph\lampcontrol\workers\GetBlock.java
+D:\Java\GitKraken\LampControl\src\main\java\cz\ceph\lampcontrol\commands\ListMaterialsDev.java
 D:\Java\GitKraken\LampControl\src\main\java\cz\ceph\lampcontrol\commands\core\ICommand.java
 D:\Java\GitKraken\LampControl\src\main\java\cz\ceph\lampcontrol\commands\HelpCommand.java
 D:\Java\GitKraken\LampControl\src\main\java\cz\ceph\lampcontrol\events\ReflectEvent.java

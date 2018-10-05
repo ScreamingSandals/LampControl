@@ -23,5 +23,6 @@ cz\ceph\lampcontrol\workers\SwitchMaterial.class
 cz\ceph\lampcontrol\commands\OnCommand.class
 cz\ceph\lampcontrol\LampControl.class
 cz\ceph\lampcontrol\events\ReflectEvent$Callback.class
+cz\ceph\lampcontrol\commands\ListMaterialsDev.class
 cz\ceph\lampcontrol\commands\core\IRegexCommand.class
 cz\ceph\lampcontrol\config\BaseConfiguration.class
