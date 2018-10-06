@@ -18,14 +18,14 @@ public class MainConfig extends BaseConfiguration {
     private static final int CONFIG_VERSION = 9;
 
     private static final String PATH_PLUGIN_PREFIX = "pluginPrefix";
-    private static final String PATH_LAMPTOOL = "lampTool";
-    private static final String PATH_USE_PERMISSIONS = "use.permissions";
-    private static final String PATH_USE_ITEMS = "use.items";
-    private static final String PATH_USE_PLATES = "use.plates";
     private static final String PATH_LANGUAGE = "language";
-    private static final String PATH_MANAGE_LAMPS = "manage.lamps";
-    private static final String PATH_MANAGE_RAILS = "manage.rails";
-    private static final String PATH_MANAGE_OP = "manage.op";
+    private static final String PATH_LIGHT_ITEM = "lightItem";
+    private static final String PATH_ENABLE_PERMISSIONS = "enable.permissions";
+    private static final String PATH_ENABLE_ITEMS = "enable.items";
+    private static final String PATH_ENABLE_PLATES = "enable.plates";
+    private static final String PATH_CONTROL_LAMPS = "control.lamps";
+    private static final String PATH_CONTROL_RAILS = "control.rails";
+    private static final String PATH_OPERATOR_USE = "operatorUse";
     private static final String PATH_MATERIALS_CONFIGURED = "materials.configured";
     private static final String PATH_MATERIALS_USEITEM = "materials.useItem";
     private static final String PATH_MATERIALS_LIST = "materials.customMaterials";
@@ -49,14 +49,14 @@ public class MainConfig extends BaseConfiguration {
         materialsConfigDefault.add("here");
 
         setString(PATH_PLUGIN_PREFIX, "&8[&eLamp&cControl&8]&r");
-        setString(PATH_LAMPTOOL, "FLINT_AND_STEEL");
-        setBoolean(PATH_USE_PERMISSIONS, true);
-        setBoolean(PATH_USE_ITEMS, false);
-        setBoolean(PATH_USE_PLATES, true);
         setString(PATH_LANGUAGE, "en");
-        setBoolean(PATH_MANAGE_LAMPS, true);
-        setBoolean(PATH_MANAGE_RAILS, true);
-        setBoolean(PATH_MANAGE_OP, true);
+        setString(PATH_LIGHT_ITEM, "FLINT_AND_STEEL");
+        setBoolean(PATH_OPERATOR_USE, true);
+        setBoolean(PATH_ENABLE_PERMISSIONS, true);
+        setBoolean(PATH_ENABLE_ITEMS, false);
+        setBoolean(PATH_ENABLE_PLATES, true);
+        setBoolean(PATH_CONTROL_LAMPS, true);
+        setBoolean(PATH_CONTROL_RAILS, true);
         setBoolean(PATH_MATERIALS_CONFIGURED, false);
         setList(PATH_MATERIALS_LIST, materialsConfigDefault);
         setString(PATH_SOUND_DEFAULT, "CLICK");
@@ -74,19 +74,18 @@ public class MainConfig extends BaseConfiguration {
             clearCachedValues();
         }
 
-        getMain().lampTool = Material.getMaterial(getString(PATH_LAMPTOOL));
-        cachedBooleanValues.put("use-permissions", getBoolean(PATH_USE_PERMISSIONS));
-        cachedBooleanValues.put("use-items", getBoolean(PATH_USE_ITEMS));
-        cachedBooleanValues.put("use-plates", getBoolean(PATH_USE_PLATES));
-        cachedBooleanValues.put("manage-lamps", getBoolean(PATH_MANAGE_LAMPS));
-        cachedBooleanValues.put("manage-rails", getBoolean(PATH_MANAGE_RAILS));
-        cachedBooleanValues.put("manage-op", getBoolean(PATH_MANAGE_OP));
-        cachedBooleanValues.put("manage-op", getBoolean(PATH_MANAGE_OP));
+        getMain().lampTool = Material.getMaterial(getString(PATH_LIGHT_ITEM));
+        cachedBooleanValues.put("enable-permissions", getBoolean(PATH_ENABLE_PERMISSIONS));
+        cachedBooleanValues.put("enable-items", getBoolean(PATH_ENABLE_ITEMS));
+        cachedBooleanValues.put("enable-plates", getBoolean(PATH_ENABLE_PLATES));
+        cachedBooleanValues.put("control-lamps", getBoolean(PATH_CONTROL_LAMPS));
+        cachedBooleanValues.put("control-rails", getBoolean(PATH_CONTROL_RAILS));
+        cachedBooleanValues.put("operatorControl", getBoolean(PATH_OPERATOR_USE));
 
-        LampControl.language = getString(PATH_LANGUAGE);
+        LampControl.configLanguage = getString(PATH_LANGUAGE);
         isConfigInitialized = true;
 
-        if (cachedBooleanValues.get("use-items")) {
+        if (cachedBooleanValues.get("enable-items")) {
             setString(PATH_MATERIALS_USEITEM, "FLINT_AND_STEEL");
         }
 
@@ -115,7 +114,7 @@ public class MainConfig extends BaseConfiguration {
             cachedRedstoneMaterials.add(Material.TRIPWIRE);
             cachedRedstoneMaterials.add(Material.TRIPWIRE_HOOK);
             cachedRedstoneMaterials.add(Material.DAYLIGHT_DETECTOR);
-            if (cachedBooleanValues.get("use-plates")) {
+            if (cachedBooleanValues.get("enable-plates")) {
                 cachedRedstoneMaterials.add(Material.BIRCH_PRESSURE_PLATE);
                 cachedRedstoneMaterials.add(Material.ACACIA_PRESSURE_PLATE);
                 cachedRedstoneMaterials.add(Material.DARK_OAK_PRESSURE_PLATE);

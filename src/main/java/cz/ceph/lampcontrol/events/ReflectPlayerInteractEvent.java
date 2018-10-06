@@ -9,7 +9,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.Action;
@@ -45,7 +44,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
 
         if (player.isSneaking()) return;
 
-        if (getMain().cachedBooleanValues.get("manage-op") && event.getPlayer().isOp() || checkPermissions(player, "lampcontrol.hand")) {
+        if (getMain().cachedBooleanValues.get("operatorControl") && event.getPlayer().isOp() || checkPermissions(player, "lampcontrol.hand")) {
             if (player.getItemInHand() == null || !player.getItemInHand().getType().equals(Material.AIR) && !player.getItemInHand().getType().equals(getMain().lampTool)) {
                 return;
             }
@@ -56,10 +55,10 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
         }
 
         if (GetBlock.getLamp(false, event)) {
-            if (getMain().cachedBooleanValues.get("use-permissions") && !checkPermissions(player, "lampcontrol.use"))
+            if (getMain().cachedBooleanValues.get("enable-permissions") && !checkPermissions(player, "lampcontrol.use"))
                 return;
 
-            if (!getMain().cachedBooleanValues.get("manage-lamps")) return;
+            if (!getMain().cachedBooleanValues.get("control-lamps")) return;
 
             event.setCancelled(true);
 
@@ -74,11 +73,11 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
 
             if (blockPlaceEvent.isCancelled()) {
                 plugin.getSwitchBlock().switchLamp(block, false);
-                event.getPlayer().sendMessage(ChatWriter.prefix(LampControl.localizations.get("error.no_permissions")));
+                event.getPlayer().sendMessage(ChatWriter.prefix(LampControl.localization.get("error.no_permissions")));
                 return;
             }
 
-            if (getMain().cachedBooleanValues.get("use-items")) {
+            if (getMain().cachedBooleanValues.get("enable-items")) {
                 ItemStack item = event.getPlayer().getItemInHand();
                 item.setAmount(item.getAmount() - 1);
                 event.getPlayer().setItemInHand(null);
@@ -90,7 +89,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
 
             event.setCancelled(true);
 
-            if (getMain().cachedBooleanValues.get("use-permissions") && !event.getPlayer().hasPermission("lampcontrol.use"))
+            if (getMain().cachedBooleanValues.get("enable-permissions") && !event.getPlayer().hasPermission("lampcontrol.use"))
                 return;
 
             Block b = event.getClickedBlock();
@@ -104,11 +103,11 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
 
             if (checkBuildPerms.isCancelled()) {
                 plugin.getSwitchBlock().switchLamp(b, true);
-                event.getPlayer().sendMessage(ChatWriter.prefix(LampControl.localizations.get("error.no_permissions")));
+                event.getPlayer().sendMessage(ChatWriter.prefix(LampControl.localization.get("error.no_permissions")));
                 return;
             }
 
-            if (getMain().cachedBooleanValues.get("use-items")) {
+            if (getMain().cachedBooleanValues.get("enable-items")) {
                 ItemStack item = event.getPlayer().getItemInHand();
                 item.setAmount(item.getAmount() - 1);
                 event.getPlayer().setItemInHand(null);
@@ -124,10 +123,10 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
          * All about rails here
          */
         else if (event.getClickedBlock().getType().equals(Material.POWERED_RAIL)) {
-            if (getMain().cachedBooleanValues.get("use-permissions") && !event.getPlayer().hasPermission("lampcontrol.use"))
+            if (getMain().cachedBooleanValues.get("enable-permissions") && !event.getPlayer().hasPermission("lampcontrol.use"))
                 return;
 
-            if (!getMain().cachedBooleanValues.get("manage-rails")) return;
+            if (!getMain().cachedBooleanValues.get("enable-rails")) return;
 
             event.setCancelled(true);
 
@@ -139,7 +138,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
                 BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(b, blockState, b, new ItemStack(Material.POWERED_RAIL), event.getPlayer(), true);
                 Bukkit.getPluginManager().callEvent(checkBuildPerms);
                 if (checkBuildPerms.isCancelled()) {
-                    event.getPlayer().sendMessage(ChatWriter.prefix(LampControl.localizations.get("error.no_permissions")));
+                    event.getPlayer().sendMessage(ChatWriter.prefix(LampControl.localization.get("error.no_permissions")));
                     return;
                 } else {
                     BlockFace[] sides = new BlockFace[]{BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST};
@@ -161,7 +160,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
                     plugin.getSwitchBlock().switchRail(b, true);
                 }
 
-                if (getMain().cachedBooleanValues.get("use-items")) {
+                if (getMain().cachedBooleanValues.get("enable-items")) {
                     ItemStack item = event.getPlayer().getItemInHand();
                     item.setAmount(item.getAmount() - 1);
                     event.getPlayer().setItemInHand(null);
@@ -174,14 +173,14 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
                 Bukkit.getPluginManager().callEvent(checkBuildPerms);
 
                 if (checkBuildPerms.isCancelled()) {
-                    event.getPlayer().sendMessage(ChatWriter.prefix(LampControl.localizations.get("error.no_permissions")));
+                    event.getPlayer().sendMessage(ChatWriter.prefix(LampControl.localization.get("error.no_permissions")));
                     return;
                 } else {
                     plugin.getSwitchBlock().initWorld(b.getWorld());
                     plugin.getSwitchBlock().switchRail(b, false);
                 }
 
-                if (getMain().cachedBooleanValues.get("use-items")) {
+                if (getMain().cachedBooleanValues.get("enable-items")) {
                     ItemStack item = event.getPlayer().getItemInHand();
                     item.setAmount(item.getAmount() - 1);
                     event.getPlayer().setItemInHand(null);

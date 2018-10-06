@@ -3,7 +3,6 @@ package cz.ceph.lampcontrol.commands;
 import cz.ceph.lampcontrol.LampControl;
 import cz.ceph.lampcontrol.commands.core.IBasicCommand;
 import cz.ceph.lampcontrol.commands.core.RegisterCommand;
-import cz.ceph.lampcontrol.localization.Localizations;
 import cz.ceph.lampcontrol.utils.ChatWriter;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -24,7 +23,7 @@ public class ReloadCommand implements IBasicCommand {
 
     @Override
     public String getDescription() {
-        return LampControl.localizations.get("command.reload_description");
+        return LampControl.localization.get("command.reload_description");
     }
 
     @Override
@@ -35,7 +34,7 @@ public class ReloadCommand implements IBasicCommand {
     @Override
     public boolean onConsoleCommand(ConsoleCommandSender sender, String[] args) {
         getMain().getMainConfig().initializeConfig();
-        sender.sendMessage(ChatWriter.prefix(LampControl.localizations.get("info.config_reloaded")));
+        sender.sendMessage(ChatWriter.prefix(LampControl.localization.get("info.config_reloaded")));
 
         return true;
     }
@@ -43,7 +42,8 @@ public class ReloadCommand implements IBasicCommand {
     @Override
     public boolean onPlayerCommand(Player player, String[] args) {
         getMain().getMainConfig().initializeConfig();
-        player.sendMessage(ChatWriter.prefix(LampControl.localizations.get("info.config_reloaded")));
+        getMain().getLocalization().loadLocalization();
+        player.sendMessage(ChatWriter.prefix(LampControl.localization.get("info.config_reloaded")));
 
         return true;
     }

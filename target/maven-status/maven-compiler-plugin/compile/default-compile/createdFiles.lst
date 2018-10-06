@@ -7,7 +7,7 @@ cz\ceph\lampcontrol\commands\core\CommandHandler$1.class
 cz\ceph\lampcontrol\commands\ReloadCommand.class
 cz\ceph\lampcontrol\utils\ChatWriter.class
 cz\ceph\lampcontrol\utils\VersionChecker.class
-cz\ceph\lampcontrol\localization\Localizations.class
+cz\ceph\lampcontrol\localization\Localization.class
 cz\ceph\lampcontrol\commands\core\ICommand.class
 cz\ceph\lampcontrol\workers\SwitchBlock.class
 cz\ceph\lampcontrol\commands\ControlCommand.class

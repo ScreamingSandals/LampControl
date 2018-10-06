@@ -34,7 +34,7 @@ public class OnCommand implements IBasicCommand {
 
     @Override
     public String getDescription() {
-        return LampControl.localizations.get("command.on_lamp_description");
+        return LampControl.localization.get("command.on_lamp_description");
     }
 
     @Override
@@ -48,7 +48,7 @@ public class OnCommand implements IBasicCommand {
         worldEdit = (WorldEditPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
 
         if (worldEdit == null) {
-            player.sendMessage(ChatWriter.prefix(LampControl.localizations.get("error.no_worldedit")));
+            player.sendMessage(ChatWriter.prefix(LampControl.localization.get("error.no_worldedit")));
             return true;
 
         } else {
@@ -64,7 +64,7 @@ public class OnCommand implements IBasicCommand {
                 region = localSession.getSelection(bukkitPlayer.getWorld());
 
                 if (region == null) {
-                    player.sendMessage(ChatWriter.prefix(LampControl.localizations.get("error.no_selection")));
+                    player.sendMessage(ChatWriter.prefix(LampControl.localization.get("error.no_selection")));
                 }
 
                 if (!(region instanceof CuboidRegion)) {
@@ -94,22 +94,22 @@ public class OnCommand implements IBasicCommand {
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
-                                    affected++;
                                 }
+                                affected++;
                             }
                         }
                 }
 
             } catch (IncompleteRegionException | NullPointerException e) {
-                player.sendMessage(ChatWriter.prefix(LampControl.localizations.get("error.no_selection")));
+                player.sendMessage(ChatWriter.prefix(LampControl.localization.get("error.no_selection")));
             }
 
 
             if (affected < 1) {
-                player.sendMessage(ChatWriter.prefix(LampControl.localizations.get("info.no_lamps_affecetd")));
+                player.sendMessage(ChatWriter.prefix(LampControl.localization.get("info.no_lamps_affecetd")));
                 SoundPlayer.play(player.getLocation(), SoundPlayer.fail(), 0.5F, 1F);
             } else
-                player.sendMessage(ChatWriter.prefix(LampControl.localizations.get("info.affected_lamps_on").replace("%affected", "" + affected + "")));
+                player.sendMessage(ChatWriter.prefix(LampControl.localization.get("info.affected_lamps_on").replace("%affected", "" + affected + "")));
             SoundPlayer.play(player.getLocation(), SoundPlayer.success(), 0.5F, 1F);
             return true;
         }
@@ -117,7 +117,7 @@ public class OnCommand implements IBasicCommand {
 
     @Override
     public boolean onConsoleCommand(ConsoleCommandSender sender, String[] args) {
-        sender.sendMessage(ChatWriter.prefix(LampControl.localizations.get("error.console_use")));
+        sender.sendMessage(ChatWriter.prefix(LampControl.localization.get("error.console_use")));
         return true;
     }
 }

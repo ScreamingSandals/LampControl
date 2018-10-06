@@ -40,7 +40,7 @@
             <artifactId>spigot</artifactId>
             <scope>system</scope>
             <version>any</version>
-            <systemPath>${project.basedir}/spigot-1.13.1-R0.1-SNAPSHOT-b1945.jar</systemPath>
+            <systemPath>${project.basedir}/libs/spigot-1.13.1-R0.1-SNAPSHOT-b1945.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.bukkit</groupId>
@@ -53,7 +53,7 @@
             <artifactId>worldedit</artifactId>
             <scope>system</scope>
             <version>any</version>
-            <systemPath>${project.basedir}/worldedit-bukkit-7.0.0-SNAPSHOT-dist.jar</systemPath>
+            <systemPath>${project.basedir}/libs/worldedit-bukkit-7.0.0-SNAPSHOT-dist.jar</systemPath>
         </dependency>
     </dependencies>
 
@@ -78,7 +78,7 @@
                 </excludes>
             </resource>
             <resource>
-                <directory>src/main/resources/languages</directory>
+                <directory>src/languages</directory>
                 <filtering>false</filtering>
                 <excludes>
                     <exclude>lang_*.yml</exclude>

@@ -2,3 +2,5 @@
 \.idea/
 
 lampcontrol\.iml
+lampcontrol\target
+target

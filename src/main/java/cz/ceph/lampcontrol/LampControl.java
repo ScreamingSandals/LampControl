@@ -5,7 +5,7 @@ import cz.ceph.lampcontrol.config.MainConfig;
 import cz.ceph.lampcontrol.events.ReflectEvent;
 import cz.ceph.lampcontrol.events.ReflectPlayerInteractEvent;
 import cz.ceph.lampcontrol.listeners.LampListener;
-import cz.ceph.lampcontrol.localization.Localizations;
+import cz.ceph.lampcontrol.localization.Localization;
 import cz.ceph.lampcontrol.workers.SwitchBlock;
 import cz.ceph.lampcontrol.utils.VersionChecker;
 import org.bukkit.Material;
@@ -31,11 +31,11 @@ public class LampControl extends JavaPlugin {
 
     public Material lampTool;
 
-    public static Localizations localizations;
+    public static Localization localization;
     public static Logger debug = Logger.getLogger("LampControl");
     private static LampControl pluginMain;
     private static PluginDescriptionFile pluginInfo;
-    public static String language;
+    public static String configLanguage;
     public static String bukkitVersion;
 
     @Override
@@ -60,10 +60,10 @@ public class LampControl extends JavaPlugin {
         mainConfig.initializeConfig();
 
         debug.info("Initializing languages");
-        localizations = new Localizations(this);
-        localizations.loadLocales();
-        debug.info("Available languages: " + localizations.getAvailableLanguages().toString() + "");
-        debug.info("Selected language: " + language + "");
+        localization = new Localization(this);
+        localization.loadLocalization();
+        debug.info("Available languages: " + localization.getAvailableLanguages().toString() + "");
+        debug.info("Selected default language is: " + configLanguage + ", selected language is: " + Localization.resultLanguage);
 
         debug.info("Initializing CommandHandler");
         commandHandler = new CommandHandler(this);
@@ -104,6 +104,10 @@ public class LampControl extends JavaPlugin {
 
     public MainConfig getMainConfig() {
         return mainConfig;
+    }
+
+    public Localization getLocalization() {
+        return localization;
     }
 
     public SwitchBlock getSwitchBlock() {

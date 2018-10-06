@@ -37,7 +37,7 @@ public class HelpCommand implements IBasicCommand {
 
     @Override
     public String getDescription() {
-        return LampControl.localizations.get("command.help_description");
+        return LampControl.localization.get("command.help_description");
     }
 
     @Override

@@ -193,7 +193,7 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
                 return regexCommand.onConsoleCommand((ConsoleCommandSender) commandSender, matcher);
 
             if (!commandSender.hasPermission(hozCommand.getPermission())) {
-                commandSender.sendMessage(ChatWriter.prefix(LampControl.localizations.get("error.no_permissions")));
+                commandSender.sendMessage(ChatWriter.prefix(LampControl.localization.get("error.no_permissions")));
                 return false;
             }
             return regexCommand.onPlayerCommand(player, matcher);
@@ -206,7 +206,7 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
             Player player = (Player) commandSender;
 
             if (!commandSender.hasPermission(hozCommand.getPermission())) {
-                commandSender.sendMessage(ChatWriter.prefix(LampControl.localizations.get("error.no_permissions")));
+                commandSender.sendMessage(ChatWriter.prefix(LampControl.localization.get("error.no_permissions")));
                 return false;
             }
             return basicCommand.onPlayerCommand(player, args);

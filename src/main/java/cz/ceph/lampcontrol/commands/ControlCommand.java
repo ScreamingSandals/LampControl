@@ -3,12 +3,9 @@ package cz.ceph.lampcontrol.commands;
 import cz.ceph.lampcontrol.LampControl;
 import cz.ceph.lampcontrol.commands.core.IBasicCommand;
 import cz.ceph.lampcontrol.commands.core.RegisterCommand;
-import cz.ceph.lampcontrol.localization.Localizations;
 import cz.ceph.lampcontrol.utils.ChatWriter;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-
-import static cz.ceph.lampcontrol.LampControl.getMain;
 
 /**
  * Created by Ceph on 10.01.2017.
@@ -24,7 +21,7 @@ public class ControlCommand implements IBasicCommand {
 
     @Override
     public String getDescription() {
-        return LampControl.localizations.get("command.on_lamp_description");
+        return LampControl.localization.get("command.on_lamp_description");
     }
 
     @Override
@@ -34,7 +31,7 @@ public class ControlCommand implements IBasicCommand {
 
     @Override
     public boolean onConsoleCommand(ConsoleCommandSender sender, String[] args) {
-        sender.sendMessage(ChatWriter.prefix(LampControl.localizations.get("error.console_use")));
+        sender.sendMessage(ChatWriter.prefix(LampControl.localization.get("error.console_use")));
         return true;
 
 
