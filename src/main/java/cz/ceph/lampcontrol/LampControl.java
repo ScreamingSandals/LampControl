@@ -63,7 +63,7 @@ public class LampControl extends JavaPlugin {
         localization = new Localization(this);
         localization.loadLocalization();
         debug.info("Available languages: " + localization.getAvailableLanguages().toString() + "");
-        debug.info("Selected default language is: " + configLanguage + ", selected language is: " + Localization.resultLanguage);
+        debug.info("Using language: " + Localization.resultLanguage);
 
         debug.info("Initializing CommandHandler");
         commandHandler = new CommandHandler(this);

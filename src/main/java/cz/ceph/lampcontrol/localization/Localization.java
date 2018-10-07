@@ -24,25 +24,22 @@ public class Localization {
         try {
             File langFolder = new File(plugin.getDataFolder(), "languages");
 
-            if (langFolder.exists() && langFolder.isDirectory()) {
-                try {
-                    loadLanguages(langFolder, configLanguage);
-
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
+            if (langFolder.exists() && langFolder.isDirectory() && !checkEmptyFolder(langFolder)) {
+                for (File file : langFolder.listFiles()) {
+                    if (file.getName().contains(configLanguage)) {
+                        loadFromFolder(langFolder);
+                        resultLanguage = configLanguage;
+                    } else {
+                        createAndLoad(configLanguage, langFolder);
+                    }
                 }
             } else {
-                createFile(configLanguage);
-                resultLanguage = configLanguage;
+                createAndLoad(configLanguage, langFolder);
             }
-        } catch (
-                NullPointerException e)
-
-        {
-            LampControl.debug.warning("Cannot load languages, contact developer with log.");
+        } catch (NullPointerException e) {
+            LampControl.debug.info("Error loading languages, contact developer.");
             e.printStackTrace();
         }
-
     }
 
     private void loadFromFolder(File langFile) {
@@ -54,9 +51,15 @@ public class Localization {
         }
     }
 
+    private boolean checkEmptyFolder(File folder) {
+        File langFolder = folder.getParentFile();
+        return langFolder.isDirectory() && langFolder.list().length == 0;
+    }
+
     private void createFile(String lang) {
         try {
             plugin.saveResource("languages/lang_" + lang + ".yml", true);
+            resultLanguage = lang;
         } catch (IllegalArgumentException e) {
             LampControl.debug.warning("Invalid language file! Using default one.");
             plugin.saveResource("languages/lang_en.yml", true);
@@ -64,23 +67,9 @@ public class Localization {
         }
     }
 
-    private void loadLanguages(File langFolder, String configLanguage) {
-        for (File file : langFolder.listFiles()) {
-            if (file.getName().startsWith("lang_" + configLanguage)) {
-                try {
-                    loadFromFolder(langFolder);
-                    resultLanguage = configLanguage;
-                } catch (NullPointerException e) {
-                    createFile(configLanguage);
-                    resultLanguage = configLanguage;
-                    loadFromFolder(langFolder);
-                }
-            } else {
-                createFile(configLanguage);
-                resultLanguage = configLanguage;
-                loadFromFolder(langFolder);
-            }
-        }
+    private void createAndLoad(String configLanguage, File langFolder) {
+        createFile(configLanguage);
+        loadFromFolder(langFolder);
     }
 
     public Set<String> getAvailableLanguages() {
