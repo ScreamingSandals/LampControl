@@ -54,7 +54,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
             }
         }
 
-        if (GetBlock.getLamp(false, event)) {
+        if (GetBlock.getLampStatus(false, event)) {
             if (getMain().cachedBooleanValues.get("enable-permissions") && !checkPermissions(player, "lampcontrol.use"))
                 return;
 
@@ -85,7 +85,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
 
             SoundPlayer.play(event.getClickedBlock().getLocation(), SoundPlayer.success(), 0.5F, 0F);
 
-        } else if (GetBlock.getLamp(true, event)) {
+        } else if (GetBlock.getLampStatus(true, event)) {
 
             event.setCancelled(true);
 

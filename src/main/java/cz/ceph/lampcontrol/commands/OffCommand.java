@@ -88,17 +88,19 @@ public class OffCommand implements IBasicCommand {
                             if (!checkForSelection || region.contains(vectorLocation)) {
                                 Block block = minLoc.getWorld().getBlockAt(location);
 
-                                if (block.getType().equals(GetBlock.getLamp(true, block))) {
+                                if (GetBlock.getLampStatus(true, block)) {
                                     try {
                                         getMain().getSwitchBlock().switchLamp(block, false);
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
+                                    affected++;
+                                } else {
+                                    affected = 0;
                                 }
-                                affected++;
                             }
                         }
-                }
+            }
 
             } catch (IncompleteRegionException | NullPointerException e) {
                 player.sendMessage(ChatWriter.prefix(LampControl.localization.get("error.no_selection")));

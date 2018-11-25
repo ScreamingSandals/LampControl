@@ -22,8 +22,7 @@ public class LampListener implements Listener {
         Material mat = block.getType();
         lampItem = block.getType().equals(Material.REDSTONE_LAMP);
 
-        if (lampItem || !getMain().cachedBooleanValues.get("enable-plates") && !getMain().containMaterials(mat)) {
-            LampControl.debug.info("Material " + mat + " is in list as " + getMain().cachedRedstoneMaterials.contains(mat));
+        if (lampItem || !getMain().cachedBooleanValues.get("enable-plates") && !getMain().cachedBooleanValues.get("controlRedstone")) {
             event.setNewCurrent(100);
         }
     }

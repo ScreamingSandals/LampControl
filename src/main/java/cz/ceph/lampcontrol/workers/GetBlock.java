@@ -1,6 +1,5 @@
 package cz.ceph.lampcontrol.workers;
 
-import cz.ceph.lampcontrol.LampControl;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -11,26 +10,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
  * Created by iamceph on 02.10.2018.
  */
 public class GetBlock {
-
-    public static Boolean getLamp(Boolean light, PlayerInteractEvent event) {
-        Block block = event.getClickedBlock();
-        BlockData blockData = block.getBlockData();
-
-        boolean result = false;
-
-        if (blockData instanceof Lightable) {
-            if (light) {
-                Lightable lightable = (Lightable) block.getBlockData();
-
-                result = lightable.isLit();
-            } else {
-                Lightable lightable = (Lightable) block.getBlockData();
-                result = !lightable.isLit();
-            }
-        }
-
-        return result;
-    }
 
     public static Material getLamp(boolean light, Block block) {
         Material mat;
@@ -51,7 +30,41 @@ public class GetBlock {
         } else {
             mat = block.getType();
         }
-
         return mat;
+    }
+
+    public static boolean getLampStatus(boolean light, Block block) {
+        BlockData blockData = block.getBlockData();
+
+        if (blockData instanceof Lightable) {
+            if (light) {
+                Lightable lightable = (Lightable) block.getBlockData();
+                return lightable.isLit();
+
+            } else {
+                Lightable lightable = (Lightable) block.getBlockData();
+                return !lightable.isLit();
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean getLampStatus(boolean light, PlayerInteractEvent event) {
+        Block block = event.getClickedBlock();
+        BlockData blockData = block.getBlockData();
+
+        if (blockData instanceof Lightable) {
+            if (light) {
+                Lightable lightable = (Lightable) block.getBlockData();
+                return lightable.isLit();
+
+            } else {
+                Lightable lightable = (Lightable) block.getBlockData();
+                return !lightable.isLit();
+            }
+        } else {
+            return false;
+        }
     }
 }

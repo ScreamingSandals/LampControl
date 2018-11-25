@@ -27,7 +27,6 @@ public class LampControl extends JavaPlugin {
     private CommandHandler commandHandler;
 
     public Map<String, Boolean> cachedBooleanValues;
-    public List<Material> cachedRedstoneMaterials = new ArrayList<>();
 
     public Material lampTool;
 
@@ -116,10 +115,6 @@ public class LampControl extends JavaPlugin {
 
     public CommandHandler getCommandHandler() {
         return commandHandler;
-    }
-
-    public boolean containMaterials(Material mat) {
-        return cachedRedstoneMaterials.contains(mat);
     }
 
 }

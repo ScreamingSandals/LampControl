@@ -44,7 +44,7 @@ public class OnCommand implements IBasicCommand {
 
     @Override
     public boolean onPlayerCommand(Player player, String[] args) {
-        WorldEditPlugin worldEdit = null;
+        WorldEditPlugin worldEdit;
         worldEdit = (WorldEditPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
 
         if (worldEdit == null) {
@@ -52,7 +52,6 @@ public class OnCommand implements IBasicCommand {
             return true;
 
         } else {
-
             int affected = 0;
             boolean checkForSelection = false;
 
@@ -88,17 +87,20 @@ public class OnCommand implements IBasicCommand {
                             if (!checkForSelection || region.contains(vectorLocation)) {
                                 Block block = minLoc.getWorld().getBlockAt(location);
 
-                                if (block.getType().equals(GetBlock.getLamp(false, block))) {
+                                if (GetBlock.getLampStatus(false, block)) {
                                     try {
                                         getMain().getSwitchBlock().switchLamp(block, true);
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
+                                    affected++;
+                                } else {
+                                    affected = 0;
                                 }
-                                affected++;
                             }
                         }
                 }
+
 
             } catch (IncompleteRegionException | NullPointerException e) {
                 player.sendMessage(ChatWriter.prefix(LampControl.localization.get("error.no_selection")));
