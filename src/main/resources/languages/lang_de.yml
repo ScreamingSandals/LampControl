@@ -13,4 +13,6 @@ command:
   help_description: "Hilfe-Command für LampControl."
   on_lamp_description: "Schaltet ausgewählte Lampen &aein&f."
   off_lamp_description: "Schaltet ausgewählte Lampen &caus&f."
-  reload: "Liest die Konfiguration neu ein."
+  reload_description: "Liest die Konfiguration neu ein."
+sound:
+  sound_not_found: "Sound does not exist! Check the configuration."

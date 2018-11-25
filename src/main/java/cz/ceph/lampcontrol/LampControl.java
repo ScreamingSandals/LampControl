@@ -5,8 +5,9 @@ import cz.ceph.lampcontrol.config.MainConfig;
 import cz.ceph.lampcontrol.events.ReflectEvent;
 import cz.ceph.lampcontrol.events.ReflectPlayerInteractEvent;
 import cz.ceph.lampcontrol.listeners.LampListener;
-import cz.ceph.lampcontrol.localization.Localizations;
-import cz.ceph.lampcontrol.utils.SwitchBlock;
+import cz.ceph.lampcontrol.localization.Localization;
+import cz.ceph.lampcontrol.workers.SwitchBlock;
+import cz.ceph.lampcontrol.utils.VersionChecker;
 import org.bukkit.Material;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,18 +24,18 @@ public class LampControl extends JavaPlugin {
     private MainConfig mainConfig;
     private ReflectEvent reflectEvent;
     private SwitchBlock switchBlock;
-    private Localizations localizations;
     private CommandHandler commandHandler;
 
     public Map<String, Boolean> cachedBooleanValues;
-    public List<Material> cachedRedstoneMaterials = new ArrayList<>();
 
     public Material lampTool;
-    public String language;
 
+    public static Localization localization;
     public static Logger debug = Logger.getLogger("LampControl");
     private static LampControl pluginMain;
     private static PluginDescriptionFile pluginInfo;
+    public static String configLanguage;
+    public static String bukkitVersion;
 
     @Override
     public void onLoad() {
@@ -45,17 +46,23 @@ public class LampControl extends JavaPlugin {
     public void onEnable() {
         pluginMain = this;
 
+        bukkitVersion = VersionChecker.getBukkitVersion();
+        debug.info("Bukkit version is: " + bukkitVersion);
+
+
         debug.info("Initializing config file");
         cachedBooleanValues = new HashMap<>();
+
         mainConfig = new MainConfig(new File(getDataFolder(), "config.yml"));
 
         debug.info("Initializing default config values into cache");
         mainConfig.initializeConfig();
 
         debug.info("Initializing languages");
-        localizations = new Localizations(this);
-        localizations.findAndLoadFiles();
-        debug.info("Available languages: [ " + localizations.getAvailableLanguages().toString() + "]");
+        localization = new Localization(this);
+        localization.loadLocalization();
+        debug.info("Available languages: " + localization.getAvailableLanguages().toString() + "");
+        debug.info("Using language: " + Localization.resultLanguage);
 
         debug.info("Initializing CommandHandler");
         commandHandler = new CommandHandler(this);
@@ -76,12 +83,16 @@ public class LampControl extends JavaPlugin {
 
         pluginInfo = this.getDescription();
         debug.info(pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was enabled!");
+
+
+
     }
 
     @Override
     public void onDisable() {
         debug.info("Unloading commands");
         commandHandler.unloadAll();
+        getMainConfig().clearCachedValues();
 
         debug.info(pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was disabled!");
     }
@@ -94,8 +105,8 @@ public class LampControl extends JavaPlugin {
         return mainConfig;
     }
 
-    public Localizations getLocalizations() {
-        return localizations;
+    public Localization getLocalization() {
+        return localization;
     }
 
     public SwitchBlock getSwitchBlock() {
@@ -104,10 +115,6 @@ public class LampControl extends JavaPlugin {
 
     public CommandHandler getCommandHandler() {
         return commandHandler;
-    }
-
-    public boolean containMaterials(Material mat) {
-        return cachedRedstoneMaterials.contains(mat);
     }
 
 }

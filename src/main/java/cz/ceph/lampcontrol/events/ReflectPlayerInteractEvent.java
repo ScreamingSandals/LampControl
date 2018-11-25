@@ -1,12 +1,11 @@
 package cz.ceph.lampcontrol.events;
 
 import cz.ceph.lampcontrol.LampControl;
-import cz.ceph.lampcontrol.localization.Localizations;
 import cz.ceph.lampcontrol.utils.ChatWriter;
+import cz.ceph.lampcontrol.utils.SoundPlayer;
+import cz.ceph.lampcontrol.workers.GetBlock;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -17,8 +16,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
-
 import static cz.ceph.lampcontrol.LampControl.getMain;
 
 /**
@@ -28,8 +25,6 @@ import static cz.ceph.lampcontrol.LampControl.getMain;
 public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
 
     private LampControl plugin;
-    private String language = getMain().language;
-    private Localizations localizations = getMain().getLocalizations();
 
     public ReflectPlayerInteractEvent(LampControl plugin) {
         this.plugin = plugin;
@@ -38,18 +33,18 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
     @Override
     @SuppressWarnings("deprecation")
     public void execute(Event instance) {
-        PlayerInteractEvent e = (PlayerInteractEvent) instance;
+        PlayerInteractEvent event = (PlayerInteractEvent) instance;
 
         /*
          * All about lamps here
          */
-        Player player = e.getPlayer();
+        Player player = event.getPlayer();
 
-        if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
+        if (!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
 
         if (player.isSneaking()) return;
 
-        if (getMain().cachedBooleanValues.get("manage-op") && e.getPlayer().isOp() || checkPermissions(player, "lampcontrol.hand")) {
+        if (getMain().cachedBooleanValues.get("operatorControl") && event.getPlayer().isOp() || checkPermissions(player, "lampcontrol.hand")) {
             if (player.getItemInHand() == null || !player.getItemInHand().getType().equals(Material.AIR) && !player.getItemInHand().getType().equals(getMain().lampTool)) {
                 return;
             }
@@ -59,65 +54,66 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
             }
         }
 
-        if (e.getClickedBlock().getType().equals(Material.REDSTONE_LAMP_ON)) {
-            if (getMain().cachedBooleanValues.get("use-permissions") && !checkPermissions(player, "lampcontrol.use"))
+        if (GetBlock.getLampStatus(false, event)) {
+            if (getMain().cachedBooleanValues.get("enable-permissions") && !checkPermissions(player, "lampcontrol.use"))
                 return;
 
-            if (!getMain().cachedBooleanValues.get("manage-lamps")) return;
+            if (!getMain().cachedBooleanValues.get("control-lamps")) return;
 
-            e.setCancelled(true);
+            event.setCancelled(true);
 
-            Block b = e.getClickedBlock();
+            Block block = event.getClickedBlock();
+            BlockState blockState = block.getState();
+
+            plugin.getSwitchBlock().initWorld(block.getWorld());
+            plugin.getSwitchBlock().switchLamp(block, true);
+
+            BlockPlaceEvent blockPlaceEvent = new BlockPlaceEvent(block, blockState, block, new ItemStack(GetBlock.getLamp(false, block)), player, true);
+            Bukkit.getPluginManager().callEvent(blockPlaceEvent);
+
+            if (blockPlaceEvent.isCancelled()) {
+                plugin.getSwitchBlock().switchLamp(block, false);
+                event.getPlayer().sendMessage(ChatWriter.prefix(LampControl.localization.get("error.no_permissions")));
+                return;
+            }
+
+            if (getMain().cachedBooleanValues.get("enable-items")) {
+                ItemStack item = event.getPlayer().getItemInHand();
+                item.setAmount(item.getAmount() - 1);
+                event.getPlayer().setItemInHand(null);
+            }
+
+            SoundPlayer.play(event.getClickedBlock().getLocation(), SoundPlayer.success(), 0.5F, 0F);
+
+        } else if (GetBlock.getLampStatus(true, event)) {
+
+            event.setCancelled(true);
+
+            if (getMain().cachedBooleanValues.get("enable-permissions") && !event.getPlayer().hasPermission("lampcontrol.use"))
+                return;
+
+            Block b = event.getClickedBlock();
             BlockState blockState = b.getState();
 
             plugin.getSwitchBlock().initWorld(b.getWorld());
             plugin.getSwitchBlock().switchLamp(b, false);
 
-            BlockPlaceEvent blockPlaceEvent = new BlockPlaceEvent(b, blockState, b, new ItemStack(Material.REDSTONE_LAMP_OFF), player, true);
-            Bukkit.getPluginManager().callEvent(blockPlaceEvent);
-
-            if (blockPlaceEvent.isCancelled()) {
-                plugin.getSwitchBlock().switchLamp(b, false);
-                e.getPlayer().sendMessage(ChatWriter.prefix(localizations.get(language, "error.no_permissions")));
-                return;
-            }
-
-            if (getMain().cachedBooleanValues.get("use-items")) {
-                ItemStack item = e.getPlayer().getItemInHand();
-                item.setAmount(item.getAmount() - 1);
-                e.getPlayer().setItemInHand(null);
-            }
-
-            playSound(e.getClickedBlock().getLocation(), 0.5F, 0F);
-        } else if (e.getClickedBlock().getType().equals(Material.REDSTONE_LAMP_OFF)) {
-
-            e.setCancelled(true);
-
-            if (getMain().cachedBooleanValues.get("use-permissions") && !e.getPlayer().hasPermission("lampcontrol.use"))
-                return;
-
-            Block b = e.getClickedBlock();
-            BlockState blockState = b.getState();
-
-            plugin.getSwitchBlock().initWorld(b.getWorld());
-            plugin.getSwitchBlock().switchLamp(b, true);
-
-            BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(b, blockState, b, new ItemStack(Material.REDSTONE_LAMP_ON), e.getPlayer(), true);
+            BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(b, blockState, b, new ItemStack(GetBlock.getLamp(false, b)), event.getPlayer(), true);
             Bukkit.getPluginManager().callEvent(checkBuildPerms);
 
             if (checkBuildPerms.isCancelled()) {
                 plugin.getSwitchBlock().switchLamp(b, true);
-                e.getPlayer().sendMessage(ChatWriter.prefix(localizations.get(language, "error.no_permissions")));
+                event.getPlayer().sendMessage(ChatWriter.prefix(LampControl.localization.get("error.no_permissions")));
                 return;
             }
 
-            if (getMain().cachedBooleanValues.get("use-items")) {
-                ItemStack item = e.getPlayer().getItemInHand();
+            if (getMain().cachedBooleanValues.get("enable-items")) {
+                ItemStack item = event.getPlayer().getItemInHand();
                 item.setAmount(item.getAmount() - 1);
-                e.getPlayer().setItemInHand(null);
+                event.getPlayer().setItemInHand(null);
             }
 
-            playSound(e.getClickedBlock().getLocation(), 0.5F, 1F);
+            SoundPlayer.play(event.getClickedBlock().getLocation(), SoundPlayer.success(), 0.5F, 1F);
         }
         /*
          * End of lamps section
@@ -126,23 +122,23 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
         /*
          * All about rails here
          */
-        else if (e.getClickedBlock().getType().equals(Material.POWERED_RAIL)) {
-            if (getMain().cachedBooleanValues.get("use-permissions") && !e.getPlayer().hasPermission("lampcontrol.use"))
+        else if (event.getClickedBlock().getType().equals(Material.POWERED_RAIL)) {
+            if (getMain().cachedBooleanValues.get("enable-permissions") && !event.getPlayer().hasPermission("lampcontrol.use"))
                 return;
 
-            if (!getMain().cachedBooleanValues.get("manage-rails")) return;
+            if (!getMain().cachedBooleanValues.get("enable-rails")) return;
 
-            e.setCancelled(true);
+            event.setCancelled(true);
 
-            Block b = e.getClickedBlock();
+            Block b = event.getClickedBlock();
             BlockState blockState = b.getState();
             int data = (int) b.getData();
 
             if (data < 7) {
-                BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(b, blockState, b, new ItemStack(Material.POWERED_RAIL), e.getPlayer(), true);
+                BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(b, blockState, b, new ItemStack(Material.POWERED_RAIL), event.getPlayer(), true);
                 Bukkit.getPluginManager().callEvent(checkBuildPerms);
                 if (checkBuildPerms.isCancelled()) {
-                    e.getPlayer().sendMessage(ChatWriter.prefix(localizations.get(language, "error.no_permissions")));
+                    event.getPlayer().sendMessage(ChatWriter.prefix(LampControl.localization.get("error.no_permissions")));
                     return;
                 } else {
                     BlockFace[] sides = new BlockFace[]{BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST};
@@ -164,33 +160,33 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
                     plugin.getSwitchBlock().switchRail(b, true);
                 }
 
-                if (getMain().cachedBooleanValues.get("use-item")) {
-                    ItemStack item = e.getPlayer().getItemInHand();
+                if (getMain().cachedBooleanValues.get("enable-items")) {
+                    ItemStack item = event.getPlayer().getItemInHand();
                     item.setAmount(item.getAmount() - 1);
-                    e.getPlayer().setItemInHand(null);
-                    e.getPlayer().updateInventory();
+                    event.getPlayer().setItemInHand(null);
+                    event.getPlayer().updateInventory();
                 }
 
-                playSound(e.getClickedBlock().getLocation(), 0.5F, 1.0F);
+                SoundPlayer.play(event.getClickedBlock().getLocation(), SoundPlayer.success(), 0.5F, 1F);
             } else {
-                BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(b, blockState, b, new ItemStack(Material.POWERED_RAIL), e.getPlayer(), true);
+                BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(b, blockState, b, new ItemStack(Material.POWERED_RAIL), event.getPlayer(), true);
                 Bukkit.getPluginManager().callEvent(checkBuildPerms);
 
                 if (checkBuildPerms.isCancelled()) {
-                    e.getPlayer().sendMessage(ChatWriter.prefix(localizations.get(language, "error.no_permissions")));
+                    event.getPlayer().sendMessage(ChatWriter.prefix(LampControl.localization.get("error.no_permissions")));
                     return;
                 } else {
                     plugin.getSwitchBlock().initWorld(b.getWorld());
                     plugin.getSwitchBlock().switchRail(b, false);
                 }
 
-                if (getMain().cachedBooleanValues.get("use-items")) {
-                    ItemStack item = e.getPlayer().getItemInHand();
+                if (getMain().cachedBooleanValues.get("enable-items")) {
+                    ItemStack item = event.getPlayer().getItemInHand();
                     item.setAmount(item.getAmount() - 1);
-                    e.getPlayer().setItemInHand(null);
+                    event.getPlayer().setItemInHand(null);
                 }
 
-                playSound(e.getClickedBlock().getLocation(), 0.5F, 0F);
+                SoundPlayer.play(event.getClickedBlock().getLocation(), SoundPlayer.success(), 0.5F, 0F);
             }
         }
 
@@ -199,31 +195,6 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
          */
 
 
-    }
-
-    /*
-     * If any other Spigot sounds will be added or modified, this is needed to rewrite.
-     */
-
-    private void playSound(Location loc, float v, float v1) {
-        Sound[] sounds = Sound.values();
-        Sound correctSound = null;
-        for (Sound s : sounds) {
-            if (s.toString().equalsIgnoreCase("ui_button_click"))
-                correctSound = s;
-            else if (s.toString().equalsIgnoreCase("click"))
-                correctSound = s;
-            if (correctSound != null)
-                break;
-        }
-
-        if (correctSound == null) {
-            LampControl.debug.warning("Sound not found! Contact developer for help.");
-            Arrays.stream(sounds).forEach(sound -> System.out.println(sound.toString()));
-            return;
-        }
-
-        loc.getWorld().playSound(loc, correctSound, v, v1);
     }
 
     private boolean checkPermissions(Player p, String permission) {

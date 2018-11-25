@@ -6,7 +6,7 @@
 
     <groupId>cz.ceph</groupId>
     <artifactId>lampcontrol</artifactId>
-    <version>3.1-SNAPSHOT</version>
+    <version>3.1-DEV</version>
     <packaging>jar</packaging>
 
     <name>LampControl</name>
@@ -17,10 +17,6 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
-            <repository>
-                <id>sk89q-snapshots</id>
-                <url>http://maven.sk89q.com/repo/</url>
-            </repository>
     </repositories>
 
     <properties>
@@ -29,15 +25,22 @@
 
         <spigot.plugin.version>${project.version}</spigot.plugin.version>
 
-        <spigot.version>1.11-R0.1-SNAPSHOT</spigot.version>
+        <spigot.version>1.13.2-R0.1-SNAPSHOT</spigot.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
+            <artifactId>spigot-api</artifactId>
             <version>${spigot.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <scope>system</scope>
+            <version>any</version>
+            <systemPath>${project.basedir}/libs/spigot-1.13.1-R0.1-SNAPSHOT-b1945.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.bukkit</groupId>
@@ -48,7 +51,9 @@
         <dependency>
             <groupId>com.sk89q</groupId>
             <artifactId>worldedit</artifactId>
-            <version>6.0.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <version>any</version>
+            <systemPath>${project.basedir}/libs/worldedit-bukkit-7.0.0-SNAPSHOT-dist.jar</systemPath>
         </dependency>
     </dependencies>
 
@@ -73,11 +78,10 @@
                 </excludes>
             </resource>
             <resource>
-                <directory>src/main/resources/languages</directory>
+                <directory>src/languages</directory>
                 <filtering>false</filtering>
                 <excludes>
-                    <exclude>**/*.java</exclude>
-                    <exclude>*.yml</exclude>
+                    <exclude>lang_*.yml</exclude>
                 </excludes>
             </resource>
         </resources>
