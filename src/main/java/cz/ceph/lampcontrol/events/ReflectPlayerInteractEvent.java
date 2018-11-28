@@ -68,7 +68,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
             plugin.getSwitchBlock().initWorld(block.getWorld());
             plugin.getSwitchBlock().switchLamp(block, true);
 
-            BlockPlaceEvent blockPlaceEvent = new BlockPlaceEvent(block, blockState, block, new ItemStack(GetBlock.getLamp(false, block)), player, true);
+            BlockPlaceEvent blockPlaceEvent = new BlockPlaceEvent(block, blockState, block, new ItemStack(Material.REDSTONE_LAMP), player, true);
             Bukkit.getPluginManager().callEvent(blockPlaceEvent);
 
             if (blockPlaceEvent.isCancelled()) {
@@ -92,17 +92,17 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
             if (getMain().cachedBooleanValues.get("enable-permissions") && !event.getPlayer().hasPermission("lampcontrol.use"))
                 return;
 
-            Block b = event.getClickedBlock();
-            BlockState blockState = b.getState();
+            Block block = event.getClickedBlock();
+            BlockState blockState = block.getState();
 
-            plugin.getSwitchBlock().initWorld(b.getWorld());
-            plugin.getSwitchBlock().switchLamp(b, false);
+            plugin.getSwitchBlock().initWorld(block.getWorld());
+            plugin.getSwitchBlock().switchLamp(block, false);
 
-            BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(b, blockState, b, new ItemStack(GetBlock.getLamp(false, b)), event.getPlayer(), true);
+            BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(block, blockState, block, new ItemStack(Material.REDSTONE_LAMP), event.getPlayer(), true);
             Bukkit.getPluginManager().callEvent(checkBuildPerms);
 
             if (checkBuildPerms.isCancelled()) {
-                plugin.getSwitchBlock().switchLamp(b, true);
+                plugin.getSwitchBlock().switchLamp(block, true);
                 event.getPlayer().sendMessage(ChatWriter.prefix(LampControl.localization.get("error.no_permissions")));
                 return;
             }
