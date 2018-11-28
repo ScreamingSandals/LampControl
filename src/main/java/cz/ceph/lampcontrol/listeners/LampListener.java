@@ -16,10 +16,9 @@ import static cz.ceph.lampcontrol.LampControl.getMain;
 public class LampListener implements Listener {
 
     @EventHandler
-    public void onEntityChangeBlock(BlockRedstoneEvent event) {
+    public void onRedstoneBlockChange(BlockRedstoneEvent event) {
         boolean lampItem;
         Block block = event.getBlock();
-        Material mat = block.getType();
         lampItem = block.getType().equals(Material.REDSTONE_LAMP);
 
         if (lampItem || !getMain().cachedBooleanValues.get("enable-plates") && !getMain().cachedBooleanValues.get("controlRedstone")) {
