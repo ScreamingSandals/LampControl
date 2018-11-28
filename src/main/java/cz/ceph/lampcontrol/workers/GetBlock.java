@@ -32,15 +32,12 @@ public class GetBlock {
 
         if (getBlock(block)) {
             if (light) {
-                LampControl.debug.info("getLampStatus, light true");
                 Lightable lightable = (Lightable) block.getBlockData();
-                LampControl.debug.info("lightable is " + lightable.isLit());
                 return lightable.isLit();
 
 
             } else {
                 Lightable lightable = (Lightable) block.getBlockData();
-                LampControl.debug.info("lightable is " + lightable.isLit());
                 return !lightable.isLit();
             }
         } else {
