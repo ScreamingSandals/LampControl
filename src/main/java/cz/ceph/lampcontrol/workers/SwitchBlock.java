@@ -1,16 +1,9 @@
 package cz.ceph.lampcontrol.workers;
 
 import cz.ceph.lampcontrol.LampControl;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.Lightable;
-import org.bukkit.block.data.Powerable;
-import org.bukkit.entity.minecart.PoweredMinecart;
-import org.bukkit.material.PoweredRail;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
@@ -52,10 +45,10 @@ public class SwitchBlock {
     public void switchLamp(Block block, boolean light) {
         if (light) {
             setStatic(true);
-            SwitchMaterial.lampSwitcher(true, block);
+            block.setType(Material.REDSTONE_LAMP_ON);
             setStatic(false);
         } else {
-            SwitchMaterial.lampSwitcher(false, block);
+            block.setType(Material.REDSTONE_LAMP_OFF);
         }
     }
 
@@ -71,16 +64,21 @@ public class SwitchBlock {
         return cW.getClass().getDeclaredMethod("getHandle").invoke(cW);
     }
 
+    @SuppressWarnings("deprecation")
     public void switchRail(Block block, boolean power) {
-        Powerable powerable = (Powerable) block.getState().getBlockData();
-
-        if (power) {
-            setStatic(true);
-            powerable.setPowered(true);
-            setStatic(false);
-
-        } else {
-            powerable.setPowered(false);
+        try {
+            int data = (int) block.getData();
+            if (power) {
+                data = data + 8;
+                setStatic(true);
+                block.setTypeIdAndData(27, (byte) data, false);
+                setStatic(false);
+            } else {
+                data = data - 8;
+                block.setTypeIdAndData(27, (byte) data, false);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

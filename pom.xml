@@ -6,7 +6,7 @@
 
     <groupId>cz.ceph</groupId>
     <artifactId>lampcontrol</artifactId>
-    <version>3.1.1</version>
+    <version>3.1.1_r1_12</version>
     <packaging>jar</packaging>
 
     <name>LampControl</name>
@@ -17,6 +17,10 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
+        <repository>
+        <id>sk89q-snapshots</id>
+        <url>http://maven.sk89q.com/repo/</url>
+    </repository>
     </repositories>
 
     <properties>
@@ -25,7 +29,7 @@
 
         <spigot.plugin.version>${project.version}</spigot.plugin.version>
 
-        <spigot.version>1.13.2-R0.1-SNAPSHOT</spigot.version>
+        <spigot.version>1.12.2-R0.1-SNAPSHOT</spigot.version>
     </properties>
 
     <dependencies>
@@ -36,13 +40,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <scope>system</scope>
-            <version>any</version>
-            <systemPath>${project.basedir}/libs/spigot-1.13.1-R0.1-SNAPSHOT-b1945.jar</systemPath>
-        </dependency>
-        <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
             <version>${spigot.version}</version>
@@ -51,9 +48,7 @@
         <dependency>
             <groupId>com.sk89q</groupId>
             <artifactId>worldedit</artifactId>
-            <scope>system</scope>
-            <version>any</version>
-            <systemPath>${project.basedir}/libs/worldedit-bukkit-7.0.0-SNAPSHOT-dist.jar</systemPath>
+            <version>6.0.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

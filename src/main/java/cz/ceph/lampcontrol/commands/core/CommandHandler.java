@@ -1,11 +1,9 @@
 package cz.ceph.lampcontrol.commands.core;
 
 import cz.ceph.lampcontrol.LampControl;
-import cz.ceph.lampcontrol.utils.ChatWriter;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
-import org.bukkit.craftbukkit.v1_13_R2.command.CraftCommandMap;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.SimplePluginManager;
 
@@ -43,7 +41,7 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
             commandMap = (CommandMap) fieldCommandMap.get(simplePluginManager);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
-            LampControl.debug.info("Registration of command failed.");
+            plugin.getLogger().severe("Registration of command failed.");
         }
     }
 
@@ -94,7 +92,7 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
         }
         if (clazzInstance == null)
             LampControl.debug.info("[ERROR] Cannot create instance of " + clazz.getSimpleName() + " . Creating instance returned null.");
-        return ICommand.class.cast(clazzInstance);
+        return ICommand.class.cast(handle(clazzInstance));
     }
 
     @Override
@@ -107,8 +105,15 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
     }
 
     private Map<String, Command> getKnownCommands() {
-        CraftCommandMap simpleCommandMap = (CraftCommandMap) commandMap;
-        return simpleCommandMap.getKnownCommands();
+        try {
+            SimpleCommandMap simpleCommandMap = (SimpleCommandMap) commandMap;
+            Field field = simpleCommandMap.getClass().getDeclaredField("knownCommands");
+            field.setAccessible(true);
+            return (Map<String, Command>) field.get(simpleCommandMap);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyMap();
     }
 
     private boolean containsCommand(String command) {
@@ -129,17 +134,17 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
     private void registerCommand(RegisterCommand annotation, ICommand iCommand) {
 
         if (annotation == null) {
-            LampControl.debug.info("[CommandHandler] [ERROR] Command annotation is null, cannot assign command name.");
+            LampControl.debug.info("[Commands] [ERROR] Command annotation is null, cannot assign command name.");
             return;
         }
 
         if (iCommand == null) {
-            LampControl.debug.info("[CommandHandler] [ERROR] Cannot register command" + annotation.value() + " due to nullable instance.");
+            LampControl.debug.info("[Commands] [ERROR] Cannot register command" + annotation.value() + " due to nullable instance.");
             return;
         }
 
         if (commandMap == null) {
-            LampControl.debug.info("[CommandHandler] [ERROR] CommandMap is null, can't add commands to CommandMap.");
+            LampControl.debug.info("[Commands] [ERROR] CommandMap is null, can't add commands to CommandMap.");
             return;
         }
 
@@ -162,7 +167,7 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
         });
 
         availableCommands.put(commandName, iCommand);
-        LampControl.debug.info("[CommandHandler] Registered command \"" + commandName + "\"");
+        LampControl.debug.info("[Commands] Registered command \"" + commandName + "\"");
     }
 
     public Map<String, ICommand> getAvailableCommands() {
@@ -193,7 +198,7 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
                 return regexCommand.onConsoleCommand((ConsoleCommandSender) commandSender, matcher);
 
             if (!commandSender.hasPermission(hozCommand.getPermission())) {
-                commandSender.sendMessage(ChatWriter.prefix(LampControl.localization.get("error.no_permissions")));
+                commandSender.sendMessage(LampControl.localization.get("error.no_permissions"));
                 return false;
             }
             return regexCommand.onPlayerCommand(player, matcher);
@@ -206,7 +211,7 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
             Player player = (Player) commandSender;
 
             if (!commandSender.hasPermission(hozCommand.getPermission())) {
-                commandSender.sendMessage(ChatWriter.prefix(LampControl.localization.get("error.no_permissions")));
+                commandSender.sendMessage(LampControl.localization.get("error.no_permissions"));
                 return false;
             }
             return basicCommand.onPlayerCommand(player, args);
@@ -215,4 +220,18 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
         return false;
     }
 
+    private <T> T handle(T instance) {
+        if (instance == null) return instance;
+        Arrays.stream(instance.getClass().getDeclaredFields()).forEach(field -> {
+            field.setAccessible(true);
+            Object targetInstance = LampControl.class;
+
+            try {
+                field.set(instance, targetInstance);
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        });
+        return instance;
+    }
 }
