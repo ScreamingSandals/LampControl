@@ -41,7 +41,7 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
             commandMap = (CommandMap) fieldCommandMap.get(simplePluginManager);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
-            plugin.getLogger().severe("Registration of command failed.");
+            LampControl.debug.info("Registration of command failed.");
         }
     }
 
@@ -134,17 +134,17 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
     private void registerCommand(RegisterCommand annotation, ICommand iCommand) {
 
         if (annotation == null) {
-            LampControl.debug.info("[Commands] [ERROR] Command annotation is null, cannot assign command name.");
+            LampControl.debug.info("[CommandHandler Error] Command annotation is null, cannot assign command name.");
             return;
         }
 
         if (iCommand == null) {
-            LampControl.debug.info("[Commands] [ERROR] Cannot register command" + annotation.value() + " due to nullable instance.");
+            LampControl.debug.info("[CommandHandler Error] Cannot register command" + annotation.value() + " due to nullable instance.");
             return;
         }
 
         if (commandMap == null) {
-            LampControl.debug.info("[Commands] [ERROR] CommandMap is null, can't add commands to CommandMap.");
+            LampControl.debug.info("[CommandHandler Error] CommandMap is null, can't add commands to CommandMap.");
             return;
         }
 
@@ -167,7 +167,7 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
         });
 
         availableCommands.put(commandName, iCommand);
-        LampControl.debug.info("[Commands] Registered command \"" + commandName + "\"");
+        LampControl.debug.info("[CommandHandler] Registered command \"" + commandName + "\"");
     }
 
     public Map<String, ICommand> getAvailableCommands() {

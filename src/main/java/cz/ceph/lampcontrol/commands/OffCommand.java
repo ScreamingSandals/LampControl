@@ -21,12 +21,12 @@ import static cz.ceph.lampcontrol.LampControl.getMain;
  * Created by Ceph on 10.01.2017.
  */
 
-@RegisterCommand(value = "onlamp", alias = {"lampoff", "offlamp"})
+@RegisterCommand(value = "offlamp", alias = {"lampoff"})
 public class OffCommand implements IBasicCommand {
 
     @Override
     public String getPermission() {
-        return "lampcontrol.command.of";
+        return "lampcontrol.command.off";
     }
 
     @Override
@@ -90,7 +90,7 @@ public class OffCommand implements IBasicCommand {
                 player.sendMessage(ChatWriter.prefix(LampControl.localization.get("info.no_lamps_affecetd")));
                 SoundPlayer.play(player.getLocation(), SoundPlayer.fail(), 0.5F, 1F);
             } else
-                player.sendMessage(ChatWriter.prefix(LampControl.localization.get("info.affected_lamps_on").replace("%affected", "" + affected + "")));
+                player.sendMessage(ChatWriter.prefix(LampControl.localization.get("info.affected_lamps_off").replace("%affected", "" + affected + "")));
             SoundPlayer.play(player.getLocation(), SoundPlayer.success(), 0.5F, 1F);
             return true;
         }

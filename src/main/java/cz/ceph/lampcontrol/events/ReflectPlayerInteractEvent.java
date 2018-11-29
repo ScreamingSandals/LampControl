@@ -54,7 +54,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
             }
         }
 
-        if (event.getClickedBlock().getType().equals(Material.REDSTONE_LAMP_ON)) {
+        if (event.getClickedBlock().getType().equals(Material.REDSTONE_LAMP_OFF)) {
             if (getMain().cachedBooleanValues.get("enable-permissions") && !checkPermissions(player, "lampcontrol.use"))
                 return;
 
@@ -68,7 +68,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
             plugin.getSwitchBlock().initWorld(block.getWorld());
             plugin.getSwitchBlock().switchLamp(block, true);
 
-            BlockPlaceEvent blockPlaceEvent = new BlockPlaceEvent(block, blockState, block, new ItemStack(Material.REDSTONE_LAMP_OFF), player, true);
+            BlockPlaceEvent blockPlaceEvent = new BlockPlaceEvent(block, blockState, block, new ItemStack(Material.REDSTONE_LAMP_ON), player, true);
             Bukkit.getPluginManager().callEvent(blockPlaceEvent);
 
             if (blockPlaceEvent.isCancelled()) {
@@ -85,7 +85,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
 
             SoundPlayer.play(event.getClickedBlock().getLocation(), SoundPlayer.success(), 0.5F, 0F);
 
-        } else if (event.getClickedBlock().getType().equals(Material.REDSTONE_LAMP_OFF)) {
+        } else if (event.getClickedBlock().getType().equals(Material.REDSTONE_LAMP_ON)) {
 
             event.setCancelled(true);
 
@@ -98,7 +98,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
             plugin.getSwitchBlock().initWorld(block.getWorld());
             plugin.getSwitchBlock().switchLamp(block, false);
 
-            BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(block, blockState, block, new ItemStack(Material.REDSTONE_LAMP_ON), event.getPlayer(), true);
+            BlockPlaceEvent checkBuildPerms = new BlockPlaceEvent(block, blockState, block, new ItemStack(Material.REDSTONE_LAMP_OFF), event.getPlayer(), true);
             Bukkit.getPluginManager().callEvent(checkBuildPerms);
 
             if (checkBuildPerms.isCancelled()) {
