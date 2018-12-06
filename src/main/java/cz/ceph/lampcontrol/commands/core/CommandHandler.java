@@ -43,7 +43,7 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
             commandMap = (CommandMap) fieldCommandMap.get(simplePluginManager);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
-            LampControl.debug.info("Registration of command failed.");
+            LampControl.debug.info("[CommandHandler Error]  Registration of command failed.");
         }
     }
 
@@ -93,7 +93,7 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
             e.printStackTrace();
         }
         if (clazzInstance == null)
-            LampControl.debug.info("[ERROR] Cannot create instance of " + clazz.getSimpleName() + " . Creating instance returned null.");
+            LampControl.debug.info("[CommandHandler Error] Cannot create instance of " + clazz.getSimpleName() + " . Creating instance returned null.");
         return ICommand.class.cast(clazzInstance);
     }
 
@@ -129,17 +129,17 @@ public class CommandHandler implements CommandExecutor, ICommandHandler {
     private void registerCommand(RegisterCommand annotation, ICommand iCommand) {
 
         if (annotation == null) {
-            LampControl.debug.info("[CommandHandler] [ERROR] Command annotation is null, cannot assign command name.");
+            LampControl.debug.info("[CommandHandler Error] Command annotation is null, cannot assign command name.");
             return;
         }
 
         if (iCommand == null) {
-            LampControl.debug.info("[CommandHandler] [ERROR] Cannot register command" + annotation.value() + " due to nullable instance.");
+            LampControl.debug.info("[CommandHandler Error] Cannot register command" + annotation.value() + " due to nullable instance.");
             return;
         }
 
         if (commandMap == null) {
-            LampControl.debug.info("[CommandHandler] [ERROR] CommandMap is null, can't add commands to CommandMap.");
+            LampControl.debug.info("[CommandHandler Error] CommandMap is null, can't add commands to CommandMap.");
             return;
         }
 

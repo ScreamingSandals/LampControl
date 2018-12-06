@@ -89,7 +89,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
 
             event.setCancelled(true);
 
-            if (getMain().cachedBooleanValues.get("enable-permissions") && !event.getPlayer().hasPermission("lampcontrol.use"))
+            if (getMain().cachedBooleanValues.get("control-permissions") && !event.getPlayer().hasPermission("lampcontrol.use"))
                 return;
 
             Block block = event.getClickedBlock();
@@ -126,7 +126,7 @@ public class ReflectPlayerInteractEvent implements ReflectEvent.Callback {
             if (getMain().cachedBooleanValues.get("enable-permissions") && !event.getPlayer().hasPermission("lampcontrol.use"))
                 return;
 
-            if (!getMain().cachedBooleanValues.get("enable-rails")) return;
+            if (!getMain().cachedBooleanValues.get("control-rails")) return;
 
             event.setCancelled(true);
 

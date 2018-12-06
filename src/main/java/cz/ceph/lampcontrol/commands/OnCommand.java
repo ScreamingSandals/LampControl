@@ -4,6 +4,7 @@ import com.sk89q.worldedit.*;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.BukkitPlayer;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
 import cz.ceph.lampcontrol.LampControl;
@@ -70,8 +71,8 @@ public class OnCommand implements IBasicCommand {
                     checkForSelection = true;
                 }
 
-                Vector min = region.getMinimumPoint();
-                Vector max = region.getMaximumPoint();
+                BlockVector3 min = region.getMinimumPoint();
+                BlockVector3 max = region.getMaximumPoint();
 
                 Location minLoc = new Location(player.getWorld(), min.getBlockX(), min.getBlockY(), min.getBlockZ());
                 Location maxLoc = new Location(player.getWorld(), max.getBlockX(), max.getBlockY(), max.getBlockZ());
@@ -81,7 +82,7 @@ public class OnCommand implements IBasicCommand {
                 for (int x = minLoc.getBlockX(); x <= maxLoc.getBlockX(); x++) {
                     for (int y = minLoc.getBlockY(); y <= maxLoc.getBlockY(); y++)
                         for (int z = minLoc.getBlockZ(); z <= maxLoc.getBlockZ(); z++) {
-                            Vector vectorLocation = new Vector(min.getX(), min.getY(), min.getZ());
+                            BlockVector3 vectorLocation = BlockVector3.at(min.getX(), min.getY(), min.getZ());
                             Location location = new Location(minLoc.getWorld(), x, y, z);
 
                             if (!checkForSelection || region.contains(vectorLocation)) {

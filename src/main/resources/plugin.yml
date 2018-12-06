@@ -1,5 +1,5 @@
 name: LampControl
 author: Ceph
-version: 3.1
+version: 3.1.1
 api-version: 1.13
 main: cz.ceph.lampcontrol.LampControl
