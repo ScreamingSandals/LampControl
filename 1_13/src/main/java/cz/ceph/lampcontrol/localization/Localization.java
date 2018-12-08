@@ -32,16 +32,13 @@ public class Localization {
                             resultLanguage = configLanguage;
                         } else {
                             createAndLoadLangFile(configLanguage, langFolder);
-                            LampControl.debug.info("here");
                         }
                     }
                 } else {
                     createAndLoadLangFile(configLanguage, langFolder);
-                    LampControl.debug.info("here2");
                 }
             } else {
                 createAndLoadLangFile(configLanguage, langFolder);
-                LampControl.debug.info("here3");
             }
         } catch (NullPointerException e) {
             LampControl.debug.info("Error loading languages, contact developer.");

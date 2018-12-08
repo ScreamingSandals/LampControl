@@ -47,15 +47,11 @@ public class LampControl extends JavaPlugin {
         pluginMain = this;
 
         bukkitVersion = VersionChecker.getBukkitVersion();
-        debug.info("Bukkit version is: " + bukkitVersion);
-
+        //debug.info("Bukkit version is: " + bukkitVersion);
 
         debug.info("Initializing config file");
         cachedBooleanValues = new HashMap<>();
-
         mainConfig = new MainConfig(new File(getDataFolder(), "config.yml"));
-
-        debug.info("Initializing default config values into cache");
         mainConfig.initializeConfig();
 
         debug.info("Initializing languages");
@@ -64,10 +60,10 @@ public class LampControl extends JavaPlugin {
         debug.info("Available languages: " + localization.getAvailableLanguages().toString() + "");
         debug.info("Using language: " + Localization.resultLanguage);
 
-        debug.info("Initializing CommandHandler");
+        debug.info("Initializing Core");
         commandHandler = new CommandHandler(this);
 
-        debug.info("Registering LampListener");
+        //debug.info("Registering LampListener");
         LampListener lampListener = new LampListener();
 
         reflectEvent.initListener(lampListener);
@@ -75,14 +71,14 @@ public class LampControl extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(lampListener, this);
 
-        debug.info("Registering SwitchBlock function");
+        //debug.info("Registering SwitchBlock function");
         switchBlock = new SwitchBlock();
 
-        debug.info("Registering commands");
+        //debug.info("Registering commands");
         commandHandler.loadCommands(LampControl.class);
 
         pluginInfo = this.getDescription();
-        debug.info(pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was enabled!");
+        debug.info(pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was enabled successfully!");
 
 
 
@@ -90,11 +86,11 @@ public class LampControl extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        debug.info("Unloading commands");
+        debug.info("Unloading Core");
         commandHandler.unloadAll();
         getMainConfig().clearCachedValues();
 
-        debug.info(pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was disabled!");
+        debug.info(pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was disabled :(");
     }
 
     public static LampControl getMain() {

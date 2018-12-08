@@ -41,21 +41,29 @@ public class SwitchBlock {
         isClientSideField.setAccessible(true);
     }
 
-    public void setStatic(boolean value) {
+    public void switchLamp(Block block, boolean light) {
+        Lightable lightable = (Lightable) block.getState().getBlockData();
+
+        setStatic(true);
+        lightable.setLit(light);
+        block.setBlockData(lightable);
+        setStatic(false);
+    }
+
+    public void switchRail(Block block, boolean power) {
+        Powerable powerable = (Powerable) block.getState().getBlockData();
+
+        setStatic(true);
+        powerable.setPowered(power);
+        block.setBlockData(powerable);
+        setStatic(false);
+    }
+
+    private void setStatic(boolean value) {
         try {
             isClientSideField.set(craftWorld, value);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-        }
-    }
-
-    public void switchLamp(Block block, boolean light) {
-        if (light) {
-            setStatic(true);
-            SwitchMaterial.lampSwitcher(true, block);
-            setStatic(false);
-        } else {
-            SwitchMaterial.lampSwitcher(false, block);
         }
     }
 
@@ -69,19 +77,6 @@ public class SwitchBlock {
 
     private Object getInstanceOfCW(Object cW) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         return cW.getClass().getDeclaredMethod("getHandle").invoke(cW);
-    }
-
-    public void switchRail(Block block, boolean power) {
-        Powerable powerable = (Powerable) block.getState().getBlockData();
-
-        if (power) {
-            setStatic(true);
-            powerable.setPowered(true);
-            setStatic(false);
-
-        } else {
-            powerable.setPowered(false);
-        }
     }
 
 }

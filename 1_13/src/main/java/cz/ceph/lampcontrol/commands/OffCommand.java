@@ -45,7 +45,7 @@ public class OffCommand implements IBasicCommand {
 
     @Override
     public boolean onPlayerCommand(Player player, String[] args) {
-        WorldEditPlugin worldEdit = null;
+        WorldEditPlugin worldEdit;
         worldEdit = (WorldEditPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
 
         if (worldEdit == null) {

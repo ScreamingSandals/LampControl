@@ -1,5 +1,6 @@
 package cz.ceph.lampcontrol.config;
 
+import cz.ceph.lampcontrol.LampControl;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -26,6 +27,7 @@ public abstract class BaseConfiguration {
         this(file);
 
         if (getVersion() != expectedVersion) {
+            LampControl.debug.info("Creating new config file, old version used!");
             setDefault();
             setInt(FILE_VERSION_PATH, expectedVersion);
             save();
@@ -53,7 +55,7 @@ public abstract class BaseConfiguration {
     }
 
     public int getVersion() {
-        return yaml.getInt(FILE_VERSION_PATH, 0);
+        return yaml.getInt(FILE_VERSION_PATH, 10);
     }
 
     protected boolean contains(String path) {

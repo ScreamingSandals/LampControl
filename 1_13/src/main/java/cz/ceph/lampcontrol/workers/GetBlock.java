@@ -1,10 +1,13 @@
 package cz.ceph.lampcontrol.workers;
 
 import cz.ceph.lampcontrol.LampControl;
+import net.royawesome.jlibnoise.module.combiner.Power;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Lightable;
+import org.bukkit.block.data.Powerable;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 /**
@@ -13,13 +16,13 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class GetBlock {
 
     public static boolean getLampStatus(boolean light, Block block) {
-        if (getBlock(block)) {
+        if (getLampBlock(block)) {
+            Lightable lightable = (Lightable) block.getBlockData();
+
             if (light) {
-                Lightable lightable = (Lightable) block.getBlockData();
                 return lightable.isLit();
 
             } else {
-                Lightable lightable = (Lightable) block.getBlockData();
                 return !lightable.isLit();
             }
         } else {
@@ -27,27 +30,49 @@ public class GetBlock {
         }
     }
 
-    public static boolean getLampStatus(boolean light, PlayerInteractEvent event) {
+    public static boolean getRailStatus(boolean power, Block block) {
+        if (getRailBlock(block)) {
+            Powerable powerable = (Powerable) block.getBlockData();
+
+            if (power) {
+                return powerable.isPowered();
+
+
+            } else {
+                return !powerable.isPowered();
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean getRailStatus(boolean power, PlayerInteractEvent event) {
         Block block = event.getClickedBlock();
 
-        if (getBlock(block)) {
-            if (light) {
-                Lightable lightable = (Lightable) block.getBlockData();
-                return lightable.isLit();
+        if (getRailBlock(block)) {
+            Powerable powerable = (Powerable) block.getBlockData();
+
+            if (power) {
+                return powerable.isPowered();
 
 
             } else {
-                Lightable lightable = (Lightable) block.getBlockData();
-                return !lightable.isLit();
+                return !powerable.isPowered();
             }
         } else {
             return false;
         }
     }
 
-    private static boolean getBlock(Block block) {
+    private static boolean getLampBlock(Block block) {
         Material blockMat = block.getType();
 
         return blockMat == Material.REDSTONE_LAMP;
+    }
+
+    private static boolean getRailBlock(Block block) {
+        Material blockMat = block.getType();
+
+        return blockMat == Material.POWERED_RAIL;
     }
 }
