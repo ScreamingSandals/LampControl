@@ -66,6 +66,8 @@ public class OffCommand implements IBasicCommand {
 
                 if (region == null) {
                     player.sendMessage(ChatWriter.prefix(LampControl.localization.get("error.no_selection")));
+                    SoundPlayer.play(player.getLocation(), SoundPlayer.fail(), 0.5F, 0F);
+                    return true;
                 }
 
                 if (!(region instanceof CuboidRegion)) {
@@ -109,10 +111,10 @@ public class OffCommand implements IBasicCommand {
 
             if (affected < 1) {
                 player.sendMessage(ChatWriter.prefix(LampControl.localization.get("info.no_lamps_affecetd")));
-                SoundPlayer.play(player.getLocation(), SoundPlayer.fail(), 0.5F, 1F);
+                SoundPlayer.play(player.getLocation(), SoundPlayer.fail(), 0.5F, 0F);
             } else
                 player.sendMessage(ChatWriter.prefix(LampControl.localization.get("info.affected_lamps_off").replace("%affected", "" + affected + "")));
-            SoundPlayer.play(player.getLocation(), SoundPlayer.success(), 0.5F, 1F);
+            SoundPlayer.play(player.getLocation(), SoundPlayer.success(), 0.5F, 0F);
             return true;
         }
     }

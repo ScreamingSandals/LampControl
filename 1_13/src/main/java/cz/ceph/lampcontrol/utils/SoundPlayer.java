@@ -18,18 +18,13 @@ public class SoundPlayer {
         loc.getWorld().playSound(loc, sound, v, v1);
     }
 
-    private boolean checkSound() {
-        String version = bukkitVersion;
-        return false;
-    }
-
     public static String success() {
         return "ui.button.click";
 
     }
 
     public static String fail() {
-        return "sup";
+        return "block.glass.break";
     }
 
 }
