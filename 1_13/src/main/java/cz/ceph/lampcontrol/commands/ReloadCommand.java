@@ -33,7 +33,8 @@ public class ReloadCommand implements IBasicCommand {
 
     @Override
     public boolean onConsoleCommand(ConsoleCommandSender sender, String[] args) {
-        getMain().getMainConfig().initializeConfig();
+        getMain().configLoad();
+        getMain().getLocalization().loadLocalization();
         sender.sendMessage(ChatWriter.prefix(LampControl.localization.get("info.config_reloaded")));
 
         return true;

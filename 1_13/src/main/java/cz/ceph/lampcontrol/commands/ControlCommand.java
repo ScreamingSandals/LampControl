@@ -11,12 +11,12 @@ import org.bukkit.entity.Player;
  * Created by Ceph on 10.01.2017.
  */
 
-@RegisterCommand(value = "lampcontrol", alias = {"controllamp", "lc"})
+@RegisterCommand(value = "lampconfig", alias = {"lampc"})
 public class ControlCommand implements IBasicCommand {
 
     @Override
     public String getPermission() {
-        return "lampcontrol.command.reload";
+        return "lampcontrol.command.cionfig";
     }
 
     @Override
@@ -26,7 +26,7 @@ public class ControlCommand implements IBasicCommand {
 
     @Override
     public String getUsage() {
-        return "/lampreload or /reloadlamp";
+        return "/lampconfig [config value] [change to value] or alias lampc.";
     }
 
     @Override

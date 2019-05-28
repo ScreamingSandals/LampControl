@@ -9,44 +9,45 @@ import java.util.Set;
 
 public class Localization {
 
-    private LampControl plugin;
-    private HashMap<String, YamlConfiguration> langFiles;
-    public static String resultLanguage;
+        private LampControl plugin;
+        private HashMap<String, YamlConfiguration> langFiles;
+        public String resultLanguage;
 
-    public Localization(LampControl plugin) {
-        this.plugin = plugin;
-        langFiles = new HashMap<>();
-    }
+        public Localization(LampControl plugin) {
+            this.plugin = plugin;
+            langFiles = new HashMap<>();
+        }
 
-    public void loadLocalization() {
-        String configLanguage = LampControl.configLanguage;
+        public void loadLocalization() {
+            resultLanguage = "";
+            String configLanguage = LampControl.getMain().configLanguage;
 
-        try {
-            File langFolder = new File(plugin.getDataFolder(), "languages");
+            try {
+                File langFolder = new File(plugin.getDataFolder(), "languages");
 
-            if (langFolder.exists() && langFolder.isDirectory()) {
-                if (!checkLangFolder(langFolder)) {
-                    for (File file : langFolder.listFiles()) {
-                        if (file.getName().contains(configLanguage)) {
-                            loadFromFolder(langFolder);
-                            resultLanguage = configLanguage;
-                        } else {
-                            createAndLoadLangFile(configLanguage, langFolder);
+                if (langFolder.exists() && langFolder.isDirectory()) {
+                    if (!checkLangFolder(langFolder)) {
+                        for (File file : langFolder.listFiles()) {
+                            if (file.getName().contains(configLanguage)) {
+                                loadFromFolder(langFolder);
+                                resultLanguage = configLanguage;
+                            } else {
+                                createAndLoadLangFile(configLanguage, langFolder);
+                            }
                         }
+                    } else {
+                        createAndLoadLangFile(configLanguage, langFolder);
                     }
                 } else {
                     createAndLoadLangFile(configLanguage, langFolder);
                 }
-            } else {
-                createAndLoadLangFile(configLanguage, langFolder);
+            } catch (NullPointerException e) {
+                LampControl.debug.info("Error loading languages, contact developer.");
+                e.printStackTrace();
             }
-        } catch (NullPointerException e) {
-            LampControl.debug.info("Error loading languages, contact developer.");
-            e.printStackTrace();
         }
-    }
 
-    private void loadFromFolder(File langFile) {
+        private void loadFromFolder(File langFile) {
         for (File file : langFile.listFiles()) {
             if (file.getName().startsWith("lang_")) {
                 String[] parts = file.getName().split("_");
@@ -65,7 +66,7 @@ public class Localization {
             plugin.saveResource("languages/lang_" + lang + ".yml", true);
             resultLanguage = lang;
         } catch (IllegalArgumentException e) {
-            LampControl.debug.warning("Invalid language file! Using default one.");
+            LampControl.debug.warning("Invalid language file! Using default language.");
             plugin.saveResource("languages/lang_en.yml", true);
             resultLanguage = "en";
         }

@@ -1,12 +1,6 @@
 package cz.ceph.lampcontrol.utils;
 
-import cz.ceph.lampcontrol.LampControl;
 import org.bukkit.Location;
-import org.bukkit.Sound;
-
-import java.util.Arrays;
-
-import static cz.ceph.lampcontrol.LampControl.bukkitVersion;
 
 /**
  * Created by iamceph on 20.06.2018.

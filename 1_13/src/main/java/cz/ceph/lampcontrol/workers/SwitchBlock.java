@@ -68,11 +68,11 @@ public class SwitchBlock {
     }
 
     private Object getNMCWorld(Object cW) throws ClassNotFoundException {
-        return Class.forName("net.minecraft.server." + LampControl.bukkitVersion + ".World", false, LampControl.class.getClassLoader()).cast(cW);
+        return Class.forName("net.minecraft.server." + LampControl.getMain().bukkitVersion + ".World", false, LampControl.class.getClassLoader()).cast(cW);
     }
 
     private Object getCraftWorld(Object worldInstance) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        return Class.forName("org.bukkit.craftbukkit." + LampControl.bukkitVersion + ".CraftWorld", false, LampControl.class.getClassLoader()).cast(worldInstance);
+        return Class.forName("org.bukkit.craftbukkit." + LampControl.getMain().bukkitVersion + ".CraftWorld", false, LampControl.class.getClassLoader()).cast(worldInstance);
     }
 
     private Object getInstanceOfCW(Object cW) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {

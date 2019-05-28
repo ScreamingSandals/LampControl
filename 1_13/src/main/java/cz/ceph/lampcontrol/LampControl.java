@@ -26,16 +26,18 @@ public class LampControl extends JavaPlugin {
     private SwitchBlock switchBlock;
     private CommandHandler commandHandler;
 
+    private PluginDescriptionFile pluginInfo;
+    public String configLanguage;
+    public String bukkitVersion;
+
     public Map<String, Boolean> cachedBooleanValues;
+    public List<Material> cachedMaterials = new ArrayList<>();
 
     public Material lampTool;
 
     public static Localization localization;
     public static Logger debug = Logger.getLogger("LampControl");
     private static LampControl pluginMain;
-    private static PluginDescriptionFile pluginInfo;
-    public static String configLanguage;
-    public static String bukkitVersion;
 
     @Override
     public void onLoad() {
@@ -51,14 +53,13 @@ public class LampControl extends JavaPlugin {
 
         debug.info("Initializing config file");
         cachedBooleanValues = new HashMap<>();
-        mainConfig = new MainConfig(new File(getDataFolder(), "config.yml"));
-        mainConfig.initializeConfig();
+        configLoad();
 
         debug.info("Initializing languages");
         localization = new Localization(this);
         localization.loadLocalization();
         debug.info("Available languages: " + localization.getAvailableLanguages().toString() + "");
-        debug.info("Using language: " + Localization.resultLanguage);
+        debug.info("Using language: " + localization.resultLanguage);
 
         debug.info("Initializing Core");
         commandHandler = new CommandHandler(this);
@@ -111,6 +112,11 @@ public class LampControl extends JavaPlugin {
 
     public CommandHandler getCommandHandler() {
         return commandHandler;
+    }
+
+    public void configLoad() {
+        mainConfig = new MainConfig(new File(getDataFolder(), "config.yml"));
+        mainConfig.initializeConfig();
     }
 
 }

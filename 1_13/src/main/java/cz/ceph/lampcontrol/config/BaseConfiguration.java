@@ -27,7 +27,7 @@ public abstract class BaseConfiguration {
         this(file);
 
         if (getVersion() != expectedVersion) {
-            LampControl.debug.info("Creating new config file, old version used!");
+            LampControl.debug.info("Creating new config file!");
             setDefault();
             setInt(FILE_VERSION_PATH, expectedVersion);
             save();
