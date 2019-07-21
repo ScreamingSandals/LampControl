@@ -6,14 +6,11 @@ import cz.ceph.lampcontrol.utils.SoundPlayer;
 import cz.ceph.lampcontrol.workers.GetBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
 
 import static cz.ceph.lampcontrol.LampControl.getMain;
 

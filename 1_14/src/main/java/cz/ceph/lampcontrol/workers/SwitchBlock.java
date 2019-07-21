@@ -1,15 +1,10 @@
 package cz.ceph.lampcontrol.workers;
 
 import cz.ceph.lampcontrol.LampControl;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Lightable;
 import org.bukkit.block.data.Powerable;
-import org.bukkit.entity.minecart.PoweredMinecart;
-import org.bukkit.material.PoweredRail;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

@@ -6,8 +6,8 @@ import cz.ceph.lampcontrol.events.ReflectEvent;
 import cz.ceph.lampcontrol.events.ReflectPlayerInteractEvent;
 import cz.ceph.lampcontrol.listeners.LampListener;
 import cz.ceph.lampcontrol.localization.Localization;
-import cz.ceph.lampcontrol.workers.SwitchBlock;
 import cz.ceph.lampcontrol.utils.VersionChecker;
+import cz.ceph.lampcontrol.workers.SwitchBlock;
 import org.bukkit.Material;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -31,7 +31,7 @@ public class LampControl extends JavaPlugin {
     public String bukkitVersion;
 
     public Map<String, Boolean> cachedBooleanValues;
-    public List<Material> cachedMaterials = new ArrayList<>();
+    public List<Material> cachedRedstoneMaterials = new ArrayList<>();
 
     public Material lampTool;
 
@@ -66,11 +66,11 @@ public class LampControl extends JavaPlugin {
 
         //debug.info("Registering LampListener");
         LampListener lampListener = new LampListener();
+        getServer().getPluginManager().registerEvents(lampListener, this);
 
         reflectEvent.initListener(lampListener);
         reflectEvent.registerPlayerInteractEvent(new ReflectPlayerInteractEvent(this));
 
-        getServer().getPluginManager().registerEvents(lampListener, this);
 
         //debug.info("Registering SwitchBlock function");
         switchBlock = new SwitchBlock();

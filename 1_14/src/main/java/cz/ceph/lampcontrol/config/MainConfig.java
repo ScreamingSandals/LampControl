@@ -14,16 +14,16 @@ import static cz.ceph.lampcontrol.LampControl.getMain;
  */
 
 public class MainConfig extends BaseConfiguration {
-    private static final int CONFIG_VERSION = 1;
+    private static final int CONFIG_VERSION = 2;
 
     private static final String PATH_PLUGIN_PREFIX = "pluginPrefix";
     private static final String PATH_LANGUAGE = "language";
     private static final String PATH_LIGHT_ITEM = "lightItem";
     private static final String PATH_ENABLE_PERMISSIONS = "enable.permissions";
-    private static final String PATH_ENABLE_PLATES = "enable.plates";
     private static final String PATH_ENABLE_LIGHTITEM = "enable.lightItem";
     private static final String PATH_CONTROL_LAMPS = "control.lamps";
     private static final String PATH_CONTROL_RAILS = "control.rails";
+    private static final String PATH_CONTROL_REDSTONE = "control.redstone";
     private static final String PATH_CONTROL_OP = "control.OP";
     private static final String PATH_SOUND_SUCCESS = "sound.success";
     private static final String PATH_SOUND_FAIL = "sound.fail";
@@ -31,7 +31,7 @@ public class MainConfig extends BaseConfiguration {
     private boolean isConfigInitialized;
 
     private Map<String, Boolean> cachedBooleanValues = getMain().cachedBooleanValues;
-    private List<Material> cachedMaterials = getMain().cachedMaterials;
+    private List<Material> cachedRedstoneMaterials = getMain().cachedRedstoneMaterials;
 
     public MainConfig(File file) {
         super(file, CONFIG_VERSION);
@@ -43,10 +43,10 @@ public class MainConfig extends BaseConfiguration {
         setString(PATH_LANGUAGE, "en");
         setString(PATH_LIGHT_ITEM, "FLINT_AND_STEEL");
         setBoolean(PATH_ENABLE_PERMISSIONS, true);
-        setBoolean(PATH_ENABLE_PLATES, true);
         setBoolean(PATH_ENABLE_LIGHTITEM, true);
         setBoolean(PATH_CONTROL_LAMPS, true);
         setBoolean(PATH_CONTROL_RAILS, true);
+        setBoolean(PATH_CONTROL_REDSTONE, true);
         setBoolean(PATH_CONTROL_OP, true);
         setString(PATH_SOUND_DEFAULT, "ui.button.click");
         setString(PATH_SOUND_SUCCESS, "ui.button.click");
@@ -67,24 +67,26 @@ public class MainConfig extends BaseConfiguration {
 
         getMain().lampTool = Material.getMaterial(getString(PATH_LIGHT_ITEM));
         cachedBooleanValues.put("enable-permissions", getBoolean(PATH_ENABLE_PERMISSIONS));
-        cachedBooleanValues.put("enable-plates", getBoolean(PATH_ENABLE_PLATES));
+        cachedBooleanValues.put("enable-redstone", getBoolean(PATH_CONTROL_REDSTONE));
         cachedBooleanValues.put("enable-lightItem", getBoolean(PATH_ENABLE_LIGHTITEM));
         cachedBooleanValues.put("control-lamps", getBoolean(PATH_CONTROL_LAMPS));
         cachedBooleanValues.put("control-rails", getBoolean(PATH_CONTROL_RAILS));
         cachedBooleanValues.put("control-OP", getBoolean(PATH_CONTROL_OP));
 
-        if (cachedBooleanValues.get("enable-plates")) {
-            LampControl.debug.info("HERE I AM, ENABLED PLATES!");
-            cachedMaterials.add(Material.BIRCH_PRESSURE_PLATE);
-            cachedMaterials.add(Material.ACACIA_PRESSURE_PLATE);
-            cachedMaterials.add(Material.DARK_OAK_PRESSURE_PLATE);
-            cachedMaterials.add(Material.HEAVY_WEIGHTED_PRESSURE_PLATE);
-            cachedMaterials.add(Material.JUNGLE_PRESSURE_PLATE);
-            cachedMaterials.add(Material.LIGHT_WEIGHTED_PRESSURE_PLATE);
-            cachedMaterials.add(Material.OAK_PRESSURE_PLATE);
-            cachedMaterials.add(Material.SPRUCE_PRESSURE_PLATE);
-            cachedMaterials.add(Material.STONE_PRESSURE_PLATE);
-        }
+        cachedRedstoneMaterials.add(Material.DETECTOR_RAIL);
+        cachedRedstoneMaterials.add(Material.POWERED_RAIL);
+        cachedRedstoneMaterials.add(Material.REDSTONE_WIRE);
+        cachedRedstoneMaterials.add(Material.REDSTONE_BLOCK);
+        cachedRedstoneMaterials.add(Material.PISTON);
+        cachedRedstoneMaterials.add(Material.PISTON_HEAD);
+        cachedRedstoneMaterials.add(Material.MOVING_PISTON);
+        cachedRedstoneMaterials.add(Material.STICKY_PISTON);
+        cachedRedstoneMaterials.add(Material.REDSTONE_TORCH);
+        cachedRedstoneMaterials.add(Material.COMPARATOR);
+        cachedRedstoneMaterials.add(Material.LEVER);
+        cachedRedstoneMaterials.add(Material.TRIPWIRE);
+        cachedRedstoneMaterials.add(Material.TRIPWIRE_HOOK);
+        cachedRedstoneMaterials.add(Material.DAYLIGHT_DETECTOR);
 
         LampControl.getMain().configLanguage = getString(PATH_LANGUAGE);
         isConfigInitialized = true;
@@ -93,7 +95,7 @@ public class MainConfig extends BaseConfiguration {
 
     public void clearCachedValues() {
         cachedBooleanValues.clear();
-        cachedMaterials.clear();
+        cachedRedstoneMaterials.clear();
         LampControl.getMain().configLanguage = "";
     }
 }
