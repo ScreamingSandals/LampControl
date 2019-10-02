@@ -1,4 +1,4 @@
-package cz.ceph.lampcontrol.workers;
+package cz.ceph.lampcontrol.utils;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;

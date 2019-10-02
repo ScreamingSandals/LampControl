@@ -1,14 +1,10 @@
-package cz.ceph.lampcontrol.workers;
+package cz.ceph.lampcontrol.utils;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Lightable;
 
-
-/**
- * Created by iamceph on 01.10.2018.
- */
 public class SwitchMaterial {
 
     /* This vLampSwitcher method depends on Minecraft version

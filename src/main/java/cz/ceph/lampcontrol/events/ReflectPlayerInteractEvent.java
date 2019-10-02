@@ -3,7 +3,7 @@ package cz.ceph.lampcontrol.events;
 import cz.ceph.lampcontrol.LampControl;
 import cz.ceph.lampcontrol.utils.ChatWriter;
 import cz.ceph.lampcontrol.utils.SoundPlayer;
-import cz.ceph.lampcontrol.workers.GetBlock;
+import cz.ceph.lampcontrol.utils.GetBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

@@ -8,49 +8,38 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
-import cz.ceph.lampcontrol.LampControl;
-import cz.ceph.lampcontrol.commands.core.IBasicCommand;
-import cz.ceph.lampcontrol.commands.core.RegisterCommand;
-import cz.ceph.lampcontrol.utils.ChatWriter;
+import cz.ceph.lampcontrol.utils.GetBlock;
 import cz.ceph.lampcontrol.utils.SoundPlayer;
-import cz.ceph.lampcontrol.workers.GetBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static cz.ceph.lampcontrol.LampControl.getMain;
+import static misat11.lib.lang.I18n.i18n;
 
-/**
- * Created by Ceph on 10.01.2017.
- */
-
-@RegisterCommand(value = "onlamp", alias = {"lamp", "lampon"})
-public class OnCommand implements IBasicCommand {
+public class OnCommand implements CommandExecutor, TabCompleter {
 
     @Override
-    public String getPermission() {
-        return "lampcontrol.command.on";
-    }
+    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+        if (!(commandSender instanceof Player)) {
+            return true;
+            //TODO: only player can use this
+        }
 
-    @Override
-    public String getDescription() {
-        return LampControl.localization.get("command.on_lamp_description");
-    }
-
-    @Override
-    public String getUsage() {
-        return "/onlamp or /lampon";
-    }
-
-    @Override
-    public boolean onPlayerCommand(Player player, String[] args) {
+        Player player = (Player) commandSender;
         WorldEditPlugin worldEdit;
         worldEdit = (WorldEditPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
 
         if (worldEdit == null) {
-            player.sendMessage(ChatWriter.prefix(LampControl.localization.get("error.no_worldedit")));
+            player.sendMessage(i18n("error.no_worldedit"));
             SoundPlayer.play(player.getLocation(), SoundPlayer.fail(), 0.5F, 0F);
             return true;
 
@@ -66,7 +55,7 @@ public class OnCommand implements IBasicCommand {
                 region = localSession.getSelection(bukkitPlayer.getWorld());
 
                 if (region == null) {
-                    player.sendMessage(ChatWriter.prefix(LampControl.localization.get("error.no_selection")));
+                    player.sendMessage(i18n("error.no_selection"));
                     SoundPlayer.play(player.getLocation(), SoundPlayer.fail(), 0.5F, 0F);
                     return true;
                 }
@@ -108,23 +97,22 @@ public class OnCommand implements IBasicCommand {
 
 
             } catch (IncompleteRegionException | NullPointerException e) {
-                player.sendMessage(ChatWriter.prefix(LampControl.localization.get("error.no_selection")));
+                player.sendMessage(i18n("error.no_selection"));
             }
 
 
             if (affected < 1) {
-                player.sendMessage(ChatWriter.prefix(LampControl.localization.get("info.no_lamps_affecetd")));
+                player.sendMessage(i18n("info.no_lamps_affecetd"));
                 SoundPlayer.play(player.getLocation(), SoundPlayer.fail(), 0.5F, 0F);
             } else
-                player.sendMessage(ChatWriter.prefix(LampControl.localization.get("info.affected_lamps_on").replace("%affected", "" + affected + "")));
+                player.sendMessage(i18n("info.affected_lamps_on").replace("%affected", "" + affected + ""));
             SoundPlayer.play(player.getLocation(), SoundPlayer.success(), 0.5F, 0F);
             return true;
         }
     }
 
     @Override
-    public boolean onConsoleCommand(ConsoleCommandSender sender, String[] args) {
-        sender.sendMessage(ChatWriter.prefix(LampControl.localization.get("error.console_use")));
-        return true;
+    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
+        return new ArrayList<>();
     }
 }

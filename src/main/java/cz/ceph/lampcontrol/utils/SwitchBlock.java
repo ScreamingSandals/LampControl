@@ -1,4 +1,4 @@
-package cz.ceph.lampcontrol.workers;
+package cz.ceph.lampcontrol.utils;
 
 import cz.ceph.lampcontrol.LampControl;
 import org.bukkit.World;
@@ -8,10 +8,6 @@ import org.bukkit.block.data.Powerable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-
-/**
- * Created by Ceph on 17.07.2016.
- */
 
 public class SwitchBlock {
 

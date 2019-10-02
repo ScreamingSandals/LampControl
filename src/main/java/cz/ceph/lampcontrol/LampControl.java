@@ -1,12 +1,11 @@
 package cz.ceph.lampcontrol;
 
-import cz.ceph.lampcontrol.commands.core.CommandHandler;
 import cz.ceph.lampcontrol.config.MainConfig;
 import cz.ceph.lampcontrol.events.ReflectEvent;
 import cz.ceph.lampcontrol.events.ReflectPlayerInteractEvent;
 import cz.ceph.lampcontrol.listeners.LampListener;
 import cz.ceph.lampcontrol.utils.VersionChecker;
-import cz.ceph.lampcontrol.workers.SwitchBlock;
+import cz.ceph.lampcontrol.utils.SwitchBlock;
 import misat11.lib.lang.I18n;
 import org.bukkit.Material;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -24,7 +23,6 @@ public class LampControl extends JavaPlugin {
     private MainConfig mainConfig;
     private ReflectEvent reflectEvent;
     private SwitchBlock switchBlock;
-    private CommandHandler commandHandler;
 
     private PluginDescriptionFile pluginInfo;
     public String configLanguage;
@@ -36,7 +34,7 @@ public class LampControl extends JavaPlugin {
     public Material lampTool;
 
     public static Logger debug = Logger.getLogger("LampControl");
-    private static LampControl pluginMain;
+    private static LampControl lampControl;
 
     @Override
     public void onLoad() {
@@ -45,7 +43,7 @@ public class LampControl extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        pluginMain = this;
+        lampControl = this;
 
         bukkitVersion = VersionChecker.getBukkitVersion();
         //debug.info("Bukkit version is: " + bukkitVersion);
@@ -58,7 +56,7 @@ public class LampControl extends JavaPlugin {
         I18n.load(this, "en");
 
         debug.info("Initializing Core");
-        commandHandler = new CommandHandler(this);
+
 
         //debug.info("Registering LampListener");
         LampListener lampListener = new LampListener();
@@ -71,9 +69,6 @@ public class LampControl extends JavaPlugin {
         switchBlock = new SwitchBlock();
 
         //debug.info("Registering commands");
-        commandHandler.loadCommands(LampControl.class);
-
-        pluginInfo = this.getDescription();
         debug.info(pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was enabled successfully!");
 
 
@@ -83,14 +78,13 @@ public class LampControl extends JavaPlugin {
     @Override
     public void onDisable() {
         debug.info("Unloading Core");
-        commandHandler.unloadAll();
         getMainConfig().clearCachedValues();
 
         debug.info(pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was disabled :(");
     }
 
     public static LampControl getMain() {
-        return pluginMain;
+        return lampControl;
     }
 
     public MainConfig getMainConfig() {
@@ -99,10 +93,6 @@ public class LampControl extends JavaPlugin {
 
     public SwitchBlock getSwitchBlock() {
         return switchBlock;
-    }
-
-    public CommandHandler getCommandHandler() {
-        return commandHandler;
     }
 
     public void configLoad() {
