@@ -1,0 +1,4 @@
+name: LampControl
+author: Ceph
+version: ${project.version}
+main: cz.ceph.lampcontrol.LampControl
