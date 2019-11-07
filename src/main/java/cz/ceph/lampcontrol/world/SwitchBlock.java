@@ -1,4 +1,4 @@
-package cz.ceph.lampcontrol.utils;
+package cz.ceph.lampcontrol.world;
 
 import cz.ceph.lampcontrol.LampControl;
 import org.bukkit.World;
@@ -10,16 +10,14 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
 public class SwitchBlock {
-
     private Object craftWorld;
     private Field isClientSideField;
-
 
     public void initWorld(World world) {
         try {
             craftWorld = getNMCWorld(getInstanceOfCW(getCraftWorld(world)));
             isClientSideField = craftWorld.getClass().getField("isClientSide");
-        } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
+        } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
         } catch (NoSuchFieldException e) {
             try {
@@ -59,15 +57,14 @@ public class SwitchBlock {
     }
 
     private Object getNMCWorld(Object cW) throws ClassNotFoundException {
-        return Class.forName("net.minecraft.server." + LampControl.getMain().bukkitVersion + ".World", false, LampControl.class.getClassLoader()).cast(cW);
+        return Class.forName("net.minecraft.server." + LampControl.getInstance() + ".World", false, LampControl.class.getClassLoader()).cast(cW);
     }
 
-    private Object getCraftWorld(Object worldInstance) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        return Class.forName("org.bukkit.craftbukkit." + LampControl.getMain().bukkitVersion + ".CraftWorld", false, LampControl.class.getClassLoader()).cast(worldInstance);
+    private Object getCraftWorld(Object worldInstance) throws ClassNotFoundException {
+        return Class.forName("org.bukkit.craftbukkit." + LampControl.getInstance() + ".CraftWorld", false, LampControl.class.getClassLoader()).cast(worldInstance);
     }
 
     private Object getInstanceOfCW(Object cW) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         return cW.getClass().getDeclaredMethod("getHandle").invoke(cW);
     }
-
 }

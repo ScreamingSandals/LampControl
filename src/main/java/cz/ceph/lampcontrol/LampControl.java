@@ -1,103 +1,60 @@
 package cz.ceph.lampcontrol;
 
 import cz.ceph.lampcontrol.config.MainConfig;
-import cz.ceph.lampcontrol.events.ReflectEvent;
-import cz.ceph.lampcontrol.events.ReflectPlayerInteractEvent;
-import cz.ceph.lampcontrol.listeners.LampListener;
-import cz.ceph.lampcontrol.utils.VersionChecker;
-import cz.ceph.lampcontrol.utils.SwitchBlock;
-import misat11.lib.lang.I18n;
-import org.bukkit.Material;
-import org.bukkit.plugin.PluginDescriptionFile;
+import cz.ceph.lampcontrol.core.Loader;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
 
 public class LampControl extends JavaPlugin {
-
-    private MainConfig mainConfig;
-    private ReflectEvent reflectEvent;
-    private SwitchBlock switchBlock;
-
-    private PluginDescriptionFile pluginInfo;
-    public String configLanguage;
-    public String bukkitVersion;
-
-    public Map<String, Boolean> cachedBooleanValues;
-    public List<Material> cachedRedstoneMaterials = new ArrayList<>();
-
-    public Material lampTool;
-
-    public static Logger debug = Logger.getLogger("LampControl");
     private static LampControl lampControl;
+    private Loader loader;
+    private MainConfig mainConfig;
 
-    @Override
-    public void onLoad() {
-        reflectEvent = new ReflectEvent(this);
-    }
+    private boolean isLegacy;
+    private int versionNumber;
+    private List<String> redstoneMaterials = new ArrayList<>();
 
     @Override
     public void onEnable() {
         lampControl = this;
+        loader = new Loader(this);
 
-        bukkitVersion = VersionChecker.getBukkitVersion();
-        //debug.info("Bukkit version is: " + bukkitVersion);
+        String[] bukkitVersion = Bukkit.getBukkitVersion().split("-")[0].split("\\.");
+        for (int i = 0; i < 2; i++) {
+            versionNumber += Integer.parseInt(bukkitVersion[i]) * (i == 0 ? 100 : 1);
+        }
 
-        debug.info("Initializing config file");
-        cachedBooleanValues = new HashMap<>();
-        configLoad();
+        isLegacy = versionNumber < 113;
 
-        debug.info("Initializing languages");
-        I18n.load(this, "en");
-
-        debug.info("Initializing Core");
-
-
-        //debug.info("Registering LampListener");
-        LampListener lampListener = new LampListener();
-        getServer().getPluginManager().registerEvents(lampListener, this);
-
-        reflectEvent.initListener(lampListener);
-        reflectEvent.registerPlayerInteractEvent(new ReflectPlayerInteractEvent(this));
-
-        //debug.info("Registering SwitchBlock function");
-        switchBlock = new SwitchBlock();
-
-        //debug.info("Registering commands");
-        debug.info(pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was enabled successfully!");
-
-
-
+        mainConfig = new MainConfig(this);
+        redstoneMaterials = mainConfig.config.getStringList("redstone-materials");
     }
 
     @Override
     public void onDisable() {
-        debug.info("Unloading Core");
-        getMainConfig().clearCachedValues();
 
-        debug.info(pluginInfo.getName() + " v" + pluginInfo.getVersion() + " was disabled :(");
     }
 
-    public static LampControl getMain() {
+    public static LampControl getInstance() {
         return lampControl;
+    }
+
+    public Loader getLoader() {
+        return loader;
     }
 
     public MainConfig getMainConfig() {
         return mainConfig;
     }
 
-    public SwitchBlock getSwitchBlock() {
-        return switchBlock;
+    public boolean isLegacy() {
+        return isLegacy;
     }
 
-    public void configLoad() {
-        mainConfig = new MainConfig(new File(getDataFolder(), "config.yml"));
-        mainConfig.initializeConfig();
+    public int getVersionNumber() {
+        return versionNumber;
     }
-
 }

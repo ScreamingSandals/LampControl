@@ -1,102 +1,82 @@
 package cz.ceph.lampcontrol.config;
 
 import cz.ceph.lampcontrol.LampControl;
-import org.bukkit.Material;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-import static cz.ceph.lampcontrol.LampControl.getMain;
+public class MainConfig {
+    public File configFile;
+    public FileConfiguration config;
 
-/**
- * Created by Ceph on 08.01.2017.
- */
+    public final File dataFolder;
+    public final LampControl lampControl;
 
-public class MainConfig extends BaseConfiguration {
-    private static final int CONFIG_VERSION = 2;
-
-    private static final String PATH_PLUGIN_PREFIX = "pluginPrefix";
-    private static final String PATH_LANGUAGE = "language";
-    private static final String PATH_LIGHT_ITEM = "lightItem";
-    private static final String PATH_ENABLE_PERMISSIONS = "enable.permissions";
-    private static final String PATH_ENABLE_LIGHTITEM = "enable.lightItem";
-    private static final String PATH_CONTROL_LAMPS = "control.lamps";
-    private static final String PATH_CONTROL_RAILS = "control.rails";
-    private static final String PATH_CONTROL_REDSTONE = "control.redstone";
-    private static final String PATH_CONTROL_OP = "control.OP";
-    private static final String PATH_SOUND_SUCCESS = "sound.success";
-    private static final String PATH_SOUND_FAIL = "sound.fail";
-    private static final String PATH_SOUND_DEFAULT = "sound.default";
-    private boolean isConfigInitialized;
-
-    private Map<String, Boolean> cachedBooleanValues = getMain().cachedBooleanValues;
-    private List<Material> cachedRedstoneMaterials = getMain().cachedRedstoneMaterials;
-
-    public MainConfig(File file) {
-        super(file, CONFIG_VERSION);
+    public MainConfig(LampControl lampControl) {
+        this.dataFolder = lampControl.getDataFolder();
+        this.lampControl = lampControl;
     }
 
-    @Override
-    public void setDefault() {
-        setString(PATH_PLUGIN_PREFIX, "&8[&eLamp&cControl&8]&r");
-        setString(PATH_LANGUAGE, "en");
-        setString(PATH_LIGHT_ITEM, "FLINT_AND_STEEL");
-        setBoolean(PATH_ENABLE_PERMISSIONS, true);
-        setBoolean(PATH_ENABLE_LIGHTITEM, true);
-        setBoolean(PATH_CONTROL_LAMPS, true);
-        setBoolean(PATH_CONTROL_RAILS, true);
-        setBoolean(PATH_CONTROL_REDSTONE, true);
-        setBoolean(PATH_CONTROL_OP, true);
-        setString(PATH_SOUND_DEFAULT, "ui.button.click");
-        setString(PATH_SOUND_SUCCESS, "ui.button.click");
-        setString(PATH_SOUND_FAIL, "block.glass.break");
-        setInt(FILE_VERSION_PATH, 1);
-    }
+    public boolean createFiles() {
+        configFile = new File(dataFolder, "config.yml");
+        config = new YamlConfiguration();
 
-    public String getPluginPrefix() {
-        return getString(PATH_PLUGIN_PREFIX);
-    }
-
-    public void initializeConfig() {
-        LampControl.debug.info(isConfigInitialized + " boolean on initialize");
-        if (isConfigInitialized) {
-            clearCachedValues();
-            LampControl.debug.info("Cache cleared!");
+        if (!configFile.exists()) {
+            lampControl.saveResource("config.yml", false);
+        }
+        try {
+            config.load(configFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+            return false;
         }
 
-        getMain().lampTool = Material.getMaterial(getString(PATH_LIGHT_ITEM));
-        cachedBooleanValues.put("enable-permissions", getBoolean(PATH_ENABLE_PERMISSIONS));
-        cachedBooleanValues.put("enable-redstone", getBoolean(PATH_CONTROL_REDSTONE));
-        cachedBooleanValues.put("enable-lightItem", getBoolean(PATH_ENABLE_LIGHTITEM));
-        cachedBooleanValues.put("control-lamps", getBoolean(PATH_CONTROL_LAMPS));
-        cachedBooleanValues.put("control-rails", getBoolean(PATH_CONTROL_RAILS));
-        cachedBooleanValues.put("control-OP", getBoolean(PATH_CONTROL_OP));
+        AtomicBoolean modify = new AtomicBoolean(false);
+        checkOrSetConfig(modify, "prefix", "&8[&eLamp&cControl&8]&r");
+        checkOrSetConfig(modify, "locale", "en");
+        checkOrSetConfig(modify, "debug", false);
+        checkOrSetConfig(modify, "redstone-materials", new ArrayList<String>() {
+            {
+                add("/aac");
+                add("/playerbalancer");
+                add("/hd");
+                add("/holo");
+                add("/holograms");
+                add("/hologram");
+                add("/worldedit");
+                add("//sel");
+                add("/titlemanager");
+                add("/tm");
+                add("/npcmd");
+                add("/multiworld");
+            }
+        });
 
-        cachedRedstoneMaterials.add(Material.DETECTOR_RAIL);
-        cachedRedstoneMaterials.add(Material.POWERED_RAIL);
-        cachedRedstoneMaterials.add(Material.REDSTONE_WIRE);
-        cachedRedstoneMaterials.add(Material.REDSTONE_BLOCK);
-        cachedRedstoneMaterials.add(Material.PISTON);
-        cachedRedstoneMaterials.add(Material.PISTON_HEAD);
-        cachedRedstoneMaterials.add(Material.MOVING_PISTON);
-        cachedRedstoneMaterials.add(Material.STICKY_PISTON);
-        cachedRedstoneMaterials.add(Material.REDSTONE_TORCH);
-        cachedRedstoneMaterials.add(Material.COMPARATOR);
-        cachedRedstoneMaterials.add(Material.LEVER);
-        cachedRedstoneMaterials.add(Material.TRIPWIRE);
-        cachedRedstoneMaterials.add(Material.TRIPWIRE_HOOK);
-        cachedRedstoneMaterials.add(Material.DAYLIGHT_DETECTOR);
+        if (modify.get()) {
+            try {
+                config.save(configFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
 
-        LampControl.getMain().configLanguage = getString(PATH_LANGUAGE);
-        isConfigInitialized = true;
-
+        return true;
     }
 
-    public void clearCachedValues() {
-        cachedBooleanValues.clear();
-        cachedRedstoneMaterials.clear();
-        LampControl.getMain().configLanguage = "";
+    private void checkOrSetConfig(AtomicBoolean modify, String path, java.io.Serializable value) {
+        checkOrSet(modify, this.config, path, value);
+    }
+
+    private static void checkOrSet(AtomicBoolean modify, FileConfiguration config, String path, java.io.Serializable value) {
+        if (!config.isSet(path)) {
+            config.set(path, value);
+            modify.set(true);
+        }
     }
 }
-

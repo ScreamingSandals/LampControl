@@ -6,7 +6,7 @@
 
     <groupId>cz.ceph</groupId>
     <artifactId>lampcontrol</artifactId>
-    <version>4.0-SNAPSHOT</version>
+    <version>4.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>LampControl</name>
@@ -42,7 +42,13 @@
         <dependency>
             <groupId>misat11.lib.lang</groupId>
             <artifactId>LanguageTool</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.6</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>cz.ceph</groupId>
+            <artifactId>easydebug</artifactId>
+            <version>1.0.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
