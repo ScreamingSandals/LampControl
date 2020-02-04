@@ -10,12 +10,12 @@
     <packaging>jar</packaging>
 
     <name>LampControl</name>
-    <description>Just righ-click your lamps and rails to get em on!</description>
+    <description>Easily manage any lightable or powerable sources!</description>
 
     <repositories>
         <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <id>papermc</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
         <repository>
             <id>mtorus-repo</id>
@@ -34,27 +34,45 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.14.4-R0.1-SNAPSHOT</version>
+            <groupId>com.destroystokyo.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.15.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>misat11.lib.lang</groupId>
-            <artifactId>LanguageTool</artifactId>
+            <groupId>org.screamingsandals.lib</groupId>
+            <artifactId>Debug</artifactId>
             <version>1.0.6</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>cz.ceph</groupId>
-            <artifactId>easydebug</artifactId>
-            <version>1.0.1</version>
+            <groupId>org.screamingsandals.lib</groupId>
+            <artifactId>screamingcommands</artifactId>
+            <version>1.0.6</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.screamingsandals.lib</groupId>
+            <artifactId>LanguageTool</artifactId>
+            <version>1.1.3</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.sk89q.worldedit</groupId>
             <artifactId>worldedit-bukkit</artifactId>
-            <version>7.1.0-SNAPSHOT</version>
+            <version>7.1.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.10</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.papermc</groupId>
+            <artifactId>paperlib</artifactId>
+            <version>1.0.2</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -65,36 +83,48 @@
 
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
+                <targetPath>.</targetPath>
                 <filtering>true</filtering>
+                <directory>src/main/resources</directory>
                 <includes>
-                    <include>plugin.yml</include>
+                    <include>**/*</include>
                 </includes>
             </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>false</filtering>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                    <exclude>plugin.yml</exclude>
-                </excludes>
-            </resource>
-            <resource>
-                <directory>../src/languages</directory>
-                <filtering>false</filtering>
-                <excludes>
-                    <exclude>lang_*.yml</exclude>
-                </excludes>
-            </resource>
         </resources>
-
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <relocations>
+                                <!-- OLD Libraries -->
+                                <relocation>
+                                    <pattern>misat11.lib</pattern>
+                                    <shadedPattern>${project.groupId}.shaded.lib</shadedPattern>
+                                </relocation>
+                                <!-- NEW Libraries -->
+                                <relocation>
+                                    <pattern>org.screamingsandals.lib</pattern>
+                                    <shadedPattern>${project.groupId}.shaded.lib</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>6</source>
+                    <target>6</target>
                 </configuration>
             </plugin>
         </plugins>

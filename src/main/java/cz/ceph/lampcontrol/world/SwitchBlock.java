@@ -1,6 +1,9 @@
 package cz.ceph.lampcontrol.world;
 
-import cz.ceph.lampcontrol.LampControl;
+import cz.ceph.lampcontrol.Main;
+import cz.ceph.lampcontrol.utils.Utils;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Lightable;
@@ -9,62 +12,67 @@ import org.bukkit.block.data.Powerable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
-public class SwitchBlock {
-    private Object craftWorld;
-    private Field isClientSideField;
+@Data
+@NoArgsConstructor
+public class SwitchBlock implements cz.ceph.lampcontrol.api.SwitchBlock {
+    private Object craftWorld = null;
+    private Field clientSide = null;
 
-    public void initWorld(World world) {
+    @Override
+    public void setLit(Block block, boolean light) {
+        World world = block.getWorld();
+        Lightable lightable = (Lightable) block.getState().getBlockData();
+
+        setStatic(world,true);
+        lightable.setLit(light);
+        block.setBlockData(lightable);
+        setStatic(world,false);
+    }
+
+    @Override
+    public void setPowered(Block block, boolean power) {
+        World world = block.getWorld();
+        Powerable powerable = (Powerable) block.getState().getBlockData();
+
+        setStatic(world, true);
+        powerable.setPowered(power);
+        block.setBlockData(powerable);
+        setStatic(world, false);
+    }
+
+    @Override
+    public void setStatic(World world, boolean value) {
         try {
             craftWorld = getNMCWorld(getInstanceOfCW(getCraftWorld(world)));
-            isClientSideField = craftWorld.getClass().getField("isClientSide");
+            clientSide = craftWorld.getClass().getField("isClientSide");
         } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
         } catch (NoSuchFieldException e) {
             try {
-                isClientSideField = craftWorld.getClass().getField("isStatic");
+                clientSide = craftWorld.getClass().getField("isStatic");
             } catch (NoSuchFieldException e1) {
                 e1.printStackTrace();
             }
         }
 
-        isClientSideField.setAccessible(true);
-    }
+        clientSide.setAccessible(true);
 
-    public void switchLamp(Block block, boolean light) {
-        Lightable lightable = (Lightable) block.getState().getBlockData();
-
-        setStatic(true);
-        lightable.setLit(light);
-        block.setBlockData(lightable);
-        setStatic(false);
-    }
-
-    public void switchRail(Block block, boolean power) {
-        Powerable powerable = (Powerable) block.getState().getBlockData();
-
-        setStatic(true);
-        powerable.setPowered(power);
-        block.setBlockData(powerable);
-        setStatic(false);
-    }
-
-    private void setStatic(boolean value) {
         try {
-            isClientSideField.set(craftWorld, value);
+            clientSide.set(craftWorld, value);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
     }
 
-    private Object getNMCWorld(Object cW) throws ClassNotFoundException {
-        return Class.forName("net.minecraft.server." + LampControl.getInstance() + ".World", false, LampControl.class.getClassLoader()).cast(cW);
+    private Object getNMCWorld(Object craftWorld) throws ClassNotFoundException {
+        return Class.forName("net.minecraft.server." + Utils.getNMSVersion() + ".World", false, Main.class.getClassLoader()).cast(craftWorld);
     }
 
     private Object getCraftWorld(Object worldInstance) throws ClassNotFoundException {
-        return Class.forName("org.bukkit.craftbukkit." + LampControl.getInstance() + ".CraftWorld", false, LampControl.class.getClassLoader()).cast(worldInstance);
+        return Class.forName("org.bukkit.craftbukkit." + Utils.getNMSVersion() + ".CraftWorld", false, Main.class.getClassLoader()).cast(worldInstance);
     }
 
-    private Object getInstanceOfCW(Object cW) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        return cW.getClass().getDeclaredMethod("getHandle").invoke(cW);
+    private Object getInstanceOfCW(Object craftWorld) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        return craftWorld.getClass().getDeclaredMethod("getHandle").invoke(craftWorld);
     }
 }
