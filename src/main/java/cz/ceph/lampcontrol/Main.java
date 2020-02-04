@@ -34,11 +34,11 @@ public class Main extends JavaPlugin {
 
         PaperLib.suggestPaper(this);
         if (PaperLib.isVersion(12)) {
-            environment = new LegacyEnvironment();
+            environment = new LegacyEnvironment(this);
         } else if (PaperLib.isVersion(13)) {
-            environment = new FlatteningEnvironment();
+            environment = new FlatteningEnvironment(this);
         } else {
-            environment = new MainEnvironment();
+            environment = new MainEnvironment(this);
         }
 
         baseConfig = new ConfigInstance(createConfigFile(getDataFolder(), "config.yml"));
