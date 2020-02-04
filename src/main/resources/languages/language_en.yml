@@ -4,3 +4,11 @@ language_code: "en"
 
 #Edit this as you wish :P
 prefix: "&8[&eLamp&cControl&8]&r"
+
+loaded: "&ahas been loaded! &dWorldEdit &ais:&e %boolean%"
+
+commands:
+  no-worldedit: "&eWorldEdit &cis not installed! This command will not work &r:<"
+  no-selection: "&cCouldn't find any &eWorldEdit &cselections!"
+  replaced: "&e%count% &ablock has been replaced!"
+  not_replaced: "&cNothing has been replaced &e:("

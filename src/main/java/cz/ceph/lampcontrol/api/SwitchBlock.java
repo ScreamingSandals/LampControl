@@ -20,10 +20,4 @@ public interface SwitchBlock {
      * @param powered
      */
     void setPowered(Block block, boolean powered);
-
-    /**
-     *
-     * @param value static or not
-     */
-    void setStatic(World world, boolean value);
 }

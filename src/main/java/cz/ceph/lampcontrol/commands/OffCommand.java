@@ -28,8 +28,8 @@ import static org.screamingsandals.lib.lang.I.mpr;
  * @author ScreamingSandals team
  */
 @RegisterCommand
-public class OnCommand implements BukkitCommand {
-    public OnCommand(Main main) {
+public class OffCommand implements BukkitCommand {
+    public OffCommand(Main main) {
     }
 
     @Override
@@ -70,12 +70,12 @@ public class OnCommand implements BukkitCommand {
                         Block block = minLoc.getWorld().getBlockAt(location);
                         final Material material = block.getType();
                         if (Main.getEnvironment().isLightable(material)
-                                && !BlockStatus.isLit(block)) {
-                            Main.getSwitchBlock().setLit(block, true);
+                                && BlockStatus.isLit(block)) {
+                            Main.getSwitchBlock().setLit(block, false);
                             replaced++;
                         } else if (Main.getEnvironment().isPowerable(material)
-                                && !BlockStatus.isPowered(block)) {
-                            Main.getSwitchBlock().setPowered(block, true);
+                                && BlockStatus.isPowered(block)) {
+                            Main.getSwitchBlock().setPowered(block, false);
                             replaced++;
                         }
                     }
@@ -94,8 +94,7 @@ public class OnCommand implements BukkitCommand {
     }
 
     @Override
-    public boolean onConsoleCommand(ConsoleCommandSender consoleCommandSender, ICommand
-            iCommand, List<String> list) {
+    public boolean onConsoleCommand(ConsoleCommandSender consoleCommandSender, ICommand iCommand, List<String> list) {
         return false;
     }
 
@@ -117,7 +116,7 @@ public class OnCommand implements BukkitCommand {
 
     @Override
     public @NotNull String getSubCommandName() {
-        return "on";
+        return "off";
     }
 
     @Override

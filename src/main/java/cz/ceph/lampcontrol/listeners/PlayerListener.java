@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 
 /**
  * @author ScreamingSandals team
@@ -20,7 +21,9 @@ public class PlayerListener implements Listener {
         final Player player = event.getPlayer();
         final Block block = event.getClickedBlock();
 
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK
+        if (event.getHand() != EquipmentSlot.HAND
+                || event.getAction() != Action.RIGHT_CLICK_BLOCK
+                || event.getItem() != null
                 || block == null) {
             return;
         }

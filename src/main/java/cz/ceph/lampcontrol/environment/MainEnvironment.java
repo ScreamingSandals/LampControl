@@ -19,11 +19,11 @@ public class MainEnvironment extends Environment {
         super(plugin);
 
         loadLightable();
+        loadPowerable();
     }
 
     private void loadLightable() {
         List<Material> lightable = new ArrayList<>();
-
         lightable.add(Material.REDSTONE_LAMP);
         lightable.add(Material.REDSTONE_TORCH);
         lightable.add(Material.REDSTONE_WALL_TORCH);
@@ -32,6 +32,13 @@ public class MainEnvironment extends Environment {
         lightable.add(Material.CAMPFIRE);
 
         setLIGHTABLE(lightable);
+    }
+
+    private void loadPowerable() {
+        List<Material> powerable = new ArrayList<>();
+        powerable.add(Material.POWERED_RAIL);
+
+        setPOWERABLE(powerable);
     }
 
 }

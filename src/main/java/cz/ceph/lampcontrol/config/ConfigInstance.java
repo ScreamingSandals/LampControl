@@ -19,7 +19,7 @@ public class ConfigInstance implements BaseConfig {
     @Override
     public void checkDefaultValues() {
         AtomicBoolean modify = new AtomicBoolean(false);
-        checkOrSet(modify, "locale", "cz");
+        checkOrSet(modify, "language", "en");
         checkOrSet(modify, "debug", false);
 
         if (modify.get()) {

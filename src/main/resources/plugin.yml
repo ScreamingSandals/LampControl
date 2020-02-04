@@ -3,12 +3,7 @@ author: Ceph
 version: ${project.version}
 api-version: 1.13
 website: https://hryozivot.net
-main: cz.ceph.lampcontrol.LampControl
+main: cz.ceph.lampcontrol.Main
 
 softdepend:
   - WorldEdit
-
-commands:
-  lampcontrol:
-    permission: lampcontrol.basic
-    description: Basic LampControl command
