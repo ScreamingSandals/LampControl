@@ -7,8 +7,13 @@ prefix: "&8[&eLamp&cControl&8]&r"
 
 loaded: "&ahas been loaded! &dWorldEdit &ais:&e %boolean%"
 
+vault:
+  loaded: "Vault support has been enabled!"
+  not_found: "Vault not found, disabling economy.."
+  withdraw: "&e%cost%&f%currency% &ahas been removed from your account."
+
 commands:
   no-worldedit: "&eWorldEdit &cis not installed! This command will not work &r:<"
   no-selection: "&cCouldn't find any &eWorldEdit &cselections!"
-  replaced: "&e%count% &ablock has been replaced!"
+  replaced: "&e%count% &ablock(s) has been replaced!"
   not_replaced: "&cNothing has been replaced &e:("

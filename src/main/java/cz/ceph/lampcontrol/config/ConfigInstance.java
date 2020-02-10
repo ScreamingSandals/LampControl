@@ -1,5 +1,6 @@
 package cz.ceph.lampcontrol.config;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -21,6 +22,9 @@ public class ConfigInstance implements BaseConfig {
         AtomicBoolean modify = new AtomicBoolean(false);
         checkOrSet(modify, "language", "en");
         checkOrSet(modify, "debug", false);
+        checkOrSet(modify, "vault.enabled", false);
+        checkOrSet(modify, "vault.cost", 10.0);
+        checkOrSet(modify, "vault.item", "FLINT_AND_STEEL");
 
         if (modify.get()) {
             save();
@@ -115,5 +119,14 @@ public class ConfigInstance implements BaseConfig {
     @Override
     public void set(String key, Object obj) {
         yamlConfiguration.set(key, obj);
+    }
+
+    @Override
+    public Material getMaterial(String key) {
+        Material toReturn = Material.getMaterial(getString(key));
+        if (toReturn == null) {
+            return Material.FLINT_AND_STEEL;
+        }
+        return toReturn;
     }
 }

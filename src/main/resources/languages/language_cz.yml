@@ -1,0 +1,14 @@
+#DO NOT EDIT THIS :)
+language_name: "Čeština"
+language_code: "cz"
+
+#Edit this as you wish :P
+prefix: "&8[&eLamp&cControl&8]&r"
+
+loaded: "&abyl načten! &dWorldEdit &aje:&e %boolean%"
+
+commands:
+  no-worldedit: "&eWorldEdit &cnení nainstalovanej! Takhle to fungovat nebude &r:<"
+  no-selection: "&cŽádná oblast &eWorldEditu &cnení označena!"
+  replaced: "&aBylo změněno &e%count% &abloků!"
+  not_replaced: "&cNic se nestalo &e:("

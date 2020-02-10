@@ -1,5 +1,7 @@
 package cz.ceph.lampcontrol.config;
 
+import org.bukkit.Material;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -41,6 +43,8 @@ public interface BaseConfig {
     void initialize();
 
     void checkDefaultValues();
+
+    Material getMaterial(String key);
 
     default void checkOrSet(AtomicBoolean modify, String path, java.io.Serializable value) {
         if (!isSet(path)) {

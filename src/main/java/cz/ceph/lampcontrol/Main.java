@@ -10,7 +10,12 @@ import cz.ceph.lampcontrol.listeners.PlayerListener;
 import cz.ceph.lampcontrol.world.SwitchBlock;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.screamingsandals.lib.lang.Language;
 import org.screamingsandals.lib.screamingcommands.ScreamingCommands;
@@ -33,6 +38,8 @@ public class Main extends JavaPlugin {
     @Getter
     private static WorldEditPlugin worldEdit;
     private boolean worldEditInstalled = false;
+    private Economy economy;
+    private boolean isVault = false;
 
     @Override
     public void onEnable() {
@@ -58,12 +65,19 @@ public class Main extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 
-        worldEdit = (WorldEditPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
-        if (worldEdit != null) {
-            worldEditInstalled = true;
+        try {
+            worldEdit = (WorldEditPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
+            if (worldEdit != null) {
+                worldEditInstalled = true;
+            }
+        } catch (NoClassDefFoundError ignored) {
         }
 
-        getServer().getLogger().info(mpr("loaded")
+        if (baseConfig.getBoolean("vault.enabled")) {
+            log(setupEconomy() ? mpr("vault.loaded").get() : mpr("vault.not_found").get());
+        }
+
+        log(mpr("loaded")
                 .replace("%boolean%", worldEditInstalled)
                 .get());
     }
@@ -96,5 +110,40 @@ public class Main extends JavaPlugin {
         }
 
         return configFile;
+    }
+
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> registration = getServer().getServicesManager().getRegistration(Economy.class);
+        if (registration == null) {
+            return false;
+        }
+
+        economy = registration.getProvider();
+        isVault = true;
+        return true;
+    }
+
+    public static void withdrawPlayer(Player player) {
+        double count = getBaseConfig().getDouble("vault.cost");
+        try {
+            if (instance.isVault && getBaseConfig().getBoolean("vault.enable")) {
+                EconomyResponse response = instance.economy.withdrawPlayer(player, count);
+                if (response.transactionSuccess()) {
+                    mpr("vault.withdraw")
+                            .replace("%count%", Double.toString(count))
+                            .replace("%currency%", (count == 1
+                                    ? instance.economy.currencyNameSingular()
+                                    : instance.economy.currencyNamePlural())).send(player);
+                }
+            }
+        } catch (Throwable ignored) {
+        }
+    }
+
+    public static void log(String message) {
+        instance.getLogger().info(message);
     }
 }
