@@ -1,4 +1,4 @@
-package cz.ceph.lampcontrol.commands;
+package org.screamingsandals.lampcontrol.commands;
 
 import com.google.common.collect.ImmutableSet;
 import com.sk89q.worldedit.IncompleteRegionException;
@@ -8,8 +8,8 @@ import com.sk89q.worldedit.bukkit.BukkitPlayer;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
-import cz.ceph.lampcontrol.Main;
-import cz.ceph.lampcontrol.api.BlockInfo;
+import org.screamingsandals.lampcontrol.Main;
+import org.screamingsandals.lampcontrol.api.BlockInfo;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -28,8 +28,8 @@ import static org.screamingsandals.lib.lang.I.mpr;
  * @author ScreamingSandals team
  */
 @RegisterCommand
-public class OffCommand implements BukkitCommand {
-    public OffCommand(Main main) {
+public class OnCommand implements BukkitCommand {
+    public OnCommand(Main main) {
     }
 
     @Override
@@ -70,12 +70,12 @@ public class OffCommand implements BukkitCommand {
                         Block block = minLoc.getWorld().getBlockAt(location);
                         final Material material = block.getType();
                         if (BlockInfo.isLightable(material)
-                                && BlockInfo.isLit(block)) {
-                            Main.getSwitchBlock().setLit(block, false);
+                                && !BlockInfo.isLit(block)) {
+                            Main.getSwitchBlock().setLit(block, true);
                             replaced++;
                         } else if (BlockInfo.isPowerable(material)
-                                && BlockInfo.isPowered(block)) {
-                            Main.getSwitchBlock().setPowered(block, false);
+                                && !BlockInfo.isPowered(block)) {
+                            Main.getSwitchBlock().setPowered(block, true);
                             replaced++;
                         }
                     }
@@ -94,7 +94,8 @@ public class OffCommand implements BukkitCommand {
     }
 
     @Override
-    public boolean onConsoleCommand(ConsoleCommandSender consoleCommandSender, ICommand iCommand, List<String> list) {
+    public boolean onConsoleCommand(ConsoleCommandSender consoleCommandSender, ICommand
+            iCommand, List<String> list) {
         return false;
     }
 
@@ -116,7 +117,7 @@ public class OffCommand implements BukkitCommand {
 
     @Override
     public @NotNull String getSubCommandName() {
-        return "off";
+        return "on";
     }
 
     @Override

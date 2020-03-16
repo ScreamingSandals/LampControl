@@ -1,4 +1,4 @@
-package cz.ceph.lampcontrol.utils;
+package org.screamingsandals.lampcontrol.utils;
 
 import org.bukkit.Bukkit;
 

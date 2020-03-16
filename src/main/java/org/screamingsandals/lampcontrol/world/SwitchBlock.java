@@ -1,7 +1,7 @@
-package cz.ceph.lampcontrol.world;
+package org.screamingsandals.lampcontrol.world;
 
-import cz.ceph.lampcontrol.Main;
-import cz.ceph.lampcontrol.utils.Utils;
+import org.screamingsandals.lampcontrol.Main;
+import org.screamingsandals.lampcontrol.utils.Utils;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bukkit.Material;
@@ -16,7 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 
 @Data
 @NoArgsConstructor
-public class SwitchBlock implements cz.ceph.lampcontrol.api.SwitchBlock {
+public class SwitchBlock implements org.screamingsandals.lampcontrol.api.SwitchBlock {
     @Override
     public void setLit(Block block, boolean light) {
         World world = block.getWorld();

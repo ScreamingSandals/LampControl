@@ -1,4 +1,4 @@
-package cz.ceph.lampcontrol.api;
+package org.screamingsandals.lampcontrol.api;
 
 import org.bukkit.block.Block;
 

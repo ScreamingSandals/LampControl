@@ -1,9 +1,8 @@
-package cz.ceph.lampcontrol.environment;
+package org.screamingsandals.lampcontrol.environment;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.bukkit.Material;
-import org.bukkit.block.data.Lightable;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;

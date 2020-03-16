@@ -1,7 +1,7 @@
-package cz.ceph.lampcontrol.commands;
+package org.screamingsandals.lampcontrol.commands;
 
 import com.google.common.collect.ImmutableSet;
-import cz.ceph.lampcontrol.Main;
+import org.screamingsandals.lampcontrol.Main;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

@@ -1,13 +1,13 @@
-package cz.ceph.lampcontrol;
+package org.screamingsandals.lampcontrol;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import cz.ceph.lampcontrol.config.BaseConfig;
-import cz.ceph.lampcontrol.config.MainConfig;
-import cz.ceph.lampcontrol.environment.Environment;
-import cz.ceph.lampcontrol.environment.LegacyEnvironment;
-import cz.ceph.lampcontrol.environment.MainEnvironment;
-import cz.ceph.lampcontrol.listeners.PlayerListener;
-import cz.ceph.lampcontrol.world.SwitchBlock;
+import org.screamingsandals.lampcontrol.api.SwitchBlock;
+import org.screamingsandals.lampcontrol.config.BaseConfig;
+import org.screamingsandals.lampcontrol.config.MainConfig;
+import org.screamingsandals.lampcontrol.environment.Environment;
+import org.screamingsandals.lampcontrol.environment.LegacyEnvironment;
+import org.screamingsandals.lampcontrol.environment.MainEnvironment;
+import org.screamingsandals.lampcontrol.listeners.PlayerListener;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
@@ -21,8 +21,6 @@ import org.screamingsandals.lib.screamingcommands.ScreamingCommands;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.screamingsandals.lib.lang.I.mpr;
 
@@ -35,9 +33,7 @@ public class Main extends JavaPlugin {
     private static Environment environment;
     private ScreamingCommands screamingCommands;
     @Getter
-    private final static cz.ceph.lampcontrol.api.SwitchBlock switchBlock = new SwitchBlock();
-    @Getter
-    private List<Player> disabledPlayers = new ArrayList<>();
+    private final static SwitchBlock switchBlock = new org.screamingsandals.lampcontrol.world.SwitchBlock();
     @Getter
     private static WorldEditPlugin worldEdit;
     private boolean worldEditInstalled = false;
@@ -119,6 +115,7 @@ public class Main extends JavaPlugin {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             return false;
         }
+
         RegisteredServiceProvider<Economy> registration = getServer().getServicesManager().getRegistration(Economy.class);
         if (registration == null) {
             return false;

@@ -1,4 +1,4 @@
-package cz.ceph.lampcontrol.api.events;
+package org.screamingsandals.lampcontrol.api.events;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,6 +18,8 @@ public class PlayerChangeBlockStateEvent extends Event implements Cancellable {
     private HandlerList handlerList = new HandlerList();
     private final Player player;
     private final Block block;
+    private final Type type;
+    private final Action action;
     private boolean cancelled;
 
     @Override
@@ -33,5 +35,15 @@ public class PlayerChangeBlockStateEvent extends Event implements Cancellable {
     @Override
     public void setCancelled(boolean cancel) {
         this.cancelled = cancel;
+    }
+
+    public enum Type {
+        LIT,
+        POWER;
+    }
+
+    public enum Action {
+        ON,
+        OFF;
     }
 }

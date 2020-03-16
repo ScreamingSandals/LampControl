@@ -1,4 +1,4 @@
-package cz.ceph.lampcontrol.environment;
+package org.screamingsandals.lampcontrol.environment;
 
 import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;

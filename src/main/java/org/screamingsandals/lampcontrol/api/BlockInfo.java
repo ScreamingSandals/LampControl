@@ -1,6 +1,6 @@
-package cz.ceph.lampcontrol.api;
+package org.screamingsandals.lampcontrol.api;
 
-import cz.ceph.lampcontrol.environment.Environment;
+import org.screamingsandals.lampcontrol.environment.Environment;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Lightable;
