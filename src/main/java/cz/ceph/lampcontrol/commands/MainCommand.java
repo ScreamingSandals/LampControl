@@ -20,6 +20,7 @@ public class MainCommand implements BukkitCommand {
 
     @Override
     public boolean onPlayerCommand(Player player, ICommand iCommand, List<String> list) {
+
         return false;
     }
 

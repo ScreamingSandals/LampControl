@@ -9,7 +9,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Lightable;
 import org.bukkit.block.data.Powerable;
-import org.bukkit.material.MaterialData;
 import org.bukkit.material.PoweredRail;
 
 import java.lang.reflect.Field;
@@ -70,7 +69,7 @@ public class SwitchBlock implements cz.ceph.lampcontrol.api.SwitchBlock {
     }
 
     @Data
-    public static class Handler {
+    private static class Handler {
         private Object craftWorld;
         private Field clientSide;
 

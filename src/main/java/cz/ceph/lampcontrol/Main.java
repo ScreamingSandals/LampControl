@@ -2,7 +2,7 @@ package cz.ceph.lampcontrol;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import cz.ceph.lampcontrol.config.BaseConfig;
-import cz.ceph.lampcontrol.config.ConfigInstance;
+import cz.ceph.lampcontrol.config.MainConfig;
 import cz.ceph.lampcontrol.environment.Environment;
 import cz.ceph.lampcontrol.environment.LegacyEnvironment;
 import cz.ceph.lampcontrol.environment.MainEnvironment;
@@ -13,7 +13,6 @@ import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,6 +21,8 @@ import org.screamingsandals.lib.screamingcommands.ScreamingCommands;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.screamingsandals.lib.lang.I.mpr;
 
@@ -34,7 +35,9 @@ public class Main extends JavaPlugin {
     private static Environment environment;
     private ScreamingCommands screamingCommands;
     @Getter
-    private static cz.ceph.lampcontrol.api.SwitchBlock switchBlock = new SwitchBlock();
+    private final static cz.ceph.lampcontrol.api.SwitchBlock switchBlock = new SwitchBlock();
+    @Getter
+    private List<Player> disabledPlayers = new ArrayList<>();
     @Getter
     private static WorldEditPlugin worldEdit;
     private boolean worldEditInstalled = false;
@@ -54,7 +57,7 @@ public class Main extends JavaPlugin {
 
         System.out.println(environment.toString());
 
-        baseConfig = new ConfigInstance(createConfigFile(getDataFolder(), "config.yml"));
+        baseConfig = new MainConfig(createConfigFile(getDataFolder(), "config.yml"));
         baseConfig.initialize();
         baseConfig.checkDefaultValues();
 

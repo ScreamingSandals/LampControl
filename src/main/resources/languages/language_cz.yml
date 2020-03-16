@@ -7,6 +7,11 @@ prefix: "&8[&eLamp&cControl&8]&r"
 
 loaded: "&abyl načten! &dWorldEdit &aje:&e %boolean%"
 
+vault:
+  loaded: "Podpora Vaultu byla načtena!"
+  not_found: "Vault nebyl nalezen, ekonomika se nepoužije.."
+  withdraw: "&e%cost%&f%currency% &abylo odebráno z tvého účtu."
+
 commands:
   no-worldedit: "&eWorldEdit &cnení nainstalovanej! Takhle to fungovat nebude &r:<"
   no-selection: "&cŽádná oblast &eWorldEditu &cnení označena!"

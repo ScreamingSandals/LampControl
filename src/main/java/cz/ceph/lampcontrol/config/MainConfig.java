@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class ConfigInstance implements BaseConfig {
+public class MainConfig implements BaseConfig {
     private final File configFile;
     private YamlConfiguration yamlConfiguration;
 
-    public ConfigInstance(File configFile) {
+    public MainConfig(File configFile) {
         this.configFile = configFile;
     }
 

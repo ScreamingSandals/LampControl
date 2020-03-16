@@ -1,6 +1,5 @@
 package cz.ceph.lampcontrol.api;
 
-import org.bukkit.World;
 import org.bukkit.block.Block;
 
 /**
@@ -8,14 +7,14 @@ import org.bukkit.block.Block;
  */
 public interface SwitchBlock {
     /**
-     *
+     * Sets the provided block's lit state
      * @param block
      * @param lit
      */
     void setLit(Block block, boolean lit);
 
     /**
-     *
+     * Sets the provided block's power state
      * @param block
      * @param powered
      */

@@ -9,7 +9,7 @@ import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
 import cz.ceph.lampcontrol.Main;
-import cz.ceph.lampcontrol.world.BlockStatus;
+import cz.ceph.lampcontrol.api.BlockInfo;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -69,12 +69,12 @@ public class OffCommand implements BukkitCommand {
                     if (region.contains(vectorLocation)) {
                         Block block = minLoc.getWorld().getBlockAt(location);
                         final Material material = block.getType();
-                        if (Main.getEnvironment().isLightable(material)
-                                && BlockStatus.isLit(block)) {
+                        if (BlockInfo.isLightable(material)
+                                && BlockInfo.isLit(block)) {
                             Main.getSwitchBlock().setLit(block, false);
                             replaced++;
-                        } else if (Main.getEnvironment().isPowerable(material)
-                                && BlockStatus.isPowered(block)) {
+                        } else if (BlockInfo.isPowerable(material)
+                                && BlockInfo.isPowered(block)) {
                             Main.getSwitchBlock().setPowered(block, false);
                             replaced++;
                         }

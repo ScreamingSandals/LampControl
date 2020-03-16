@@ -1,7 +1,8 @@
 package cz.ceph.lampcontrol.listeners;
 
 import cz.ceph.lampcontrol.Main;
-import cz.ceph.lampcontrol.world.BlockStatus;
+import cz.ceph.lampcontrol.api.BlockInfo;
+import cz.ceph.lampcontrol.api.events.PlayerChangeBlockStateEvent;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -31,13 +32,19 @@ public class PlayerListener implements Listener {
 
         if (itemStack != null
                 && itemStack.getType() == Main.getBaseConfig().getMaterial("vault.item")) {
-            if (changeBlock(block)) {
-                Main.withdrawPlayer(player);
+            if (BlockInfo.isLightable(block.getType()) || BlockInfo.isPowerable(block.getType())) {
+                PlayerChangeBlockStateEvent playerChangeBlockStateEvent = new PlayerChangeBlockStateEvent(player, block);
+                playerChangeBlockStateEvent.callEvent();
+
+                if (!playerChangeBlockStateEvent.isCancelled()) {
+                    changeBlock(block);
+                    Main.withdrawPlayer(player);
+                }
             }
             return;
         }
 
-        if (player.hasPermission("lampcontrol.rightclick")) {
+        if (player.hasPermission("lampcontrol.right-click")) {
             changeBlock(block);
         }
 
@@ -45,16 +52,16 @@ public class PlayerListener implements Listener {
 
     private boolean changeBlock(Block block) {
         final Material material = block.getType();
-        if (Main.getEnvironment().isLightable(material)) {
-            if (BlockStatus.isLit(block)) {
+        if (BlockInfo.isLightable(material)) {
+            if (BlockInfo.isLit(block)) {
                 Main.getSwitchBlock().setLit(block, false);
                 return false;
             } else {
                 Main.getSwitchBlock().setLit(block, true);
                 return true;
             }
-        } else if (Main.getEnvironment().isPowerable(material)) {
-            if (BlockStatus.isPowered(block)) {
+        } else if (BlockInfo.isPowerable(material)) {
+            if (BlockInfo.isPowered(block)) {
                 Main.getSwitchBlock().setPowered(block, false);
                 return false;
             } else {
