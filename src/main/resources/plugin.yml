@@ -3,7 +3,7 @@ author: Ceph
 version: ${project.version}
 api-version: 1.13
 website: https://hryozivot.net
-main: cz.ceph.lampcontrol.Main
+main: org.screamingsandals.lampcontrol.Main
 
 softdepend:
   - WorldEdit

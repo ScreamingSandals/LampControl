@@ -1,13 +1,6 @@
 package org.screamingsandals.lampcontrol;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import org.screamingsandals.lampcontrol.api.SwitchBlock;
-import org.screamingsandals.lampcontrol.config.BaseConfig;
-import org.screamingsandals.lampcontrol.config.MainConfig;
-import org.screamingsandals.lampcontrol.environment.Environment;
-import org.screamingsandals.lampcontrol.environment.LegacyEnvironment;
-import org.screamingsandals.lampcontrol.environment.MainEnvironment;
-import org.screamingsandals.lampcontrol.listeners.PlayerListener;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
@@ -16,12 +9,21 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.screamingsandals.lampcontrol.api.SwitchBlock;
+import org.screamingsandals.lampcontrol.config.BaseConfig;
+import org.screamingsandals.lampcontrol.config.MainConfig;
+import org.screamingsandals.lampcontrol.environment.Environment;
+import org.screamingsandals.lampcontrol.environment.LegacyEnvironment;
+import org.screamingsandals.lampcontrol.environment.MainEnvironment;
+import org.screamingsandals.lampcontrol.listeners.PlayerListener;
+import org.screamingsandals.lampcontrol.player.DataManager;
 import org.screamingsandals.lib.lang.Language;
 import org.screamingsandals.lib.screamingcommands.ScreamingCommands;
 
 import java.io.File;
 import java.io.IOException;
 
+import static org.screamingsandals.lib.lang.I.m;
 import static org.screamingsandals.lib.lang.I.mpr;
 
 public class Main extends JavaPlugin {
@@ -36,6 +38,8 @@ public class Main extends JavaPlugin {
     private final static SwitchBlock switchBlock = new org.screamingsandals.lampcontrol.world.SwitchBlock();
     @Getter
     private static WorldEditPlugin worldEdit;
+    @Getter
+    private static DataManager dataManager;
     private boolean worldEditInstalled = false;
     private Economy economy;
     private boolean isVault = false;
@@ -57,7 +61,7 @@ public class Main extends JavaPlugin {
         baseConfig.initialize();
         baseConfig.checkDefaultValues();
 
-        screamingCommands = new ScreamingCommands(this, Main.class, "cz/ceph/lampcontrol");
+        screamingCommands = new ScreamingCommands(this, Main.class, "org/screamingsandals/lampcontrol");
         screamingCommands.loadCommands();
 
         Language language = new Language(this, baseConfig.getString("language"));
@@ -72,17 +76,24 @@ public class Main extends JavaPlugin {
         } catch (NoClassDefFoundError ignored) {
         }
 
+        dataManager = new DataManager(this);
+
         if (baseConfig.getBoolean("vault.enabled")) {
             log(setupEconomy() ? mpr("vault.loaded").get() : mpr("vault.not_found").get());
         }
 
-        log(mpr("loaded")
+        log(m("loaded")
                 .replace("%boolean%", worldEditInstalled)
                 .get());
+
+        if (getDescription().getVersion().contains("SNAPSHOT")) {
+            log(m("error.snapshot-version").get());
+        }
     }
 
     @Override
     public void onDisable() {
+        dataManager.save();
         screamingCommands.unloadCommands();
 
         getServer().getServicesManager().unregisterAll(this);

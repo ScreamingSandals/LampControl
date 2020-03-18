@@ -5,7 +5,7 @@ language_code: "cz"
 #Edit this as you wish :P
 prefix: "&8[&eLamp&cControl&8]&r"
 
-loaded: "&abyl načten! &dWorldEdit &aje:&e %boolean%"
+loaded: "&aPlugin byl načten! &dWorldEdit &aje:&e %boolean%"
 
 vault:
   loaded: "Podpora Vaultu byla načtena!"
@@ -17,3 +17,10 @@ commands:
   no-selection: "&cŽádná oblast &eWorldEditu &cnení označena!"
   replaced: "&aBylo změněno &e%count% &abloků!"
   not_replaced: "&cNic se nestalo &e:("
+
+interract:
+  edit-mode-off: "Edit mód je vypnutý, použij /lampcontrol edit, aby fungovalo pravé kliknutí!"
+  edit-mode-on: ""
+
+error:
+  snapshot-version: "&cPoužíváte verzi, která je označena jako &lSNAPSHOT&c, tedy nestabilní! Všechno je na vaše vlastní nebezpečí."

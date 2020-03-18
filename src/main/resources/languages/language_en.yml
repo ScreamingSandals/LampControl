@@ -5,7 +5,7 @@ language_code: "en"
 #Edit this as you wish :P
 prefix: "&8[&eLamp&cControl&8]&r"
 
-loaded: "&ahas been loaded! &dWorldEdit &ais:&e %boolean%"
+loaded: "&aPlugin has been loaded! &dWorldEdit &ais:&e %boolean%"
 
 vault:
   loaded: "Vault support has been enabled!"
@@ -17,3 +17,6 @@ commands:
   no-selection: "&cCouldn't find any &eWorldEdit &cselections!"
   replaced: "&e%count% &ablock(s) has been replaced!"
   not_replaced: "&cNothing has been replaced &e:("
+
+error:
+  snapshot-version: "&cYou are using &lSNAPSHOT&c version! Everything is at your own risk."

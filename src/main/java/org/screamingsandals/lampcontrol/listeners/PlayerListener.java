@@ -1,5 +1,6 @@
 package org.screamingsandals.lampcontrol.listeners;
 
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.screamingsandals.lampcontrol.Main;
 import org.screamingsandals.lampcontrol.api.BlockInfo;
 import org.screamingsandals.lampcontrol.api.events.PlayerChangeBlockStateEvent;
@@ -17,6 +18,11 @@ import org.bukkit.inventory.ItemStack;
  * @author ScreamingSandals team
  */
 public class PlayerListener implements Listener {
+
+        @EventHandler
+        public void onPlayerJoin(PlayerJoinEvent event) {
+        Main.getDataManager().createPlayerData(event.getPlayer());
+    }
 
     @EventHandler
     public void onRightClick(PlayerInteractEvent event) {
